@@ -28,8 +28,7 @@ export const metadata: Metadata = {
     shortcut: '/favicon.png',
   },
   verification: {
-    // Add your Google Search Console / Bing Webmaster verification tokens here
-    // google: 'YOUR_GOOGLE_VERIFICATION_TOKEN',
+    google: 'ncDPDf6qeVYyIfZspChewZ1n7l0WbtzJejdJRZMsCqQ',
   },
 }
 
@@ -37,6 +36,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Google Site Verification (Search Console) */}
+        <meta name="google-site-verification" content="ncDPDf6qeVYyIfZspChewZ1n7l0WbtzJejdJRZMsCqQ" />
+
         {/* Favicon */}
         <link rel="icon" href="/favicon.png" type="image/png" />
         <link rel="apple-touch-icon" href="/favicon.png" />
