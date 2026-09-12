@@ -2,9 +2,10 @@ import type { Metadata } from 'next'
 import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import LandingNavbar from '@/components/landing/LandingNavbar'
 
 // ─── Company & Contact Constants ──────────────────────────────────────────────
-const SITE_URL = 'https://samstack.tech'
+const SITE_URL = 'https://samstack-crm.vercel.app'
 const COMPANY_NAME = 'SAMStack'
 const OFFICIAL_EMAIL = 'samstacktechs@gmail.com'
 const OFFICIAL_PHONE = '+923285778715'
@@ -318,17 +319,147 @@ const jsonLd = {
         '@type': 'OfferCatalog',
         name: 'SAMStack Core Engineering Services',
         itemListElement: [
-          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Web Development', description: 'Custom full-stack web applications built with Next.js, React, and TypeScript.' } },
-          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Mobile App Development', description: 'Cross-platform iOS and Android mobile apps using React Native and Flutter.' } },
-          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Data Science & Analytics', description: 'Machine learning, predictive models, business intelligence, and Python data pipelines.' } },
-          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Backend Engineering & APIs', description: 'Scalable backend architectures, REST/GraphQL microservices, and high-concurrency databases.' } },
-          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'UI/UX Design', description: 'Modern user experience design, Figma prototypes, responsive interfaces, and interaction design.' } },
-          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Technical Writing', description: 'Professional software documentation, API documentation, developer guides, and tech content.' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Enterprise Web Development', description: 'Custom full-stack web applications built with Next.js 16, React 19, and TypeScript with 100/100 Core Web Vitals.' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Cross-Platform Mobile App Development', description: 'Cross-platform iOS and Android mobile apps using React Native and Flutter with offline data sync.' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Data Science & Predictive Analytics', description: 'Machine learning, automated ETL pipelines, predictive customer models, and interactive BI dashboards.' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'High-Throughput Backend & Microservices', description: 'Scalable backend architectures, REST/GraphQL microservices, and PostgreSQL with Row-Level Security.' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'AI Solutions & Custom LLM Workflows', description: 'Retrieval-Augmented Generation (RAG) with pgvector, OpenAI GPT-4o, and autonomous LangChain agents.' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'UI/UX Design & Design Systems', description: 'Modern user experience design, Figma clickable prototypes, WCAG 2.1 AA accessibility, and atomic design tokens.' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Headless E-Commerce & Global Payments', description: 'High-conversion headless digital storefronts with Stripe, PayPal, PayFast, and localized checkouts.' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Technical Writing & API Documentation', description: 'Production-grade software documentation, OpenAPI/Swagger references, developer guides, and architecture whitepapers.' } },
         ],
       },
     },
 
-    // 6. WebSite Schema with SearchAction
+    // 6. Individual Schema.org Service Entities (GEO / AEO Standards for Google & AI Engines)
+    {
+      '@type': 'Service',
+      '@id': `${SITE_URL}/#service-web-development`,
+      name: 'Enterprise Web Development & Jamstack Architecture',
+      serviceType: 'Full Stack Web Engineering',
+      provider: { '@id': `${SITE_URL}/#organization` },
+      url: `${SITE_URL}/#services`,
+      description:
+        'Enterprise-grade web application engineering utilizing Next.js 16 (App Router), React 19, TypeScript, and TailwindCSS. Engineered for Core Web Vitals (sub-second LCP), Server Components, Edge Middleware, strict security headers, and international SEO ranking from Lahore, Pakistan.',
+      areaServed: [
+        { '@type': 'Country', name: 'Pakistan' },
+        { '@type': 'Country', name: 'United States' },
+        { '@type': 'Country', name: 'United Kingdom' },
+        { '@type': 'Country', name: 'Canada' },
+        { '@type': 'Country', name: 'Australia' },
+        { '@type': 'Country', name: 'United Arab Emirates' },
+      ],
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Web Engineering Deliverables',
+        itemListElement: [
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Next.js 16 App Router Architecture with Server Components' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: '100/100 Core Web Vitals & LCP < 1.2s Optimization' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Edge Middleware Security, CSRF & Strict CSP Headers' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Automated CI/CD Zero-Downtime Deployment on Vercel' } },
+        ],
+      },
+    },
+    {
+      '@type': 'Service',
+      '@id': `${SITE_URL}/#service-data-science`,
+      name: 'Data Science, Predictive Modeling & Business Intelligence',
+      serviceType: 'AI, Machine Learning & Data Engineering',
+      provider: { '@id': `${SITE_URL}/#organization` },
+      url: `${SITE_URL}/#services`,
+      description:
+        'Comprehensive data science and business analytics pipelines engineered with Python, Pandas, Polars, Scikit-learn, and XGBoost in Lahore. We architect automated ETL/ELT pipelines, predictive customer churn models, and interactive executive BI dashboards.',
+      areaServed: [
+        { '@type': 'Country', name: 'Pakistan' },
+        { '@type': 'Country', name: 'United States' },
+        { '@type': 'Country', name: 'United Kingdom' },
+        { '@type': 'Country', name: 'Canada' },
+        { '@type': 'Country', name: 'Australia' },
+      ],
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Data Science Deliverables',
+        itemListElement: [
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Automated ETL/ELT Cloud Data Pipelines' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Predictive ML Churn & Revenue Models' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Interactive Executive Dashboards in Power BI / Studio' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Statistical Attribution & Anomaly Detection' } },
+        ],
+      },
+    },
+    {
+      '@type': 'Service',
+      '@id': `${SITE_URL}/#service-backend-engineering`,
+      name: 'High-Throughput Backend Engineering & Microservices',
+      serviceType: 'Backend Architecture & Distributed Systems',
+      provider: { '@id': `${SITE_URL}/#organization` },
+      url: `${SITE_URL}/#services`,
+      description:
+        'Mission-critical server backends and microservices built with Node.js, Python FastAPI, PostgreSQL, and Supabase. Features PgBouncer connection pooling, Row-Level Security (RLS), distributed Redis caching, and OpenAPI specifications.',
+      areaServed: [
+        { '@type': 'Country', name: 'Pakistan' },
+        { '@type': 'Country', name: 'United States' },
+        { '@type': 'Country', name: 'United Kingdom' },
+        { '@type': 'Country', name: 'Canada' },
+      ],
+    },
+    {
+      '@type': 'Service',
+      '@id': `${SITE_URL}/#service-mobile-apps`,
+      name: 'Cross-Platform Mobile App Development',
+      serviceType: 'iOS & Android Mobile Engineering',
+      provider: { '@id': `${SITE_URL}/#organization` },
+      url: `${SITE_URL}/#services`,
+      description:
+        'High-performance cross-platform mobile apps for iOS and Android developed with React Native and Flutter. Offline-first data sync with SQLite, push notifications, and store release compliance.',
+      areaServed: [{ '@type': 'Country', name: 'Worldwide' }],
+    },
+    {
+      '@type': 'Service',
+      '@id': `${SITE_URL}/#service-ai-llm`,
+      name: 'Enterprise AI & Custom LLM Agentic Workflows',
+      serviceType: 'Generative AI & Autonomous Agent Systems',
+      provider: { '@id': `${SITE_URL}/#organization` },
+      url: `${SITE_URL}/#services`,
+      description:
+        'Custom AI copilots, Retrieval-Augmented Generation (RAG) with pgvector, and multi-agent LangChain/LangGraph pipelines with strict data privacy and zero-retention policies.',
+      areaServed: [{ '@type': 'Country', name: 'Worldwide' }],
+    },
+    {
+      '@type': 'Service',
+      '@id': `${SITE_URL}/#service-ui-ux`,
+      name: 'UI/UX Product Design & Enterprise Design Systems',
+      serviceType: 'Interface Design & Conversion Rate Optimization',
+      provider: { '@id': `${SITE_URL}/#organization` },
+      url: `${SITE_URL}/#services`,
+      description:
+        'User-centric digital product design by Saqib Javed. Figma clickable prototypes, WCAG 2.1 AA accessibility, atomic design tokens, and CRO UX audits.',
+      areaServed: [{ '@type': 'Country', name: 'Worldwide' }],
+    },
+    {
+      '@type': 'Service',
+      '@id': `${SITE_URL}/#service-ecommerce`,
+      name: 'Headless E-Commerce & Global Payment Gateways',
+      serviceType: 'Digital Commerce Infrastructure',
+      provider: { '@id': `${SITE_URL}/#organization` },
+      url: `${SITE_URL}/#services`,
+      description:
+        'High-converting headless Next.js online stores with Stripe, PayPal, PayFast payment gateway integrations, and real-time inventory synchronization.',
+      areaServed: [{ '@type': 'Country', name: 'Worldwide' }],
+    },
+    {
+      '@type': 'Service',
+      '@id': `${SITE_URL}/#service-technical-writing`,
+      name: 'Technical Writing, API Specs & Developer Relations',
+      serviceType: 'Software Documentation & Developer Education',
+      provider: { '@id': `${SITE_URL}/#organization` },
+      url: `${SITE_URL}/#services`,
+      description:
+        'Professional developer documentation, OpenAPI/Swagger references, architecture whitepapers, and high-ranking SEO technical blogs authored by Suleman Zaheer.',
+      areaServed: [{ '@type': 'Country', name: 'Worldwide' }],
+    },
+
+    // 7. WebSite Schema with SearchAction
     {
       '@type': 'WebSite',
       '@id': `${SITE_URL}/#website`,
@@ -344,7 +475,7 @@ const jsonLd = {
       },
     },
 
-    // 7. FAQPage (AEO — Answer Engine Optimization for Google AI, Perplexity, ChatGPT)
+    // 8. FAQPage (AEO — Answer Engine Optimization for Google AI Overviews, Perplexity & Copilot)
     {
       '@type': 'FAQPage',
       '@id': `${SITE_URL}/#faq`,
@@ -354,7 +485,7 @@ const jsonLd = {
           name: 'What services does SAMStack offer in Lahore and globally?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'SAMStack provides end-to-end technology solutions: custom web development (Next.js, React), mobile app development (iOS & Android), data science and data analytics (Python, Machine Learning, Business Intelligence), scalable backend systems (Node.js, Python, PostgreSQL), UI/UX design, and technical writing. We serve clients in Lahore, across Pakistan, and internationally.',
+            text: 'SAMStack provides end-to-end digital engineering: custom web development (Next.js 16, React 19), mobile app development (React Native, Flutter), data science and machine learning (Python, Pandas, Scikit-learn, Power BI), scalable backend architectures (Node.js, Python FastAPI, PostgreSQL, Supabase), Generative AI & RAG solutions, UI/UX design systems in Figma, and developer technical writing. We serve clients in Lahore, across Pakistan, and globally.',
           },
         },
         {
@@ -362,23 +493,31 @@ const jsonLd = {
           name: 'Who runs SAMStack and who are the key team members?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'SAMStack is founded and led by Suleman Zaheer, a backend and full-stack developer and technical writer based in Lahore. The core leadership team includes Syed Abdullah as Team Lead and Senior Backend Developer, and Saqib Javed as Frontend Developer and UI/UX Designer.',
+            text: 'SAMStack is founded and led by Suleman Zaheer, a backend & full-stack software engineer and technical writer based in Lahore. The core leadership team includes Syed Abdullah as Team Lead & Senior Backend Developer, and Saqib Javed as Frontend Developer & UI/UX Designer.',
           },
         },
         {
           '@type': 'Question',
-          name: 'What are SAMStack’s contact details and phone number?',
+          name: 'What web development technologies and standards does SAMStack specialize in?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'You can contact SAMStack by phone or WhatsApp at +92 328 5778715 (+923285778715) or by email at samstacktechs@gmail.com. We are located in Lahore, Punjab, Pakistan and respond promptly to inquiries.',
+            text: 'SAMStack specializes in Next.js 16 (App Router), React 19, TypeScript, and TailwindCSS. Every build achieves 100/100 Core Web Vitals (sub-second LCP), Server Components (RSC), Edge Middleware security, international SEO optimization, and automated CI/CD deployments on Vercel.',
           },
         },
         {
           '@type': 'Question',
-          name: 'What data science and data analytics capabilities does SAMStack have?',
+          name: 'What data science, machine learning, and analytics capabilities does SAMStack provide?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'SAMStack builds automated data pipelines, predictive machine learning models, customer segmentation systems, interactive BI dashboards, and custom analytics tools using Python, Pandas, Scikit-learn, TensorFlow, and cloud database architectures.',
+            text: 'SAMStack engineers automated cloud ETL/ELT pipelines, predictive machine learning models (churn, revenue forecasting, classification), customer segmentation systems, and interactive BI dashboards using Python, Pandas, Polars, Scikit-learn, XGBoost, and Power BI.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How does SAMStack ensure backend security and database scalability?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Our backend engineering utilizes PostgreSQL with connection pooling (PgBouncer), strict Row-Level Security (RLS), distributed Redis caching, and microservices in Node.js and Python FastAPI. We implement enterprise Role-Based Access Control (RBAC) and full audit logging.',
           },
         },
         {
@@ -386,7 +525,15 @@ const jsonLd = {
           name: 'Does SAMStack work with international clients outside Pakistan?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Yes. A large portion of SAMStack’s portfolio serves international clients across the United States, United Kingdom, Canada, Australia, and the Middle East (UAE & Saudi Arabia). We deliver silicon-valley caliber code quality with high cost-efficiency.',
+            text: 'Yes. A large portion of SAMStack’s portfolio serves international clients across the United States, United Kingdom, Canada, Australia, and the Middle East (UAE & Saudi Arabia). We deliver Silicon Valley caliber code quality with transparent milestones and high cost-efficiency.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'What are SAMStack’s contact details, phone number, and website?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'You can contact SAMStack by phone or WhatsApp at +92 328 5778715 (+923285778715) or by email at samstacktechs@gmail.com. Our official platform is hosted at https://samstack-crm.vercel.app. We are based in Lahore, Punjab, Pakistan.',
           },
         },
         {
@@ -394,7 +541,7 @@ const jsonLd = {
           name: 'How can I get a quote or start a project with SAMStack?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'You can email us directly at samstacktechs@gmail.com or message/call us on WhatsApp at +92 328 5778715. We offer a free technical discovery call and a comprehensive proposal with timeline and transparent pricing.',
+            text: 'You can email us directly at samstacktechs@gmail.com or message/call us on WhatsApp at +92 328 5778715. We offer a free technical discovery consultation and provide a comprehensive proposal with timeline, architecture blueprints, and fixed-price milestones.',
           },
         },
       ],
@@ -402,79 +549,151 @@ const jsonLd = {
   ],
 }
 
-// ─── Data Arrays ──────────────────────────────────────────────────────────────
+// ─── High-Level Services Data Array (International Standards) ─────────────────
 const services = [
   {
+    id: 'web-development',
     icon: '🌐',
-    title: 'Web Development',
-    desc: 'High-performance web apps built with Next.js, React, and TypeScript. Blazing fast load times, SEO-optimized architecture, and responsive layouts.',
-    tags: ['Next.js', 'React', 'TypeScript', 'TailwindCSS'],
-    gradient: 'from-blue-600/20 via-indigo-600/20 to-transparent',
-    border: 'border-blue-500/20',
-    accent: '#3b82f6',
+    badge: 'Production Web Apps',
+    metric: '⚡ 100/100 Lighthouse & Sub-1.2s LCP',
+    accentBorder: 'border-t-blue-500',
+    iconBg: 'from-blue-50 to-indigo-50 border-blue-100 text-blue-600',
+    title: 'Enterprise Web Development & Jamstack',
+    tagline: 'High-performance, SEO-dominant Next.js 16 & React web platforms engineered for maximum conversion.',
+    desc: 'We engineer bespoke full-stack web applications utilizing Next.js 16 (App Router), React 19, TypeScript, and TailwindCSS. Engineered for Core Web Vitals (LCP < 1.2s, INP < 100ms), Edge Middleware routing, semantic HTML5 microdata, and international Google ranking.',
+    deliverables: [
+      'Next.js 16 App Router architecture with Server Components (RSC)',
+      '100/100 Core Web Vitals, accessibility & performance tuning',
+      'Edge Middleware routing, CSRF protection & strict security headers',
+      'Automated Vercel / Cloudflare CI/CD zero-downtime deployment',
+    ],
+    tags: ['Next.js 16', 'React 19', 'TypeScript', 'TailwindCSS', 'Server Components', 'Edge Runtime', 'GraphQL'],
   },
   {
-    icon: '📱',
-    title: 'Mobile App Development',
-    desc: 'Cross-platform iOS and Android applications with React Native and Flutter. Native speed, offline capabilities, and intuitive touch UX.',
-    tags: ['React Native', 'Flutter', 'iOS', 'Android'],
-    gradient: 'from-purple-600/20 via-pink-600/20 to-transparent',
-    border: 'border-purple-500/20',
-    accent: '#a855f7',
-  },
-  {
+    id: 'data-science',
     icon: '📊',
-    title: 'Data Science & Analytics',
-    desc: 'Turn raw datasets into strategic advantage. Predictive ML models, data extraction, automated ETL pipelines, and executive BI dashboards.',
-    tags: ['Python', 'Pandas', 'ML / AI', 'Power BI'],
-    gradient: 'from-emerald-600/20 via-teal-600/20 to-transparent',
-    border: 'border-emerald-500/20',
-    accent: '#10b981',
+    badge: 'AI & Data Engineering',
+    metric: '📈 10M+ Data Points / Automated ETL',
+    accentBorder: 'border-t-emerald-500',
+    iconBg: 'from-emerald-50 to-teal-50 border-emerald-100 text-emerald-600',
+    title: 'Data Science & Predictive Analytics',
+    tagline: 'Transforming unstructured corporate datasets into automated ETL pipelines and predictive intelligence.',
+    desc: 'Our Lahore-based data science team architects end-to-end data pipelines, predictive machine learning models, and automated business intelligence suites. We extract, clean, and analyze high-volume data streams using Python (Pandas, NumPy, Polars, DuckDB) and build classification, regression, and forecasting models with Scikit-learn and XGBoost.',
+    deliverables: [
+      'Automated ETL/ELT cloud data pipelines for scheduled extraction & warehousing',
+      'Predictive ML classification, regression & customer churn models',
+      'Interactive executive dashboards in Power BI, Supabase Studio & custom charts',
+      'Statistical data cleansing, cohort analysis & automated KPI attribution',
+    ],
+    tags: ['Python', 'Pandas', 'Polars', 'Scikit-Learn', 'XGBoost', 'Power BI', 'DuckDB', 'ETL Pipelines'],
   },
   {
+    id: 'backend-microservices',
     icon: '⚙️',
-    title: 'Backend & Microservices',
-    desc: 'Mission-critical server architectures, RESTful and GraphQL APIs built to handle massive concurrency with rock-solid security.',
-    tags: ['Node.js', 'Python', 'PostgreSQL', 'FastAPI'],
-    gradient: 'from-amber-600/20 via-orange-600/20 to-transparent',
-    border: 'border-amber-500/20',
-    accent: '#f59e0b',
+    badge: 'Distributed Systems',
+    metric: '🛡️ 99.99% Uptime & < 80ms P95',
+    accentBorder: 'border-t-indigo-500',
+    iconBg: 'from-indigo-50 to-blue-50 border-indigo-100 text-indigo-600',
+    title: 'High-Throughput Backend & Microservices',
+    tagline: 'Fault-tolerant server architectures, distributed databases, and high-concurrency APIs.',
+    desc: 'Led by Team Lead Syed Abdullah and Founder Suleman Zaheer, our backend engineering delivers mission-critical microservices and fault-tolerant server systems. We design normalized relational database schemas in PostgreSQL with PgBouncer connection pooling, strict Row-Level Security (RLS), and distributed Redis cache layers.',
+    deliverables: [
+      'Microservices and REST/GraphQL APIs with OpenAPI / Swagger documentation',
+      'PostgreSQL schema normalization, indexing, partitioning & Supabase RLS',
+      'Distributed caching and rate-limiting using Redis & asynchronous workers',
+      'Role-Based Access Control (RBAC), Row-Level Security & JWT authentication',
+    ],
+    tags: ['Node.js', 'Python FastAPI', 'PostgreSQL', 'Supabase', 'Redis', 'Docker', 'PgBouncer'],
   },
   {
-    icon: '🎨',
-    title: 'UI/UX & Product Design',
-    desc: 'User-centric interface design, clickable Figma prototypes, and complete design systems that turn visitors into loyal customers.',
-    tags: ['Figma', 'UI/UX', 'Design Systems', 'Wireframes'],
-    gradient: 'from-rose-600/20 via-red-600/20 to-transparent',
-    border: 'border-rose-500/20',
-    accent: '#f43f5e',
+    id: 'mobile-development',
+    icon: '📱',
+    badge: 'iOS & Android Native',
+    metric: '📱 60 FPS Native Speed & Offline Sync',
+    accentBorder: 'border-t-amber-500',
+    iconBg: 'from-amber-50 to-orange-50 border-amber-100 text-amber-600',
+    title: 'Cross-Platform Mobile App Development',
+    tagline: 'Unified React Native & Flutter codebases with native speed, offline sync, and intuitive touch UX.',
+    desc: 'We develop high-performance mobile applications for Apple iOS and Google Android. Incorporating offline-first local databases (SQLite / WatermelonDB), background push notification pipelines, biometric authentication, and seamless hardware bridge access that easily pass App Store and Play Store review.',
+    deliverables: [
+      'Single codebase iOS and Android deployment with native platform bridges',
+      'Offline-first data persistence with SQLite and background cloud synchronization',
+      'Push notification pipelines via Firebase Cloud Messaging (FCM) & Apple APNs',
+      'App Store and Google Play compliance, cryptographic signing & release automation',
+    ],
+    tags: ['React Native', 'Flutter', 'TypeScript', 'Firebase FCM', 'SQLite', 'iOS / Android', 'Expo'],
   },
   {
+    id: 'ai-llm-solutions',
     icon: '🧠',
-    title: 'AI & Custom LLM Solutions',
-    desc: 'AI-driven automation, LangChain workflows, OpenAI & custom LLM integrations, retrieval-augmented generation (RAG), and intelligent bots.',
-    tags: ['OpenAI', 'RAG', 'LangChain', 'Automation'],
-    gradient: 'from-violet-600/20 via-indigo-600/20 to-transparent',
-    border: 'border-violet-500/20',
-    accent: '#8b5cf6',
+    badge: 'Generative AI & RAG',
+    metric: '🤖 Sub-Second RAG Vector Search',
+    accentBorder: 'border-t-purple-500',
+    iconBg: 'from-purple-50 to-pink-50 border-purple-100 text-purple-600',
+    title: 'AI Solutions & Custom LLM Agentic Workflows',
+    tagline: 'Custom enterprise AI solutions powered by OpenAI, Claude, LangChain, and vector embeddings.',
+    desc: 'We empower businesses with cutting-edge Generative AI and autonomous LLM agents. From Retrieval-Augmented Generation (RAG) using pgvector and Pinecone to custom OpenAI GPT-4o and Anthropic Claude workflows, we build intelligent AI copilots, document Q&A engines, and automated data enrichment pipelines.',
+    deliverables: [
+      'Production RAG pipelines with semantic document chunking & pgvector embeddings',
+      'Multi-agent autonomous workflows using LangChain, LangGraph & LlamaIndex',
+      'Conversational AI copilots with token streaming, memory & rate guards',
+      'Enterprise privacy guardrails, zero-data-retention compliance & prompt engineering',
+    ],
+    tags: ['OpenAI GPT-4o', 'Claude 3.5', 'LangChain', 'pgvector', 'Pinecone', 'LangGraph', 'Python'],
   },
   {
+    id: 'ui-ux-design',
+    icon: '🎨',
+    badge: 'Design Systems & CRO',
+    metric: '🎯 WCAG 2.1 AA Accessible Tokens',
+    accentBorder: 'border-t-rose-500',
+    iconBg: 'from-rose-50 to-pink-50 border-rose-100 text-rose-600',
+    title: 'UI/UX Product Design & Design Systems',
+    tagline: 'Human-centric digital interfaces, clickable Figma design systems, and conversion-focused wireframes.',
+    desc: 'Crafted by Frontend & UI/UX Lead Saqib Javed, our product design methodology transforms complex workflows into intuitive, visually captivating web and mobile interfaces. We build comprehensive Figma design systems with atomic tokens, responsive breakpoints, and micro-interactions that elevate customer retention.',
+    deliverables: [
+      'High-fidelity clickable Figma prototypes for desktop, tablet & mobile',
+      'Atomic Design System with tokens, typography scales, colors & UI components',
+      'User journey mapping, wireframing, usability testing & UX heuristic audits',
+      'Conversion Rate Optimization (CRO) and responsive design token handoff',
+    ],
+    tags: ['Figma', 'UI/UX', 'Design Systems', 'Atomic Tokens', 'Wireframes', 'WCAG 2.1 AA', 'Prototyping'],
+  },
+  {
+    id: 'ecommerce-platforms',
     icon: '🛒',
-    title: 'E-Commerce Platforms',
-    desc: 'High-converting custom stores and Shopify implementations with payment gateways, inventory sync, and localized checkout.',
-    tags: ['Custom E-Com', 'Shopify', 'Stripe', 'PayFast'],
-    gradient: 'from-cyan-600/20 via-blue-600/20 to-transparent',
-    border: 'border-cyan-500/20',
-    accent: '#06b6d4',
+    badge: 'Revenue Infrastructure',
+    metric: '💳 99.9% Checkout Reliability',
+    accentBorder: 'border-t-cyan-500',
+    iconBg: 'from-cyan-50 to-blue-50 border-cyan-100 text-cyan-600',
+    title: 'Headless E-Commerce & Global Payments',
+    tagline: 'High-conversion online stores with custom checkout flows, inventory synchronization, and secure payments.',
+    desc: 'We construct headless e-commerce platforms and custom Shopify Plus stores. Featuring global and localized payment gateways (Stripe, PayPal, PayFast, Pakistani payment rails), automated inventory reconciliation, cart abandonment recovery, and blazing-fast checkout flows.',
+    deliverables: [
+      'Headless Next.js storefronts with headless CMS or Shopify Plus backends',
+      'Multi-currency payment gateways (Stripe, PayPal, PayFast & local wallets)',
+      'Real-time stock synchronization, webhook listeners & inventory APIs',
+      'Cart abandonment recovery, SEO product catalogs & 1-click checkout flows',
+    ],
+    tags: ['Shopify Plus', 'Next.js Commerce', 'Stripe API', 'PayFast', 'Webhooks', 'Inventory Sync', 'TailwindCSS'],
   },
   {
+    id: 'technical-writing',
     icon: '✍️',
-    title: 'Technical Writing & Docs',
-    desc: 'Clear developer documentation, API references, architecture guides, and in-depth technical blogs that establish brand authority.',
-    tags: ['API Docs', 'Tech Blogs', 'Dev Guides', 'Markdown'],
-    gradient: 'from-slate-600/20 via-zinc-600/20 to-transparent',
-    border: 'border-slate-500/20',
-    accent: '#94a3b8',
+    badge: 'Developer Relations & Docs',
+    metric: '📚 100% API Spec Coverage',
+    accentBorder: 'border-t-teal-500',
+    iconBg: 'from-teal-50 to-emerald-50 border-teal-100 text-teal-600',
+    title: 'Technical Writing, API Specs & Developer Docs',
+    tagline: 'Clear developer documentation, OpenAPI references, architecture whitepapers, and technical blogs.',
+    desc: 'Led by Founder Suleman Zaheer, we produce authoritative technical documentation, interactive OpenAPI / Swagger references, and engineering whitepapers. Designed to drastically reduce developer onboarding friction and establish authoritative domain presence on Google.',
+    deliverables: [
+      'OpenAPI 3.1 / Swagger documentation, SDK guides & developer portals',
+      'Interactive Markdown / MDX documentation hubs with runnable code sandboxes',
+      'System architecture whitepapers, RFCs, and engineering runbooks for CTOs',
+      'SEO-dominant technical content, engineering blogs & deep-dive tutorials',
+    ],
+    tags: ['OpenAPI / Swagger', 'Markdown / MDX', 'Mintlify', 'Technical Writing', 'DevRel', 'API Docs', 'RFCs'],
   },
 ]
 
@@ -485,11 +704,10 @@ const teamMembers = [
     title: 'Backend & Full Stack Developer · Technical Writer',
     initials: 'SZ',
     image: '/suleman.png',
-    badgeColor: 'from-blue-600 to-indigo-600',
-    avatarBorder: 'border-blue-500/40',
-    tagColor: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+    status: 'Active in Lahore, PK',
+    badgeColor: 'bg-blue-50 text-blue-700 border-blue-200',
     bio: 'Leads SAMStack’s technological vision and client architecture. Deep specialization in full-stack engineering, high-throughput backend systems, data science pipelines, and clear technical communication.',
-    skills: ['Next.js', 'Node.js', 'Python', 'PostgreSQL', 'Data Science', 'Tech Writing', 'System Design'],
+    skills: ['Next.js 16', 'Node.js', 'Python', 'PostgreSQL', 'Data Science', 'Tech Writing', 'System Design'],
   },
   {
     name: 'Syed Abdullah',
@@ -497,9 +715,8 @@ const teamMembers = [
     title: 'Senior Backend Developer & Distributed Systems',
     initials: 'SA',
     image: '/abdullah.png',
-    badgeColor: 'from-emerald-600 to-teal-600',
-    avatarBorder: 'border-emerald-500/40',
-    tagColor: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+    status: 'Active in Lahore, PK',
+    badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
     bio: 'Oversees engineering delivery, microservices design, and database resilience. Specializes in building bulletproof server architectures, REST & GraphQL APIs, and high-performance cloud pipelines.',
     skills: ['Node.js', 'Python', 'FastAPI', 'Microservices', 'PostgreSQL', 'Redis', 'API Security'],
   },
@@ -509,19 +726,54 @@ const teamMembers = [
     title: 'Frontend Developer & UI/UX Designer',
     initials: 'SJ',
     image: '/saqib.png',
-    badgeColor: 'from-purple-600 to-pink-600',
-    avatarBorder: 'border-purple-500/40',
-    tagColor: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
+    status: 'Active in Lahore, PK',
+    badgeColor: 'bg-purple-50 text-purple-700 border-purple-200',
     bio: 'Crafts visually stunning, intuitive user interfaces and modern design systems. Expert in turning complex user requirements into elegant, high-conversion frontends using React and Next.js.',
-    skills: ['React', 'Next.js', 'TailwindCSS', 'Figma', 'UI/UX Design', 'Design Systems', 'Micro-Animations'],
+    skills: ['React 19', 'Next.js 16', 'TailwindCSS', 'Figma', 'UI/UX Design', 'Design Systems', 'Micro-Animations'],
   },
 ]
 
-const techStack = [
-  'Next.js 15', 'React 19', 'TypeScript', 'Node.js', 'Python', 'FastAPI',
-  'PostgreSQL', 'Supabase', 'MongoDB', 'Redis', 'TailwindCSS', 'React Native',
-  'Flutter', 'TensorFlow', 'Pandas', 'Docker', 'AWS', 'Vercel', 'GraphQL',
-  'REST APIs', 'Git', 'Figma',
+const deliveryFramework = [
+  {
+    step: '01',
+    title: 'Discovery & Architecture Blueprint',
+    desc: 'We map user personas, system workflows, database ERDs, and API contracts. You receive an interactive Figma wireframe and fixed-milestone scope within 48 hours.',
+    icon: '📐',
+    badge: 'Stage 1',
+  },
+  {
+    step: '02',
+    title: 'Agile Sprint Engineering',
+    desc: 'Bi-weekly demo deployments on preview environments. Clean Git feature branching, rigorous TypeScript typing, and direct communication with lead engineers.',
+    icon: '⚡',
+    badge: 'Stage 2',
+  },
+  {
+    step: '03',
+    title: 'Automated QA & Security Hardening',
+    desc: 'Continuous integration running end-to-end tests, Supabase Row-Level Security (RLS) penetration audits, and 100/100 Lighthouse performance audits.',
+    icon: '🛡️',
+    badge: 'Stage 3',
+  },
+  {
+    step: '04',
+    title: 'Zero-Downtime Launch & IP Transfer',
+    desc: 'Seamless deployment on edge infrastructure (Vercel, AWS, Cloudflare), 100% intellectual property ownership transfer, and full developer documentation.',
+    icon: '🚀',
+    badge: 'Stage 4',
+  },
+]
+
+const heroPillars = [
+  { icon: '⚡', label: '100/100 Core Web Vitals' },
+  { icon: '🛡️', label: '99.99% Cloud Uptime SLA' },
+  { icon: '🔒', label: 'Enterprise RLS & Security' },
+  { icon: '🌍', label: 'Global & Local Delivery' },
+]
+
+const primaryTechStrip = [
+  'Next.js 16', 'React 19', 'TypeScript', 'Python', 'FastAPI',
+  'PostgreSQL', 'Supabase', 'Docker', 'TailwindCSS', 'Redis'
 ]
 
 const faqs = [
@@ -552,10 +804,10 @@ const faqs = [
 ]
 
 const stats = [
-  { value: '50+', label: 'Projects Delivered' },
-  { value: '100%', label: 'Client Satisfaction' },
-  { value: '3+', label: 'Years Experience' },
-  { value: '15+', label: 'Tech Stacks' },
+  { value: '50+', label: 'Delivered Projects', detail: 'Web, Mobile & Data' },
+  { value: '100%', label: 'Code Ownership', detail: 'Zero Vendor Lock-in' },
+  { value: '3+ Yrs', label: 'Production Craft', detail: 'Battle-Tested Team' },
+  { value: '15+', label: 'Modern Stacks', detail: 'Full Cloud Native' },
 ]
 
 // ─── Homepage Component ───────────────────────────────────────────────────────
@@ -593,154 +845,109 @@ export default async function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="min-h-screen bg-[#060b17] text-slate-100 selection:bg-blue-600 selection:text-white overflow-x-hidden font-sans">
-        {/* ─── STICKY HEADER / NAV ──────────────────────────────────────── */}
-        <header
-          role="banner"
-          className="sticky top-0 z-50 bg-[#060b17]/85 backdrop-blur-xl border-b border-slate-800/80 transition-all"
-        >
-          <nav
-            role="navigation"
-            aria-label="Main navigation"
-            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4"
-          >
-            {/* Brand Logo */}
-            <a
-              href="/"
-              aria-label="SAMStack Technologies — Home"
-              className="flex items-center gap-2.5 group focus:outline-none"
-            >
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/25 group-hover:scale-105 transition-transform">
-                <span className="text-white text-lg font-black tracking-tighter">S</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-extrabold text-lg text-white tracking-tight leading-none">
-                  SAM<span className="text-blue-500">Stack</span>
-                </span>
-                <span className="text-[10px] text-slate-400 font-semibold tracking-wider uppercase">
-                  Technologies
-                </span>
-              </div>
-            </a>
+      <div className="min-h-screen bg-white text-slate-800 selection:bg-blue-600 selection:text-white overflow-x-hidden font-sans relative">
+        {/* Subtle Background Pattern: Modern Dot Matrix */}
+        <div className="fixed inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none opacity-60 -z-20" />
 
-            {/* Desktop Navigation Links */}
-            <div className="hidden md:flex items-center gap-7 text-sm font-medium text-slate-300">
-              <a href="#services" className="hover:text-blue-400 transition-colors">Services</a>
-              <a href="#team" className="hover:text-blue-400 transition-colors">Team</a>
-              <a href="#about" className="hover:text-blue-400 transition-colors">About</a>
-              <a href="#tech" className="hover:text-blue-400 transition-colors">Tech Stack</a>
-              <a href="#faq" className="hover:text-blue-400 transition-colors">FAQ</a>
-              <a href="#contact" className="hover:text-blue-400 transition-colors">Contact</a>
-            </div>
+        {/* ─── FIXED NAVBAR — Transparent over Hero, Glassy when scrolled ─── */}
+        <LandingNavbar
+          officialPhone={OFFICIAL_PHONE}
+          formattedPhone={FORMATTED_PHONE}
+          whatsappUrl={WHATSAPP_URL}
+        />
 
-            {/* Direct Contact Actions */}
-            <div className="flex items-center gap-2 sm:gap-3">
-              {/* Direct Phone Call Button */}
-              <a
-                href={`tel:${OFFICIAL_PHONE}`}
-                className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-700/60 transition-colors"
-                title="Call SAMStack"
-              >
-                <span>📞</span>
-                <span>{FORMATTED_PHONE}</span>
-              </a>
-
-              {/* WhatsApp Quick Button */}
-              <a
-                href={WHATSAPP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 text-xs font-semibold border border-emerald-500/30 transition-all"
-                title="Chat on WhatsApp"
-              >
-                <span>💬</span>
-                <span className="hidden sm:inline">WhatsApp</span>
-              </a>
-
-              {/* Portal Login */}
-              <Link
-                href="/login"
-                className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold shadow-md shadow-blue-500/20 transition-all"
-              >
-                Sign In
-              </Link>
-            </div>
-          </nav>
-        </header>
-
-        {/* ─── HERO SECTION ──────────────────────────────────────────────── */}
+        {/* ─── HERO SECTION (1 Screen View with crm.png Team Photo) ─── */}
         <section
           role="main"
           aria-labelledby="hero-heading"
-          className="relative pt-20 pb-28 md:pt-28 md:pb-36 text-center px-4 sm:px-6 lg:px-8 overflow-hidden"
+          className="relative min-h-screen lg:h-screen flex flex-col justify-between items-center text-center px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-6 overflow-hidden bg-slate-950 text-white"
         >
-          {/* Ambient Glows */}
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[450px] bg-gradient-to-tr from-blue-600/15 via-indigo-600/10 to-purple-600/15 blur-[120px] pointer-events-none -z-10" />
-          <div className="absolute top-10 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none -z-10" />
-          <div className="absolute bottom-10 right-10 w-80 h-80 bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none -z-10" />
+          {/* Background Image: crm.png prominently visible ("fully numaya") */}
+          <div className="absolute inset-0 z-0 pointer-events-none">
+            <img
+              src="/crm.png"
+              alt="SAMStack Team - Suleman Zaheer, Syed Abdullah, Saqib Javed"
+              className="w-full h-full object-cover object-center opacity-90 filter contrast-[1.03] brightness-95"
+            />
+            {/* Soft vignette: crystal clear center, gentle fade at edges */}
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-transparent to-slate-950/80" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(2,6,23,0.65)_100%)]" />
+          </div>
 
-          <div className="max-w-4xl mx-auto">
-            {/* Top Pill / Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-bold tracking-wide uppercase mb-6 shadow-sm">
+          {/* Ambient Subtle Glow Accents */}
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[320px] bg-gradient-to-tr from-blue-500/20 via-indigo-500/15 to-violet-500/15 blur-[120px] pointer-events-none z-0" />
+
+          {/* Hero Core Content: Clean, Spacious & Focused */}
+          <div className="flex-1 flex flex-col justify-center items-center max-w-4xl mx-auto w-full my-auto z-10">
+            {/* Top Pill / Badge with Live Status */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-900/50 backdrop-blur-md border border-white/15 text-slate-200 text-[11px] sm:text-xs font-semibold tracking-wide uppercase mb-3 shadow-lg hover:border-blue-400/40 transition-colors">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Lahore, Pakistan &bull; Worldwide Software &amp; Data Studio</span>
+              <span className="text-blue-400 font-bold">SAMStack Digital Studio</span>
+              <span className="text-slate-400">&bull;</span>
+              <span>Lahore, Pakistan &bull; Worldwide Delivery</span>
             </div>
 
             {/* Main Headline */}
             <h1
               id="hero-heading"
-              className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white leading-[1.08] mb-6"
+              className="text-3xl sm:text-5xl lg:text-[54px] font-black tracking-tight text-white leading-[1.1] mb-3 max-w-3xl drop-shadow-md"
             >
-              Transforming Ideas Into <br className="hidden sm:inline" />
-              <span className="bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">
-                High-Performance Digital Products
+              Transforming Ideas Into <br />
+              <span className="bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-300 bg-clip-text text-transparent">
+                Digital Products That Scale
               </span>
             </h1>
 
             {/* Subheading / Value Proposition */}
-            <p className="text-base sm:text-lg md:text-xl text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
-              <strong className="text-white font-semibold">SAMStack</strong> is Lahore’s premier digital engineering powerhouse. Founded by <strong className="text-blue-400 font-semibold">Suleman Zaheer</strong> with team leaders <strong className="text-slate-200 font-semibold">Syed Abdullah</strong> and <strong className="text-slate-200 font-semibold">Saqib Javed</strong> — delivering world-class Web Apps, Mobile Platforms, Data Science &amp; Scalable Cloud Backends.
+            <p className="text-xs sm:text-sm md:text-base text-slate-200/90 max-w-xl mx-auto mb-5 leading-relaxed font-normal drop-shadow-sm">
+              Lahore’s premier digital engineering studio. Crafting elite Web Apps, Mobile Platforms, Scalable Cloud Backends &amp; Data Science.
             </p>
 
             {/* Call to Action Buttons */}
-            <div className="flex flex-wrap items-center justify-center gap-3.5 mb-14">
+            <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
               <a
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-sm shadow-xl shadow-emerald-600/25 transition-all transform hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs sm:text-sm shadow-xl shadow-emerald-500/25 transition-all transform hover:-translate-y-0.5 hover:shadow-emerald-500/40"
               >
                 <span>💬</span> Chat on WhatsApp
               </a>
 
               <a
                 href={`tel:${OFFICIAL_PHONE}`}
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-sm shadow-xl shadow-blue-600/25 transition-all transform hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-white/12 hover:bg-white/20 text-white font-bold text-xs sm:text-sm border border-white/20 backdrop-blur-md shadow-md transition-all transform hover:-translate-y-0.5"
               >
-                <span>📞</span> Call: {FORMATTED_PHONE}
-              </a>
-
-              <a
-                href={`mailto:${OFFICIAL_EMAIL}`}
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 font-bold text-sm border border-slate-700 transition-all transform hover:-translate-y-0.5"
-              >
-                <span>✉️</span> {OFFICIAL_EMAIL}
+                <span>📞</span> {FORMATTED_PHONE}
               </a>
             </div>
 
-            {/* Trust Stats Bar */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-8 border-t border-slate-800/80 max-w-3xl mx-auto">
-              {stats.map((stat) => (
-                <div key={stat.label} className="p-3">
-                  <div className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-                    {stat.value}
+            {/* Minimalist, Clean Stats Bar (Zero Heavy Clutter) */}
+            <div className="w-full max-w-2xl rounded-2xl bg-slate-950/45 backdrop-blur-md border border-white/10 shadow-xl px-4 py-3">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 divide-y sm:divide-y-0 sm:divide-x divide-white/10">
+                {stats.map((stat, i) => (
+                  <div key={stat.label} className={`px-2 py-0.5 text-center ${i > 1 ? 'pt-2 sm:pt-0' : ''}`}>
+                    <div className="text-lg sm:text-xl font-black text-white tracking-tight leading-none">
+                      {stat.value}
+                    </div>
+                    <div className="text-[10.5px] sm:text-[11px] font-medium text-slate-300 mt-1 leading-tight">
+                      {stat.label}
+                    </div>
                   </div>
-                  <div className="text-xs text-slate-400 font-medium mt-1">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
+          </div>
+
+          {/* Bottom Scroll Prompt */}
+          <div className="pb-2 pt-1 flex flex-col items-center justify-center z-10">
+            <a
+              href="#services"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-white transition-colors group"
+            >
+              <span>Explore Services &amp; Capabilities</span>
+              <span className="group-hover:translate-y-0.5 transition-transform animate-bounce text-blue-400">↓</span>
+            </a>
           </div>
         </section>
 
@@ -748,63 +955,199 @@ export default async function HomePage() {
         <section
           id="services"
           aria-labelledby="services-heading"
-          className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-900/40 border-y border-slate-800/80"
+          className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-50/70 border-y border-slate-200"
         >
           <div className="max-w-7xl mx-auto">
             {/* Header */}
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <span className="text-xs font-extrabold text-blue-400 tracking-widest uppercase">
-                End-To-End Capabilities
-              </span>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold uppercase tracking-wider mb-3">
+                <span>⚡</span> Enterprise Capabilities
+              </div>
               <h2
                 id="services-heading"
-                className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight mt-2 mb-4"
+                className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight mt-1 mb-4"
               >
                 Comprehensive Software &amp; Data Services
               </h2>
-              <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
+              <p className="text-slate-500 text-sm sm:text-base leading-relaxed">
                 Whether you need a full data analytics pipeline, an enterprise web application, a modern mobile app, or developer documentation — our engineering team delivers precision at every step.
               </p>
             </div>
 
-            {/* Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* High-Level Services Grid (Compact, Modern 3-Column Grid) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
               {services.map((service) => (
                 <article
-                  key={service.title}
-                  className={`relative p-6 rounded-2xl bg-gradient-to-b ${service.gradient} bg-slate-900/80 border ${service.border} backdrop-blur-sm hover:border-slate-600 transition-all group flex flex-col justify-between`}
+                  key={service.id}
+                  id={service.id}
+                  className={`relative p-5 sm:p-6 rounded-2xl bg-white border border-slate-200/90 border-t-4 ${service.accentBorder} hover:border-slate-300 hover:shadow-lg hover:shadow-blue-500/5 transition-all group flex flex-col justify-between shadow-xs`}
                   itemScope
                   itemType="https://schema.org/Service"
                 >
                   <div>
-                    <div className="w-12 h-12 rounded-xl bg-slate-800/90 border border-slate-700/60 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
-                      {service.icon}
+                    {/* Top Meta Bar */}
+                    <div className="flex items-center justify-between gap-2 mb-3.5">
+                      <div className="flex items-center gap-2.5">
+                        <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${service.iconBg} border flex items-center justify-center text-lg group-hover:scale-105 transition-transform shadow-2xs flex-shrink-0`}>
+                          {service.icon}
+                        </div>
+                        <div>
+                          <span className="text-[10px] font-extrabold uppercase tracking-wider text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">
+                            {service.badge}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-700 text-[10px] font-bold shadow-2xs">
+                        <span>{service.metric}</span>
+                      </div>
                     </div>
+
+                    {/* Title */}
                     <h3
                       itemProp="name"
-                      className="text-lg font-bold text-white mb-2 tracking-tight group-hover:text-blue-400 transition-colors"
+                      className="text-base sm:text-lg font-bold text-slate-900 mb-1 tracking-tight group-hover:text-blue-600 transition-colors line-clamp-1"
                     >
                       {service.title}
                     </h3>
+
+                    {/* Tagline */}
+                    <p className="text-[11px] sm:text-xs font-semibold text-blue-600 mb-2 leading-snug line-clamp-1">
+                      {service.tagline}
+                    </p>
+
+                    {/* Description */}
                     <p
                       itemProp="description"
-                      className="text-xs text-slate-300 leading-relaxed mb-4"
+                      className="text-xs text-slate-600 leading-relaxed mb-3.5 line-clamp-2"
                     >
                       {service.desc}
                     </p>
+
+                    {/* Key Deliverables & Specifications */}
+                    <div className="mb-4 p-3 rounded-xl bg-slate-50/80 border border-slate-200/70">
+                      <p className="text-[10px] font-bold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                        Key Capabilities:
+                      </p>
+                      <ul className="space-y-1">
+                        {service.deliverables.slice(0, 3).map((item, i) => (
+                          <li key={i} className="flex items-start gap-1.5 text-[11px] text-slate-600 leading-tight">
+                            <span className="text-emerald-600 font-bold flex-shrink-0">✓</span>
+                            <span className="line-clamp-1">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
 
-                  <div className="flex flex-wrap gap-1.5 pt-3 border-t border-slate-800/80">
-                    {service.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-800/80 text-slate-300 border border-slate-700/60"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+                  {/* Bottom Footer: Tech Stack & CTA */}
+                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                    <div className="flex flex-wrap gap-1">
+                      {service.tags.slice(0, 3).map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-[9.5px] font-medium px-2 py-0.5 rounded bg-slate-50 text-slate-600 border border-slate-200/80"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    <a
+                      href={`https://wa.me/923285778715?text=${encodeURIComponent(`Hello SAMStack, I would like to consult with your engineering team regarding: ${service.title}`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-bold shadow-xs hover:shadow-sm transition-all whitespace-nowrap"
+                    >
+                      <span>Scope</span>
+                      <span>&rarr;</span>
+                    </a>
                   </div>
                 </article>
+              ))}
+            </div>
+
+            {/* Architecture Standards Banner */}
+            <div className="mt-14 p-8 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="max-w-2xl">
+                <span className="text-[11px] font-bold text-blue-600 uppercase tracking-wider">
+                  International Quality Guarantee
+                </span>
+                <h4 className="text-xl font-black text-slate-900 mt-1 mb-2">
+                  Need a custom SLA, dedicated squad, or technical architecture discovery?
+                </h4>
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  We offer free 30-minute discovery consultations with our lead engineers. Receive an interactive scope document, milestone breakdown, and architecture diagram within 24 hours.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3 flex-shrink-0">
+                <a
+                  href={`tel:${OFFICIAL_PHONE}`}
+                  className="px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-slate-200 transition-colors"
+                >
+                  📞 {FORMATTED_PHONE}
+                </a>
+                <a
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-md shadow-emerald-600/20 transition-all"
+                >
+                  💬 Start Discovery Call
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ─── HOW WE WORK / ENGINEERING FRAMEWORK ───────────────────────── */}
+        <section
+          id="framework"
+          aria-labelledby="framework-heading"
+          className="py-24 px-4 sm:px-6 lg:px-8 bg-white"
+        >
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <span className="text-xs font-extrabold text-blue-600 tracking-widest uppercase">
+                Proven Delivery Pipeline
+              </span>
+              <h2
+                id="framework-heading"
+                className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight mt-2 mb-4"
+              >
+                The SAMStack Engineering Framework
+              </h2>
+              <p className="text-slate-500 text-sm sm:text-base leading-relaxed">
+                From initial discovery to zero-downtime production deployment, our disciplined four-stage engineering methodology guarantees transparency, quality, and velocity.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {deliveryFramework.map((item) => (
+                <div
+                  key={item.step}
+                  className="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:border-blue-300 hover:shadow-lg hover:shadow-blue-500/5 transition-all group flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-2xl font-black text-slate-300 group-hover:text-blue-600 transition-colors font-mono">
+                        {item.step}
+                      </span>
+                      <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                        {item.badge}
+                      </span>
+                    </div>
+                    <div className="text-3xl mb-3">{item.icon}</div>
+                    <h3 className="text-base font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs text-slate-500 leading-relaxed">
+                      {item.desc}
+                    </p>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
@@ -814,21 +1157,21 @@ export default async function HomePage() {
         <section
           id="team"
           aria-labelledby="team-heading"
-          className="py-24 px-4 sm:px-6 lg:px-8 relative"
+          className="py-24 px-4 sm:px-6 lg:px-8 relative bg-slate-50/70 border-t border-slate-200"
         >
           <div className="max-w-7xl mx-auto">
             {/* Header */}
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <span className="text-xs font-extrabold text-blue-400 tracking-widest uppercase">
+              <span className="text-xs font-extrabold text-blue-600 tracking-widest uppercase">
                 The Minds Behind SAMStack
               </span>
               <h2
                 id="team-heading"
-                className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight mt-2 mb-4"
+                className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight mt-2 mb-4"
               >
                 Meet Our Leadership &amp; Engineering Team
               </h2>
-              <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
+              <p className="text-slate-500 text-sm sm:text-base leading-relaxed">
                 World-class products are built by passionate specialists. Meet the engineers driving SAMStack’s architecture, systems, and interfaces from Lahore, Pakistan.
               </p>
             </div>
@@ -838,14 +1181,14 @@ export default async function HomePage() {
               {teamMembers.map((member) => (
                 <div
                   key={member.name}
-                  className="rounded-2xl bg-slate-900/80 border border-slate-800 p-7 flex flex-col justify-between hover:border-slate-700 transition-all shadow-xl shadow-black/20"
+                  className="rounded-2xl bg-white border border-slate-200 p-7 flex flex-col justify-between hover:border-blue-200 hover:shadow-xl hover:shadow-blue-500/5 transition-all shadow-sm"
                   itemScope
                   itemType="https://schema.org/Person"
                 >
                   <div>
                     {/* Header: Photo Avatar + Role */}
                     <div className="flex items-center gap-4 mb-5">
-                      <div className="relative w-16 h-16 rounded-2xl overflow-hidden shadow-lg border border-slate-700/80 flex-shrink-0 bg-slate-800 ring-2 ring-blue-500/20">
+                      <div className="relative w-16 h-16 rounded-2xl overflow-hidden shadow-md border border-slate-200 flex-shrink-0 bg-slate-100 ring-2 ring-blue-500/10">
                         <img
                           src={member.image}
                           alt={`${member.name} — ${member.title} at SAMStack`}
@@ -853,19 +1196,23 @@ export default async function HomePage() {
                         />
                       </div>
                       <div>
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-md border border-blue-500/20">
+                        <span className={`text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-md border ${member.badgeColor}`}>
                           {member.role}
                         </span>
-                        <h3 itemProp="name" className="text-xl font-black text-white mt-1">
+                        <h3 itemProp="name" className="text-xl font-black text-slate-900 mt-1">
                           {member.name}
                         </h3>
+                        <span className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1 mt-0.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                          {member.status}
+                        </span>
                       </div>
                     </div>
 
                     {/* Subtitle */}
                     <p
                       itemProp="jobTitle"
-                      className="text-xs font-semibold text-slate-300 mb-3 leading-snug"
+                      className="text-xs font-semibold text-slate-600 mb-3 leading-snug"
                     >
                       {member.title}
                     </p>
@@ -873,7 +1220,7 @@ export default async function HomePage() {
                     {/* Bio */}
                     <p
                       itemProp="description"
-                      className="text-xs text-slate-400 leading-relaxed mb-6"
+                      className="text-xs text-slate-500 leading-relaxed mb-6"
                     >
                       {member.bio}
                     </p>
@@ -881,14 +1228,14 @@ export default async function HomePage() {
 
                   {/* Skills tags */}
                   <div>
-                    <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">
+                    <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">
                       Core Expertise
                     </div>
                     <div className="flex flex-wrap gap-1.5">
                       {member.skills.map((skill) => (
                         <span
                           key={skill}
-                          className={`text-[10.5px] font-semibold px-2.5 py-1 rounded-md border ${member.tagColor}`}
+                          className="text-[10.5px] font-semibold px-2.5 py-1 rounded-md border bg-slate-50 text-slate-700 border-slate-200"
                         >
                           {skill}
                         </span>
@@ -905,17 +1252,17 @@ export default async function HomePage() {
         <section
           id="about"
           aria-labelledby="about-heading"
-          className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-900/30 border-y border-slate-800/80"
+          className="py-24 px-4 sm:px-6 lg:px-8 bg-white border-t border-slate-200"
           itemScope
           itemType="https://schema.org/Person"
         >
           <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Column — Founder Overview Card */}
             <div className="lg:col-span-5">
-              <div className="rounded-3xl bg-gradient-to-b from-slate-800/80 to-slate-900/90 border border-slate-700/70 p-8 text-center relative overflow-hidden shadow-2xl">
-                <div className="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl pointer-events-none" />
+              <div className="rounded-3xl bg-white border border-slate-200 p-8 text-center relative overflow-hidden shadow-xl">
+                <div className="absolute -top-10 -right-10 w-40 h-40 bg-blue-100 rounded-full blur-3xl pointer-events-none" />
 
-                <div className="relative w-28 h-28 rounded-3xl overflow-hidden mx-auto shadow-2xl shadow-blue-500/30 mb-5 border-2 border-blue-500/40 bg-slate-800 ring-4 ring-blue-500/10">
+                <div className="relative w-28 h-28 rounded-3xl overflow-hidden mx-auto shadow-xl shadow-blue-500/10 mb-5 border-2 border-blue-200 bg-slate-100 ring-4 ring-blue-500/5">
                   <img
                     src="/suleman.png"
                     alt="Suleman Zaheer — Founder & CEO of SAMStack"
@@ -923,18 +1270,18 @@ export default async function HomePage() {
                   />
                 </div>
 
-                <h3 itemProp="name" className="text-2xl font-black text-white">
+                <h3 itemProp="name" className="text-2xl font-black text-slate-900">
                   Suleman Zaheer
                 </h3>
-                <p itemProp="jobTitle" className="text-xs text-blue-400 font-semibold mt-1 mb-4">
+                <p itemProp="jobTitle" className="text-xs text-blue-600 font-semibold mt-1 mb-4">
                   Founder &amp; CEO · Backend &amp; Full Stack Developer · Technical Writer
                 </p>
 
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-[11px] text-slate-300 mb-6">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-[11px] text-slate-600 mb-6">
                   <span>📍</span> Lahore, Punjab, Pakistan
                 </div>
 
-                <p className="text-xs text-slate-400 leading-relaxed text-left mb-6">
+                <p className="text-xs text-slate-500 leading-relaxed text-left mb-6">
                   Spearheading engineering at SAMStack with a strong focus on high-reliability backend systems, microservices, advanced data analytics, and developer-centric technical writing.
                 </p>
 
@@ -947,7 +1294,7 @@ export default async function HomePage() {
                   </a>
                   <a
                     href={`mailto:${OFFICIAL_EMAIL}`}
-                    className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition-all flex items-center justify-center gap-2"
+                    className="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold border border-slate-200 transition-all flex items-center justify-center gap-2"
                   >
                     <span>✉️</span> {OFFICIAL_EMAIL}
                   </a>
@@ -957,47 +1304,47 @@ export default async function HomePage() {
 
             {/* Right Column — Narrative & Value Pillars */}
             <div className="lg:col-span-7">
-              <span className="text-xs font-extrabold text-blue-400 tracking-widest uppercase">
+              <span className="text-xs font-extrabold text-blue-600 tracking-widest uppercase">
                 Founder&apos;s Vision
               </span>
               <h2
                 id="about-heading"
-                className="text-3xl sm:text-4xl font-black text-white tracking-tight mt-2 mb-6"
+                className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mt-2 mb-6"
               >
                 Engineering Excellence With Global Standards
               </h2>
-              <div className="space-y-4 text-slate-300 text-sm leading-relaxed">
+              <div className="space-y-4 text-slate-600 text-sm leading-relaxed">
                 <p>
-                  At <strong className="text-white">SAMStack</strong>, we believe software should be built with rigorous engineering standards, clean architecture, and total transparency. Founded in Lahore, Pakistan by <strong className="text-blue-400">Suleman Zaheer</strong>, our mission is to empower both local Pakistani businesses and global startups with enterprise-grade web development, data science, and custom software.
+                  At <strong className="text-slate-900">SAMStack</strong>, we believe software should be built with rigorous engineering standards, clean architecture, and total transparency. Founded in Lahore, Pakistan by <strong className="text-blue-600">Suleman Zaheer</strong>, our mission is to empower both local Pakistani businesses and global startups with enterprise-grade web development, data science, and custom software.
                 </p>
                 <p>
-                  Backed by Team Lead <strong className="text-white">Syed Abdullah</strong> managing high-concurrency backend services and <strong className="text-white">Saqib Javed</strong> delivering pixel-perfect UI/UX frontends, we take full pride in our engineering craft. Every line of code is structured, tested, and documented.
+                  Backed by Team Lead <strong className="text-slate-900">Syed Abdullah</strong> managing high-concurrency backend services and <strong className="text-slate-900">Saqib Javed</strong> delivering pixel-perfect UI/UX frontends, we take full pride in our engineering craft. Every line of code is structured, tested, and documented.
                 </p>
               </div>
 
               {/* Pillars */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
-                <div className="p-4 rounded-xl bg-slate-900/70 border border-slate-800">
-                  <div className="text-blue-400 font-bold text-sm mb-1">🏗️ Robust Backend Systems</div>
-                  <div className="text-xs text-slate-400 leading-relaxed">
+                <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
+                  <div className="text-blue-600 font-bold text-sm mb-1">🏗️ Robust Backend Systems</div>
+                  <div className="text-xs text-slate-500 leading-relaxed">
                     Scalable Node.js, Python, PostgreSQL, and Supabase data layers engineered for high uptime.
                   </div>
                 </div>
-                <div className="p-4 rounded-xl bg-slate-900/70 border border-slate-800">
-                  <div className="text-emerald-400 font-bold text-sm mb-1">📊 Data Science &amp; Insights</div>
-                  <div className="text-xs text-slate-400 leading-relaxed">
+                <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
+                  <div className="text-emerald-600 font-bold text-sm mb-1">📊 Data Science &amp; Insights</div>
+                  <div className="text-xs text-slate-500 leading-relaxed">
                     Data mining, predictive algorithms, automated ETL workflows, and executive analytics.
                   </div>
                 </div>
-                <div className="p-4 rounded-xl bg-slate-900/70 border border-slate-800">
-                  <div className="text-purple-400 font-bold text-sm mb-1">🎨 Modern UI/UX Experience</div>
-                  <div className="text-xs text-slate-400 leading-relaxed">
+                <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
+                  <div className="text-purple-600 font-bold text-sm mb-1">🎨 Modern UI/UX Experience</div>
+                  <div className="text-xs text-slate-500 leading-relaxed">
                     Interactive Next.js &amp; React user interfaces that maximize customer engagement and conversions.
                   </div>
                 </div>
-                <div className="p-4 rounded-xl bg-slate-900/70 border border-slate-800">
-                  <div className="text-amber-400 font-bold text-sm mb-1">✍️ Technical Documentation</div>
-                  <div className="text-xs text-slate-400 leading-relaxed">
+                <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
+                  <div className="text-amber-600 font-bold text-sm mb-1">✍️ Technical Documentation</div>
+                  <div className="text-xs text-slate-500 leading-relaxed">
                     Clear API specs, deployment guides, and knowledge bases for effortless team onboarding.
                   </div>
                 </div>
@@ -1010,27 +1357,32 @@ export default async function HomePage() {
         <section
           id="tech"
           aria-labelledby="tech-heading"
-          className="py-20 px-4 sm:px-6 lg:px-8 text-center"
+          className="py-24 px-4 sm:px-6 lg:px-8 text-center bg-slate-50/70 border-t border-slate-200"
         >
           <div className="max-w-4xl mx-auto">
-            <span className="text-xs font-extrabold text-blue-400 tracking-widest uppercase">
+            <span className="text-xs font-extrabold text-blue-600 tracking-widest uppercase">
               Technology Ecosystem
             </span>
             <h2
               id="tech-heading"
-              className="text-3xl sm:text-4xl font-black text-white tracking-tight mt-2 mb-4"
+              className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mt-2 mb-4"
             >
               Modern, Battle-Tested Stacks
             </h2>
-            <p className="text-slate-400 text-sm max-w-xl mx-auto mb-10 leading-relaxed">
+            <p className="text-slate-500 text-sm max-w-xl mx-auto mb-10 leading-relaxed">
               We choose modern, high-performance tools that guarantee speed, developer ergonomics, and scalability.
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-2.5">
-              {techStack.map((tech) => (
+              {[
+                'Next.js 16', 'React 19', 'TypeScript', 'Node.js', 'Python', 'FastAPI',
+                'PostgreSQL', 'Supabase', 'MongoDB', 'Redis', 'TailwindCSS', 'React Native',
+                'Flutter', 'TensorFlow', 'Pandas', 'Docker', 'AWS', 'Vercel', 'GraphQL',
+                'REST APIs', 'Git', 'Figma',
+              ].map((tech) => (
                 <span
                   key={tech}
-                  className="px-4 py-2 rounded-xl bg-slate-900/90 border border-slate-800 text-slate-300 text-xs font-bold hover:border-blue-500/50 hover:text-blue-400 hover:scale-105 transition-all cursor-default shadow-sm"
+                  className="px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-bold hover:border-blue-400 hover:text-blue-600 hover:scale-105 hover:bg-blue-50 transition-all cursor-default shadow-xs"
                 >
                   {tech}
                 </span>
@@ -1039,58 +1391,67 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* ─── FAQ SECTION (AEO / Answer Engine Optimization) ────────────── */}
+        {/* ─── FAQ SECTION (Accessible Native Accordion & AEO Schema) ─────── */}
         <section
           id="faq"
           aria-labelledby="faq-heading"
-          className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-900/40 border-y border-slate-800/80"
+          className="py-24 px-4 sm:px-6 lg:px-8 bg-white border-t border-slate-200"
           itemScope
           itemType="https://schema.org/FAQPage"
         >
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-16">
-              <span className="text-xs font-extrabold text-blue-400 tracking-widest uppercase">
+              <span className="text-xs font-extrabold text-blue-600 tracking-widest uppercase">
                 Frequently Asked Questions
               </span>
               <h2
                 id="faq-heading"
-                className="text-3xl sm:text-4xl font-black text-white tracking-tight mt-2 mb-4"
+                className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mt-2 mb-4"
               >
                 Clear Answers to Common Questions
               </h2>
-              <p className="text-slate-400 text-sm">
+              <p className="text-slate-500 text-sm">
                 Everything you need to know about working with SAMStack in Lahore and across the globe.
               </p>
             </div>
 
             <div className="space-y-4">
-              {faqs.map((faq) => (
-                <div
+              {faqs.map((faq, idx) => (
+                <details
                   key={faq.q}
-                  className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-slate-700 transition-colors"
+                  className="group rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:border-blue-200 transition-all overflow-hidden [&_summary::-webkit-details-marker]:hidden"
                   itemScope
                   itemProp="mainEntity"
                   itemType="https://schema.org/Question"
+                  open={idx === 0}
                 >
-                  <h3
-                    itemProp="name"
-                    className="text-base font-bold text-white mb-2 tracking-tight"
-                  >
-                    {faq.q}
-                  </h3>
+                  <summary className="flex items-center justify-between gap-4 p-5 sm:p-6 cursor-pointer select-none">
+                    <div className="flex items-center gap-3 text-left">
+                      <span className="text-xs font-mono font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
+                        0{idx + 1}
+                      </span>
+                      <h3
+                        itemProp="name"
+                        className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors"
+                      >
+                        {faq.q}
+                      </h3>
+                    </div>
+                    <span className="text-slate-400 group-open:rotate-180 transition-transform duration-200 flex-shrink-0 text-sm">
+                      ▼
+                    </span>
+                  </summary>
                   <div
+                    className="px-5 sm:px-6 pb-5 pt-1 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 bg-slate-50/40"
                     itemScope
                     itemProp="acceptedAnswer"
                     itemType="https://schema.org/Answer"
                   >
-                    <p
-                      itemProp="text"
-                      className="text-xs sm:text-sm text-slate-400 leading-relaxed"
-                    >
+                    <p itemProp="text">
                       {faq.a}
                     </p>
                   </div>
-                </div>
+                </details>
               ))}
             </div>
           </div>
@@ -1100,21 +1461,19 @@ export default async function HomePage() {
         <section
           id="contact"
           aria-labelledby="contact-heading"
-          className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
+          className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-gradient-to-b from-blue-50/60 via-indigo-50/40 to-slate-50 border-t border-slate-200"
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-blue-600/10 via-indigo-600/10 to-transparent pointer-events-none" />
-
           <div className="max-w-4xl mx-auto text-center relative z-10">
-            <span className="text-xs font-extrabold text-emerald-400 tracking-widest uppercase mb-2 inline-block">
+            <span className="text-xs font-extrabold text-blue-600 tracking-widest uppercase mb-2 inline-block">
               Get In Touch Today
             </span>
             <h2
               id="contact-heading"
-              className="text-3xl sm:text-5xl font-black text-white tracking-tight mb-4 leading-tight"
+              className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight mb-4 leading-tight"
             >
               Ready to Build Something Remarkable?
             </h2>
-            <p className="text-slate-300 text-sm sm:text-base max-w-xl mx-auto mb-10 leading-relaxed">
+            <p className="text-slate-600 text-sm sm:text-base max-w-xl mx-auto mb-10 leading-relaxed">
               Contact our leadership team directly. We provide a detailed technical discovery and proposal with transparent milestones.
             </p>
 
@@ -1122,11 +1481,11 @@ export default async function HomePage() {
               {/* Phone Card */}
               <a
                 href={`tel:${OFFICIAL_PHONE}`}
-                className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-blue-500/50 transition-all text-center group"
+                className="p-5 rounded-2xl bg-white border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all text-center group shadow-sm"
               >
                 <div className="text-2xl mb-2">📞</div>
-                <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Direct Phone</div>
-                <div className="text-sm font-extrabold text-white group-hover:text-blue-400 transition-colors">
+                <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Direct Phone</div>
+                <div className="text-sm font-extrabold text-slate-900 group-hover:text-blue-600 transition-colors">
                   {FORMATTED_PHONE}
                 </div>
               </a>
@@ -1136,11 +1495,11 @@ export default async function HomePage() {
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-emerald-500/50 transition-all text-center group"
+                className="p-5 rounded-2xl bg-emerald-50/60 border border-emerald-200 hover:bg-emerald-50 hover:border-emerald-300 hover:shadow-md transition-all text-center group shadow-sm"
               >
                 <div className="text-2xl mb-2">💬</div>
-                <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">WhatsApp Chat</div>
-                <div className="text-sm font-extrabold text-white group-hover:text-emerald-400 transition-colors">
+                <div className="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-1">WhatsApp Chat</div>
+                <div className="text-sm font-extrabold text-emerald-800 group-hover:text-emerald-600 transition-colors">
                   Chat Instantly
                 </div>
               </a>
@@ -1148,50 +1507,55 @@ export default async function HomePage() {
               {/* Email Card */}
               <a
                 href={`mailto:${OFFICIAL_EMAIL}`}
-                className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-indigo-500/50 transition-all text-center group"
+                className="p-5 rounded-2xl bg-white border border-slate-200 hover:border-indigo-300 hover:shadow-md transition-all text-center group shadow-sm"
               >
                 <div className="text-2xl mb-2">✉️</div>
-                <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Official Email</div>
-                <div className="text-xs font-extrabold text-white group-hover:text-indigo-400 transition-colors break-all">
+                <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Official Email</div>
+                <div className="text-xs font-extrabold text-slate-900 group-hover:text-indigo-600 transition-colors break-all">
                   {OFFICIAL_EMAIL}
                 </div>
               </a>
             </div>
 
+            {/* Guaranteed SLA Badge */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold mb-6">
+              <span>⚡</span> Guaranteed technical consultation with lead engineers within 2 hours
+            </div>
+
             {/* Employee Portal Link */}
             <div className="text-xs text-slate-500">
               Are you an authorized team member?{' '}
-              <Link href="/login" className="text-blue-400 hover:underline font-semibold">
+              <Link href="/login" className="text-blue-600 hover:underline font-bold">
                 Access Employee Workspace &rarr;
               </Link>
             </div>
           </div>
         </section>
 
-        {/* ─── FOOTER ────────────────────────────────────────────────────── */}
+        {/* ─── FOOTER (Light Theme) ───────────────────────────────────────── */}
         <footer
           role="contentinfo"
-          className="pt-16 pb-12 px-4 sm:px-6 lg:px-8 bg-[#040812] border-t border-slate-800/80 text-xs text-slate-400"
+          className="pt-16 pb-12 px-4 sm:px-6 lg:px-8 bg-slate-50 border-t border-slate-200 text-xs text-slate-600"
           itemScope
           itemType="https://schema.org/WPFooter"
         >
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-800/80">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-200">
               {/* Brand & Address */}
               <div className="lg:col-span-2">
                 <div className="flex items-center gap-2.5 mb-4">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-black text-sm">
-                    S
+                  <div className="w-8 h-8 rounded-lg bg-white p-0.5 border border-slate-200 shadow-sm flex items-center justify-center">
+                    <img src="/logo.png" alt="SAMStack Logo" className="w-full h-full object-contain" />
                   </div>
-                  <span className="font-black text-base text-white tracking-tight">
-                    SAM<span className="text-blue-500">Stack</span> Technologies
+                  <span className="font-black text-base text-slate-900 tracking-tight">
+                    SAM<span className="text-blue-600">Stack</span> Technologies
                   </span>
                 </div>
-                <p className="text-slate-400 leading-relaxed max-w-sm mb-4">
+                <p className="text-slate-500 leading-relaxed max-w-sm mb-4">
                   World-class software development studio based in Lahore, Pakistan. Specializing in high-performance web applications, mobile apps, data science &amp; analytics, and scalable backend infrastructure.
                 </p>
                 <address
-                  className="not-italic text-slate-400 space-y-1"
+                  className="not-italic text-slate-500 space-y-1"
                   itemScope
                   itemType="https://schema.org/PostalAddress"
                 >
@@ -1201,45 +1565,45 @@ export default async function HomePage() {
                     <span itemProp="addressCountry">Pakistan</span> (54000)
                   </div>
                   <div>
-                    📞 <a href={`tel:${OFFICIAL_PHONE}`} className="hover:text-blue-400">{FORMATTED_PHONE}</a>
+                    📞 <a href={`tel:${OFFICIAL_PHONE}`} className="hover:text-blue-600 font-medium">{FORMATTED_PHONE}</a>
                   </div>
                   <div>
-                    ✉️ <a href={`mailto:${OFFICIAL_EMAIL}`} className="hover:text-blue-400">{OFFICIAL_EMAIL}</a>
+                    ✉️ <a href={`mailto:${OFFICIAL_EMAIL}`} className="hover:text-blue-600 font-medium">{OFFICIAL_EMAIL}</a>
                   </div>
                 </address>
               </div>
 
               {/* Services Column */}
               <div>
-                <h4 className="font-bold text-white text-xs uppercase tracking-wider mb-4">
+                <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider mb-4">
                   Services
                 </h4>
-                <ul className="space-y-2 text-slate-400">
-                  <li><a href="#services" className="hover:text-blue-400">Web Development</a></li>
-                  <li><a href="#services" className="hover:text-blue-400">Mobile Apps</a></li>
-                  <li><a href="#services" className="hover:text-blue-400">Data Science &amp; Analytics</a></li>
-                  <li><a href="#services" className="hover:text-blue-400">Backend Engineering</a></li>
-                  <li><a href="#services" className="hover:text-blue-400">UI/UX &amp; Product Design</a></li>
-                  <li><a href="#services" className="hover:text-blue-400">Technical Writing</a></li>
+                <ul className="space-y-2 text-slate-500">
+                  <li><a href="#services" className="hover:text-blue-600 transition-colors">Web Development</a></li>
+                  <li><a href="#services" className="hover:text-blue-600 transition-colors">Mobile Apps</a></li>
+                  <li><a href="#services" className="hover:text-blue-600 transition-colors">Data Science &amp; Analytics</a></li>
+                  <li><a href="#services" className="hover:text-blue-600 transition-colors">Backend Engineering</a></li>
+                  <li><a href="#services" className="hover:text-blue-600 transition-colors">UI/UX &amp; Product Design</a></li>
+                  <li><a href="#services" className="hover:text-blue-600 transition-colors">Technical Writing</a></li>
                 </ul>
               </div>
 
               {/* Team Column */}
               <div>
-                <h4 className="font-bold text-white text-xs uppercase tracking-wider mb-4">
+                <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider mb-4">
                   Leadership
                 </h4>
-                <ul className="space-y-2 text-slate-400">
+                <ul className="space-y-2 text-slate-500">
                   <li>
-                    <span className="text-white font-medium">Suleman Zaheer</span>
+                    <span className="text-slate-900 font-semibold">Suleman Zaheer</span>
                     <span className="block text-[11px] text-slate-500">Founder &amp; CEO · Full Stack</span>
                   </li>
                   <li>
-                    <span className="text-white font-medium">Syed Abdullah</span>
+                    <span className="text-slate-900 font-semibold">Syed Abdullah</span>
                     <span className="block text-[11px] text-slate-500">Team Lead &amp; Backend</span>
                   </li>
                   <li>
-                    <span className="text-white font-medium">Saqib Javed</span>
+                    <span className="text-slate-900 font-semibold">Saqib Javed</span>
                     <span className="block text-[11px] text-slate-500">Frontend &amp; UI/UX</span>
                   </li>
                 </ul>
@@ -1247,10 +1611,10 @@ export default async function HomePage() {
 
               {/* Regions Served */}
               <div>
-                <h4 className="font-bold text-white text-xs uppercase tracking-wider mb-4">
+                <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider mb-4">
                   Coverage
                 </h4>
-                <ul className="space-y-2 text-slate-400">
+                <ul className="space-y-2 text-slate-500">
                   <li>Lahore, PK</li>
                   <li>Karachi &amp; Islamabad</li>
                   <li>United States</li>
@@ -1262,12 +1626,12 @@ export default async function HomePage() {
             </div>
 
             {/* Bottom Bar */}
-            <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400">
+            <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
               <p>
                 &copy; {new Date().getFullYear()} SAMStack Technologies. All rights reserved. Built with precision in Lahore, Pakistan.
               </p>
               <p>
-                Run by <strong className="text-slate-300">Suleman Zaheer</strong> (Backend/Full Stack &amp; Writer), <strong className="text-slate-300">Syed Abdullah</strong> (Team Lead), &amp; <strong className="text-slate-300">Saqib Javed</strong> (Frontend/UI/UX).
+                Run by <strong className="text-slate-700">Suleman Zaheer</strong> (Backend/Full Stack &amp; Writer), <strong className="text-slate-700">Syed Abdullah</strong> (Team Lead), &amp; <strong className="text-slate-700">Saqib Javed</strong> (Frontend/UI/UX).
               </p>
             </div>
           </div>
@@ -1276,3 +1640,4 @@ export default async function HomePage() {
     </>
   )
 }
+
