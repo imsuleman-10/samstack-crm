@@ -1,9 +1,10 @@
 'use client'
 
-import { Bell, Search, Plus, Sparkles, Building2, UserPlus, Check, ExternalLink } from 'lucide-react'
+import { Bell, Search, Plus, Building2, UserPlus, Menu } from 'lucide-react'
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import type { UserRole } from '@/lib/types/database'
 
 interface HeaderProps {
@@ -27,6 +28,10 @@ export default function Header({ title, role }: HeaderProps) {
     e.preventDefault()
     if (!search.trim()) return
     router.push(`${basePath}/leads?search=${encodeURIComponent(search.trim())}`)
+  }
+
+  function handleOpenSidebar() {
+    window.dispatchEvent(new CustomEvent('open-mobile-sidebar'))
   }
 
   // Keyboard shortcut Ctrl+K / Cmd+K to focus search
@@ -66,54 +71,78 @@ export default function Header({ title, role }: HeaderProps) {
   const unreadCount = notifications.filter(n => n.unread).length
 
   return (
-    <header className="h-16 border-b border-slate-200/80 bg-white/90 backdrop-blur-md flex items-center justify-between gap-4 px-6 flex-shrink-0 z-20 sticky top-0 shadow-xs">
-      {/* Page Title & Breadcrumb */}
-      <div className="flex items-center gap-3 min-w-0">
+    <header className="h-16 border-b border-slate-200/80 bg-white/95 backdrop-blur-md flex items-center justify-between gap-2 sm:gap-4 px-3 sm:px-6 flex-shrink-0 z-20 sticky top-0 shadow-xs">
+      {/* Left: Mobile Hamburger Toggle + Title */}
+      <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+        {/* Mobile Hamburger Button */}
+        <button
+          onClick={handleOpenSidebar}
+          className="lg:hidden w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-colors flex-shrink-0"
+          aria-label="Open sidebar menu"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+
+        {/* Mobile Mini Logo */}
+        <div className="lg:hidden flex items-center gap-1.5 flex-shrink-0">
+          <div className="w-7 h-7 rounded-lg overflow-hidden bg-slate-950 p-0.5 flex items-center justify-center">
+            <Image
+              src="/logo.png"
+              alt="Logo"
+              width={24}
+              height={24}
+              className="w-full h-full object-contain"
+            />
+          </div>
+        </div>
+
+        {/* Desktop Page Title & Breadcrumb */}
         {title && (
-          <div className="hidden lg:block">
-            <h1 className="text-sm font-bold text-slate-900 tracking-tight">{title}</h1>
+          <div className="hidden lg:block min-w-0">
+            <h1 className="text-sm font-bold text-slate-900 tracking-tight truncate">{title}</h1>
             <p className="text-[11px] text-slate-400 font-medium">SAMStack Enterprise Suite</p>
           </div>
         )}
       </div>
 
-      {/* Global Search Bar with Keyboard Hint */}
-      <form onSubmit={handleSearch} className="flex-1 max-w-lg mx-2">
+      {/* Center: Global Search Bar with Responsive Layout */}
+      <form onSubmit={handleSearch} className="flex-1 max-w-xs sm:max-w-md lg:max-w-lg mx-1 sm:mx-2 min-w-0">
         <div className="relative group">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 group-focus-within:text-blue-600 transition-colors pointer-events-none" />
           <input
             id="global-search-input"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search leads, phone numbers, cities..."
-            className="w-full h-9.5 pl-10 pr-16 rounded-xl border border-slate-200 bg-slate-50/70 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all shadow-xs"
+            placeholder="Search leads, phone..."
+            className="w-full h-9 pl-8 sm:pl-9 pr-3 sm:pr-14 rounded-xl border border-slate-200 bg-slate-50/80 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all shadow-xs"
           />
-          <div className="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-0.5 pointer-events-none">
-            <kbd className="px-1.5 py-0.5 text-[10px] font-semibold text-slate-400 bg-slate-200/70 rounded border border-slate-300">
+          <div className="hidden sm:flex absolute right-2.5 top-1/2 -translate-y-1/2 items-center gap-0.5 pointer-events-none">
+            <kbd className="px-1 py-0.2 text-[9px] font-semibold text-slate-400 bg-slate-200/70 rounded border border-slate-300">
               Ctrl
             </kbd>
-            <kbd className="px-1.5 py-0.5 text-[10px] font-semibold text-slate-400 bg-slate-200/70 rounded border border-slate-300">
+            <kbd className="px-1 py-0.2 text-[9px] font-semibold text-slate-400 bg-slate-200/70 rounded border border-slate-300">
               K
             </kbd>
           </div>
         </div>
       </form>
 
-      {/* Action Controls */}
-      <div className="flex items-center gap-2.5 flex-shrink-0">
+      {/* Right: Action Controls */}
+      <div className="flex items-center gap-1.5 sm:gap-2.5 flex-shrink-0">
         {/* Quick Action Button */}
         <div className="relative" ref={actionRef}>
           <button
             onClick={() => setQuickActionsOpen(!quickActionsOpen)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-semibold hover:from-blue-500 hover:to-indigo-500 transition-all shadow-sm shadow-blue-500/20 active:scale-95"
+            className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-semibold hover:from-blue-500 hover:to-indigo-500 transition-all shadow-sm shadow-blue-500/20 active:scale-95"
+            aria-label="Quick Action"
           >
             <Plus className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Quick Action</span>
+            <span className="hidden md:inline">Quick Action</span>
           </button>
 
           {quickActionsOpen && (
-            <div className="absolute right-0 mt-2 w-52 bg-white rounded-2xl border border-slate-200 shadow-xl py-2 z-50 animate-in">
-              <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+            <div className="absolute right-0 mt-2 w-48 sm:w-52 max-w-[calc(100vw-24px)] bg-white rounded-2xl border border-slate-200 shadow-xl py-2 z-50 animate-in">
+              <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
                 Create New
               </div>
               <Link
@@ -142,8 +171,9 @@ export default function Header({ title, role }: HeaderProps) {
         <div className="relative" ref={notifRef}>
           <button
             onClick={() => setNotificationsOpen(!notificationsOpen)}
-            className="relative w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100/80 hover:bg-slate-200 text-slate-600 hover:text-slate-900 transition-colors"
+            className="relative w-8.5 h-8.5 sm:w-9 sm:h-9 flex items-center justify-center rounded-xl bg-slate-100/80 hover:bg-slate-200 text-slate-600 hover:text-slate-900 transition-colors"
             title="Notifications"
+            aria-label="Notifications"
           >
             <Bell className="w-4 h-4" />
             {unreadCount > 0 && (
@@ -152,7 +182,7 @@ export default function Header({ title, role }: HeaderProps) {
           </button>
 
           {notificationsOpen && (
-            <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl border border-slate-200 shadow-2xl p-4 z-50 animate-in">
+            <div className="absolute right-0 mt-2 w-72 sm:w-80 max-w-[calc(100vw-24px)] bg-white rounded-2xl border border-slate-200 shadow-2xl p-3.5 sm:p-4 z-50 animate-in">
               <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                 <div className="flex items-center gap-1.5">
                   <span className="text-xs font-bold text-slate-900">Notifications</span>
@@ -200,4 +230,3 @@ export default function Header({ title, role }: HeaderProps) {
     </header>
   )
 }
-

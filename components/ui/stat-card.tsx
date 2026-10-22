@@ -42,33 +42,33 @@ export default function StatCard({
   className,
 }: StatCardProps) {
   return (
-    <div className={cn('bg-white border border-border rounded-xl p-5 flex flex-col gap-3', className)}>
-      <div className="flex items-start justify-between">
-        <p className="text-sm text-muted-foreground font-medium">{title}</p>
+    <div className={cn('bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 flex flex-col gap-2.5 sm:gap-3 shadow-xs', className)}>
+      <div className="flex items-start justify-between gap-2">
+        <p className="text-xs sm:text-sm text-slate-500 font-medium truncate">{title}</p>
         {Icon && (
-          <div className={cn('w-9 h-9 rounded-lg flex items-center justify-center', iconBg[color])}>
+          <div className={cn('w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center flex-shrink-0', iconBg[color])}>
             <Icon className="w-4 h-4" />
           </div>
         )}
       </div>
 
-      <div>
-        <p className="text-2xl font-bold text-foreground">
+      <div className="min-w-0">
+        <p className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight truncate">
           {typeof value === 'number' ? formatNumber(value) : value}
         </p>
         {subtitle && (
-          <p className="text-xs text-muted-foreground mt-0.5">{subtitle}</p>
+          <p className="text-[11px] sm:text-xs text-slate-400 mt-0.5 truncate">{subtitle}</p>
         )}
       </div>
 
       {trend && trendValue && (
-        <div className="flex items-center gap-1.5">
-          {trend === 'up' && <TrendingUp className="w-3.5 h-3.5 text-green-500" />}
-          {trend === 'down' && <TrendingDown className="w-3.5 h-3.5 text-red-500" />}
-          {trend === 'neutral' && <Minus className="w-3.5 h-3.5 text-slate-400" />}
+        <div className="flex items-center gap-1.5 pt-0.5">
+          {trend === 'up' && <TrendingUp className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />}
+          {trend === 'down' && <TrendingDown className="w-3.5 h-3.5 text-rose-500 flex-shrink-0" />}
+          {trend === 'neutral' && <Minus className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />}
           <span className={cn(
-            'text-xs font-medium',
-            trend === 'up' ? 'text-green-600' : trend === 'down' ? 'text-red-600' : 'text-slate-500'
+            'text-[11px] sm:text-xs font-semibold',
+            trend === 'up' ? 'text-emerald-600' : trend === 'down' ? 'text-rose-600' : 'text-slate-500'
           )}>
             {trendValue}
           </span>

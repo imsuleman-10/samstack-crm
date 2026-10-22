@@ -28,28 +28,28 @@ export default function TeamLeaderboard({ employees }: TeamLeaderboardProps) {
   }).sort((a, b) => b.revenue - a.revenue || b.wonDeals - a.wonDeals)
 
   return (
-    <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
-      <div className="flex items-center justify-between">
+    <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm space-y-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center">
-            <Trophy className="w-5 h-5" />
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center flex-shrink-0">
+            <Trophy className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
           <div>
             <h3 className="font-bold text-slate-900 text-sm">Top Outreach Performers</h3>
-            <p className="text-xs text-slate-500">Live team rankings & closed revenue achievements.</p>
+            <p className="text-[11px] sm:text-xs text-slate-500">Live team rankings & closed revenue achievements.</p>
           </div>
         </div>
 
         <Link
           href="/admin/analytics"
-          className="text-xs font-semibold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1"
+          className="text-xs font-semibold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1 self-start sm:self-auto"
         >
           View BI metrics <ArrowUpRight className="w-3.5 h-3.5" />
         </Link>
       </div>
 
       {ranked.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-2">
           {ranked.slice(0, 3).map((rep, idx) => {
             const medalColors = [
               'bg-amber-500 text-white shadow-amber-500/25', // Gold
@@ -60,7 +60,7 @@ export default function TeamLeaderboard({ employees }: TeamLeaderboardProps) {
             return (
               <div
                 key={rep.id}
-                className={`relative p-4 rounded-2xl border transition-all ${
+                className={`relative p-3.5 sm:p-4 rounded-2xl border transition-all ${
                   idx === 0
                     ? 'bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent border-amber-300 shadow-sm'
                     : 'bg-slate-50/70 border-slate-200'
@@ -78,10 +78,10 @@ export default function TeamLeaderboard({ employees }: TeamLeaderboardProps) {
                     <img
                       src={rep.profile_photo_url}
                       alt={rep.full_name}
-                      className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-xs"
+                      className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover border-2 border-white shadow-xs flex-shrink-0"
                     />
                   ) : (
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-slate-800 to-slate-700 text-white font-bold flex items-center justify-center text-xs shadow-xs">
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-tr from-slate-800 to-slate-700 text-white font-bold flex items-center justify-center text-xs shadow-xs flex-shrink-0">
                       {rep.full_name ? rep.full_name.charAt(0).toUpperCase() : <User className="w-4 h-4" />}
                     </div>
                   )}
@@ -98,7 +98,7 @@ export default function TeamLeaderboard({ employees }: TeamLeaderboardProps) {
                   </div>
                   <div>
                     <span className="text-[10px] text-slate-400">Revenue (PKR)</span>
-                    <div className="font-bold text-emerald-600 text-xs">{formatPKR(rep.revenue)}</div>
+                    <div className="font-bold text-emerald-600 text-xs truncate">{formatPKR(rep.revenue)}</div>
                   </div>
                 </div>
               </div>

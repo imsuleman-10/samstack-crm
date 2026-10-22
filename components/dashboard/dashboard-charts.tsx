@@ -44,14 +44,14 @@ export default function DashboardCharts({
 }: DashboardChartsProps) {
   const [activeTab, setActiveTab] = useState<'funnel' | 'activity'>('funnel')
 
-  // Real conversion funnel data (no fake fallbacks)
+  // Real conversion funnel data
   const funnelData = [
-    { stage: 'Captured', count: metrics.total_leads || 0, fill: '#3b82f6' },
-    { stage: 'Contacted', count: metrics.leads_contacted || 0, fill: '#6366f1' },
-    { stage: 'Seen', count: metrics.messages_seen || 0, fill: '#8b5cf6' },
-    { stage: 'Replied', count: metrics.replies_received || 0, fill: '#a855f7' },
-    { stage: 'Interested', count: metrics.interested_leads || 0, fill: '#f59e0b' },
-    { stage: 'Won Deals', count: metrics.deals_won || 0, fill: '#10b981' },
+    { stage: 'Captured', shortStage: 'Capt', count: metrics.total_leads || 0, fill: '#3b82f6' },
+    { stage: 'Contacted', shortStage: 'Cont', count: metrics.leads_contacted || 0, fill: '#6366f1' },
+    { stage: 'Seen', shortStage: 'Seen', count: metrics.messages_seen || 0, fill: '#8b5cf6' },
+    { stage: 'Replied', shortStage: 'Repl', count: metrics.replies_received || 0, fill: '#a855f7' },
+    { stage: 'Interested', shortStage: 'Int', count: metrics.interested_leads || 0, fill: '#f59e0b' },
+    { stage: 'Won Deals', shortStage: 'Won', count: metrics.deals_won || 0, fill: '#10b981' },
   ]
 
   // Real lead channels breakdown
@@ -73,13 +73,13 @@ export default function DashboardCharts({
       ]
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
       {/* Main Conversion & Activity Chart (2 Cols) */}
-      <div className="lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+      <div className="lg:col-span-2 bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
           <div>
             <div className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-blue-600" />
+              <TrendingUp className="w-4 h-4 text-blue-600 flex-shrink-0" />
               <h3 className="font-bold text-slate-900 text-sm">Pipeline Progression & Activity</h3>
             </div>
             <p className="text-xs text-slate-500 mt-0.5">
@@ -87,10 +87,10 @@ export default function DashboardCharts({
             </p>
           </div>
 
-          <div className="flex items-center p-1 bg-slate-100 rounded-xl">
+          <div className="flex items-center p-1 bg-slate-100 rounded-xl self-start sm:self-auto">
             <button
               onClick={() => setActiveTab('funnel')}
-              className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
+              className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all min-h-[32px] ${
                 activeTab === 'funnel'
                   ? 'bg-white text-slate-900 shadow-xs'
                   : 'text-slate-500 hover:text-slate-900'
@@ -100,7 +100,7 @@ export default function DashboardCharts({
             </button>
             <button
               onClick={() => setActiveTab('activity')}
-              className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
+              className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all min-h-[32px] ${
                 activeTab === 'activity'
                   ? 'bg-white text-slate-900 shadow-xs'
                   : 'text-slate-500 hover:text-slate-900'
@@ -112,13 +112,19 @@ export default function DashboardCharts({
         </div>
 
         {/* Chart Canvas */}
-        <div className="h-64 w-full pt-2">
+        <div className="h-60 sm:h-64 w-full pt-2">
           <ResponsiveContainer width="100%" height="100%">
             {activeTab === 'funnel' ? (
-              <BarChart data={funnelData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <BarChart data={funnelData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                <XAxis dataKey="stage" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
+                <XAxis
+                  dataKey="stage"
+                  tick={{ fill: '#64748b', fontSize: 10 }}
+                  interval={0}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <YAxis tick={{ fill: '#64748b', fontSize: 10 }} axisLine={false} tickLine={false} />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: '#0f172a',
@@ -130,14 +136,14 @@ export default function DashboardCharts({
                   }}
                   itemStyle={{ color: '#60a5fa' }}
                 />
-                <Bar dataKey="count" radius={[8, 8, 0, 0]}>
+                <Bar dataKey="count" radius={[6, 6, 0, 0]}>
                   {funnelData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.fill} />
                   ))}
                 </Bar>
               </BarChart>
             ) : (
-              <AreaChart data={weeklyTrends} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <AreaChart data={weeklyTrends} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
                 <defs>
                   <linearGradient id="sentGrad" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.4} />
@@ -186,10 +192,10 @@ export default function DashboardCharts({
       </div>
 
       {/* Lead Channels Distribution Donut (1 Col) */}
-      <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+      <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <PieIcon className="w-4 h-4 text-purple-600" />
+            <PieIcon className="w-4 h-4 text-purple-600 flex-shrink-0" />
             <h3 className="font-bold text-slate-900 text-sm">Lead Generation Channels</h3>
           </div>
           <p className="text-xs text-slate-500 mt-0.5">
@@ -199,15 +205,15 @@ export default function DashboardCharts({
 
         {totalSourceCount > 0 ? (
           <>
-            <div className="h-52 w-full my-auto flex items-center justify-center">
+            <div className="h-48 sm:h-52 w-full my-auto flex items-center justify-center">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
                     data={sourceDistribution}
                     cx="50%"
                     cy="50%"
-                    innerRadius={50}
-                    outerRadius={75}
+                    innerRadius={44}
+                    outerRadius={68}
                     paddingAngle={4}
                     dataKey="value"
                   >
@@ -230,7 +236,7 @@ export default function DashboardCharts({
 
             <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 text-[11px] text-slate-600">
               {sourceDistribution.slice(0, 4).map((src, i) => (
-                <div key={src.name} className="flex items-center gap-1.5">
+                <div key={src.name} className="flex items-center gap-1.5 min-w-0">
                   <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: COLORS[i] }} />
                   <span className="truncate">{src.name} ({src.value})</span>
                 </div>
@@ -238,7 +244,7 @@ export default function DashboardCharts({
             </div>
           </>
         ) : (
-          <div className="h-52 flex flex-col items-center justify-center text-center p-4">
+          <div className="h-48 sm:h-52 flex flex-col items-center justify-center text-center p-4">
             <PieIcon className="w-8 h-8 text-slate-200 mb-2" />
             <p className="text-xs font-semibold text-slate-600">No channel data yet</p>
             <p className="text-[11px] text-slate-400 mt-0.5">

@@ -1,0 +1,36 @@
+name: Supabase Keep-Alive Cron
+
+on:
+  schedule:
+    # Runs at minute 0 past every 12th hour (00:00 and 12:00 UTC)
+    - cron: '0 */12 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions UI
+
+jobs:
+  ping-supabase:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ping Keep-Alive Endpoint
+        run: |
+          TARGET_URL="${{ secrets.SITE_URL || 'https://samstack-crm.vercel.app' }}/api/keep-alive"
+          echo "Pinging $TARGET_URL to keep Supabase database active..."
+          
+          # Perform HTTP GET request with retry logic
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X GET "$TARGET_URL" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            --connect-timeout 15 \
+            --max-time 30)
+          
+          HTTP_STATUS=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          
+          echo "Response Body: $BODY"
+          echo "HTTP Status Code: $HTTP_STATUS"
+          
+          if [ "$HTTP_STATUS" -ne 200 ]; then
+            echo "::warning::Keep-alive request returned status $HTTP_STATUS. Please check project health."
+            exit 1
+          else
+            echo "Supabase keep-alive ping succeeded successfully."
+          fi

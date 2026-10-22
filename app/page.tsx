@@ -19,40 +19,17 @@ export const metadata: Metadata = {
   description:
     'SAMStack delivers world-class web development, mobile apps, data science, data analytics, and scalable backend solutions from Lahore, Pakistan. Founded & led by Suleman Zaheer (Full Stack & Writer), with Syed Abdullah (Team Lead & Backend) and Saqib Javed (Frontend & UI/UX). Call +92 328 5778715 or email samstacktechs@gmail.com.',
   keywords: [
-    // Core Brand & Team
-    'SAMStack', 'samstack.tech', 'SAMStack Lahore', 'SAMStack Pakistan',
-    'Suleman Zaheer', 'Suleman Zaheer developer', 'Suleman Zaheer writer',
-    'Syed Abdullah', 'Syed Abdullah backend', 'Syed Abdullah team lead',
-    'Saqib Javed', 'Saqib Javed frontend', 'Saqib Javed UI UX',
-    // Data Science & Analytics
-    'data science lahore', 'data analytics lahore', 'data science pakistan',
-    'data analyst lahore', 'machine learning lahore', 'AI development pakistan',
-    'predictive modeling pakistan', 'data engineering lahore', 'business intelligence pakistan',
-    'Python data science lahore', 'pandas numpy scikit learn developer pakistan',
-    // Web Development
-    'web development lahore', 'website development lahore', 'web design lahore',
-    'website development pakistan', 'custom website lahore', 'Next.js developer lahore',
-    'React developer lahore', 'React developer pakistan', 'full stack developer lahore',
-    'full stack developer pakistan', 'frontend developer lahore', 'UI UX designer lahore',
-    // Backend & APIs
-    'backend developer lahore', 'backend development pakistan', 'Node.js developer lahore',
-    'Python developer lahore', 'FastAPI developer pakistan', 'API development lahore',
-    'microservices developer lahore', 'database design lahore', 'PostgreSQL developer pakistan',
-    // Mobile Apps
-    'mobile app development lahore', 'mobile app development pakistan',
-    'React Native developer pakistan', 'Flutter developer lahore', 'iOS app lahore',
-    'Android app development pakistan',
-    // Software & Enterprise
-    'custom software development lahore', 'software development company lahore',
-    'software house lahore', 'IT company lahore', 'tech company lahore',
-    'software solutions pakistan', 'enterprise software lahore', 'tech consultancy lahore',
-    // Technical Writing & Content
-    'technical writer pakistan', 'technical writing lahore', 'documentation specialist pakistan',
-    'API documentation writer lahore', 'tech content writer pakistan',
-    // Local / Regional SEO
-    'best software company in lahore', 'top web developers in lahore', 'hire developers lahore',
-    'software house in gulberg lahore', 'software house in dha lahore', 'affordable software house pakistan',
-    'hire offshore developers pakistan', 'remote developers pakistan',
+    'SAMStack',
+    'SAMStack Technologies',
+    'Suleman Zaheer',
+    'Syed Abdullah',
+    'Saqib Javed',
+    'Web Development Lahore',
+    'Mobile App Development Pakistan',
+    'Data Science & Analytics',
+    'Next.js Full Stack Engineering',
+    'Enterprise Backend Architecture',
+    'Custom Software Studio',
   ],
   authors: [
     { name: 'Suleman Zaheer', url: SITE_URL },
@@ -862,35 +839,35 @@ export default async function HomePage() {
           aria-labelledby="hero-heading"
           className="relative min-h-screen lg:h-screen flex flex-col justify-between items-center text-center px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-6 overflow-hidden bg-slate-950 text-white"
         >
-          {/* Background Image: crm.png prominently visible ("fully numaya") */}
+          {/* Background Image: crm.png with elegant contrast protection */}
           <div className="absolute inset-0 z-0 pointer-events-none">
             <img
               src="/crm.png"
               alt="SAMStack Team - Suleman Zaheer, Syed Abdullah, Saqib Javed"
-              className="w-full h-full object-cover object-center opacity-90 filter contrast-[1.03] brightness-95"
+              className="w-full h-full object-cover object-center opacity-40 sm:opacity-50 filter contrast-[1.05] brightness-90"
             />
-            {/* Soft vignette: crystal clear center, gentle fade at edges */}
-            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-transparent to-slate-950/80" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(2,6,23,0.65)_100%)]" />
+            {/* Cinematic dark gradients for crystal-clear readability */}
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/85 via-slate-950/70 to-slate-950/95" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(2,6,23,0.85)_100%)]" />
           </div>
 
           {/* Ambient Subtle Glow Accents */}
           <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[320px] bg-gradient-to-tr from-blue-500/20 via-indigo-500/15 to-violet-500/15 blur-[120px] pointer-events-none z-0" />
 
           {/* Hero Core Content: Clean, Spacious & Focused */}
-          <div className="flex-1 flex flex-col justify-center items-center max-w-4xl mx-auto w-full my-auto z-10">
+          <div className="flex-1 flex flex-col justify-center items-center max-w-4xl mx-auto w-full my-auto z-10 px-2 sm:px-0">
             {/* Top Pill / Badge with Live Status */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-900/50 backdrop-blur-md border border-white/15 text-slate-200 text-[11px] sm:text-xs font-semibold tracking-wide uppercase mb-3 shadow-lg hover:border-blue-400/40 transition-colors">
+            <div className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1 rounded-full bg-slate-900/70 backdrop-blur-md border border-white/15 text-slate-200 text-[10px] sm:text-xs font-semibold tracking-wide uppercase mb-3 shadow-lg hover:border-blue-400/40 transition-colors">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               <span className="text-blue-400 font-bold">SAMStack Digital Studio</span>
               <span className="text-slate-400">&bull;</span>
-              <span>Lahore, Pakistan &bull; Worldwide Delivery</span>
+              <span>Lahore, Pakistan</span>
             </div>
 
             {/* Main Headline */}
             <h1
               id="hero-heading"
-              className="text-3xl sm:text-5xl lg:text-[54px] font-black tracking-tight text-white leading-[1.1] mb-3 max-w-3xl drop-shadow-md"
+              className="text-2xl sm:text-4xl lg:text-[52px] font-black tracking-tight text-white leading-[1.15] sm:leading-[1.1] mb-3 max-w-3xl drop-shadow-md"
             >
               Transforming Ideas Into <br />
               <span className="bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-300 bg-clip-text text-transparent">
@@ -899,24 +876,24 @@ export default async function HomePage() {
             </h1>
 
             {/* Subheading / Value Proposition */}
-            <p className="text-xs sm:text-sm md:text-base text-slate-200/90 max-w-xl mx-auto mb-5 leading-relaxed font-normal drop-shadow-sm">
+            <p className="text-xs sm:text-sm md:text-base text-slate-200 max-w-xl mx-auto mb-5 leading-relaxed font-normal drop-shadow-sm px-2">
               Lahore’s premier digital engineering studio. Crafting elite Web Apps, Mobile Platforms, Scalable Cloud Backends &amp; Data Science.
             </p>
 
             {/* Call to Action Buttons */}
-            <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3 mb-6 w-full sm:w-auto">
               <a
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs sm:text-sm shadow-xl shadow-emerald-500/25 transition-all transform hover:-translate-y-0.5 hover:shadow-emerald-500/40"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs sm:text-sm shadow-xl shadow-emerald-500/25 transition-all transform hover:-translate-y-0.5 hover:shadow-emerald-500/40 min-h-[44px]"
               >
                 <span>💬</span> Chat on WhatsApp
               </a>
 
               <a
                 href={`tel:${OFFICIAL_PHONE}`}
-                className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-white/12 hover:bg-white/20 text-white font-bold text-xs sm:text-sm border border-white/20 backdrop-blur-md shadow-md transition-all transform hover:-translate-y-0.5"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-white/12 hover:bg-white/20 text-white font-bold text-xs sm:text-sm border border-white/20 backdrop-blur-md shadow-md transition-all transform hover:-translate-y-0.5 min-h-[44px]"
               >
                 <span>📞</span> {FORMATTED_PHONE}
               </a>

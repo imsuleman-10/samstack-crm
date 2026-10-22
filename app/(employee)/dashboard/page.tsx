@@ -45,23 +45,23 @@ export default async function EmployeeDashboardPage() {
   const progressPercent = Math.min(100, Math.round((metrics.messages_sent / weeklyTarget) * 100))
 
   return (
-    <div className="space-y-6 animate-in">
+    <div className="space-y-4 sm:space-y-6 animate-in">
       {/* Greeting Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-slate-950 via-slate-900 to-blue-950 p-6 sm:p-8 rounded-3xl text-white shadow-xl border border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-slate-950 via-slate-900 to-blue-950 p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl text-white shadow-xl border border-slate-800">
         <div>
           <div className="flex items-center gap-2 text-blue-400 text-xs font-bold uppercase tracking-wider mb-2">
             <Sparkles className="w-4 h-4" /> Sales Workspace
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight">
             {greeting}, {profile.full_name.split(' ')[0]} 👋
           </h1>
-          <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl">
+          <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl leading-relaxed">
             Here is your daily outreach progression, pipeline leads, and scheduled follow-ups.
           </p>
         </div>
         <Link
           href="/leads/new"
-          className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-bold hover:from-blue-500 hover:to-indigo-500 transition-all shadow-md shadow-blue-500/25 active:scale-95 flex-shrink-0"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-bold hover:from-blue-500 hover:to-indigo-500 transition-all shadow-md shadow-blue-500/25 active:scale-95 flex-shrink-0 min-h-[42px]"
         >
           <Plus className="w-4 h-4" />
           Add New Lead
@@ -69,10 +69,10 @@ export default async function EmployeeDashboardPage() {
       </div>
 
       {/* Target Progress Bar Widget */}
-      <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0 font-bold">
-            <Target className="w-5 h-5" />
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0 font-bold">
+            <Target className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
           <div>
             <div className="font-bold text-xs text-slate-900">Weekly Outreach Objective</div>
@@ -82,7 +82,7 @@ export default async function EmployeeDashboardPage() {
           </div>
         </div>
 
-        <div className="flex-1 max-w-md">
+        <div className="flex-1 max-w-md w-full">
           <div className="flex justify-between text-xs font-bold text-slate-700 mb-1">
             <span>Progress</span>
             <span className="text-blue-600">{progressPercent}%</span>
@@ -97,7 +97,7 @@ export default async function EmployeeDashboardPage() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <StatCard
           title="My Assigned Leads"
           value={metrics.total_leads}
@@ -135,9 +135,9 @@ export default async function EmployeeDashboardPage() {
         weeklyTrends={weeklyTrends}
       />
 
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Follow-ups Due */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs">
+        <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 shadow-xs">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-bold text-slate-900 text-sm flex items-center gap-2">
               <CalendarCheck2 className="w-4 h-4 text-orange-500" />
@@ -154,10 +154,10 @@ export default async function EmployeeDashboardPage() {
               <p className="text-xs font-medium">No follow-ups due today</p>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-2.5 sm:space-y-3">
               {followUps.map((fu: any) => (
                 <div key={fu.id} className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-start justify-between gap-3">
-                  <div className="min-w-0">
+                  <div className="min-w-0 flex-1">
                     <Link href={`/leads/${fu.lead?.id}`} className="text-xs font-bold text-slate-900 hover:text-blue-600 truncate block">
                       {fu.lead?.business_name}
                     </Link>
@@ -171,7 +171,7 @@ export default async function EmployeeDashboardPage() {
         </div>
 
         {/* Recent Leads */}
-        <div className="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-6 shadow-xs">
+        <div className="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 shadow-xs">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-bold text-slate-900 text-sm flex items-center gap-2">
               <Building2 className="w-4 h-4 text-blue-500" />
@@ -194,8 +194,8 @@ export default async function EmployeeDashboardPage() {
           ) : (
             <div className="divide-y divide-slate-100">
               {recentLeads.map((lead: any) => (
-                <div key={lead.id} className="py-3 flex items-center justify-between gap-3 group">
-                  <div className="flex items-center gap-3 min-w-0">
+                <div key={lead.id} className="py-2.5 sm:py-3 flex items-center justify-between gap-3 group">
+                  <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
                     <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0 font-bold text-xs">
                       {lead.business_name.charAt(0).toUpperCase()}
                     </div>
@@ -203,10 +203,10 @@ export default async function EmployeeDashboardPage() {
                       <Link href={`/leads/${lead.id}`} className="text-xs font-bold text-slate-900 group-hover:text-blue-600 truncate block">
                         {lead.business_name}
                       </Link>
-                      <p className="text-[11px] text-slate-400 mt-0.5">{lead.category || 'General'} &bull; {lead.city || 'Pakistan'}</p>
+                      <p className="text-[11px] text-slate-400 mt-0.5 truncate">{lead.category || 'General'} &bull; {lead.city || 'Pakistan'}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-shrink-0">
                     <StatusBadge type="pipeline" value={lead.pipeline_stage} className="text-[10px]" />
                     <span className="text-[11px] text-slate-400 hidden sm:inline">{timeAgo(lead.updated_at)}</span>
                   </div>
@@ -219,4 +219,3 @@ export default async function EmployeeDashboardPage() {
     </div>
   )
 }
-

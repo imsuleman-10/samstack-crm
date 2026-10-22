@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { createClient, createAdminClient } from '@/lib/supabase/server'
 import Sidebar from '@/components/layout/sidebar'
 import Header from '@/components/layout/header'
+import MobileBottomNav from '@/components/layout/mobile-bottom-nav'
 
 export default async function EmployeeLayout({
   children,
@@ -33,10 +34,11 @@ export default async function EmployeeLayout({
       />
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
         <Header role={profile.role} />
-        <main className="flex-1 overflow-y-auto p-6">
+        <main className="flex-1 overflow-y-auto p-3.5 sm:p-5 lg:p-6 pb-24 lg:pb-6">
           {children}
         </main>
       </div>
+      <MobileBottomNav role={profile.role} />
     </div>
   )
 }
