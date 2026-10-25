@@ -228,3 +228,32 @@ body {
   border-color: rgba(99, 102, 241, 0.4);
   transform: translateY(-1px);
 }
+
+/* Mobile & Touch Responsiveness Utilities */
+html, body {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.safe-area-bottom {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+.safe-area-top {
+  padding-top: max(0.5rem, env(safe-area-inset-top));
+}
+
+@media (max-width: 640px) {
+  /* Prevent horizontal screen jiggle on mobile */
+  body {
+    overflow-x: hidden;
+    position: relative;
+    width: 100%;
+  }
+
+  /* Smooth touch scrolling */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+

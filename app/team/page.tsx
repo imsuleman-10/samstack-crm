@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
-const SITE_URL = 'https://samstack-crm.vercel.app'
+import { SITE_URL } from '@/lib/seo-config'
 
 export const metadata: Metadata = {
   title: 'Engineering Leadership & Team | SAMStack Technologies — Lahore, Pakistan',

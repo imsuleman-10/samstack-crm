@@ -4,13 +4,20 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import LandingNavbar from '@/components/landing/LandingNavbar'
 
+import {
+  SITE_URL,
+  COMPANY,
+  ADDRESS,
+  SAME_AS,
+  TEAM,
+} from '@/lib/seo-config'
+
 // ─── Company & Contact Constants ──────────────────────────────────────────────
-const SITE_URL = 'https://samstack-crm.vercel.app'
-const COMPANY_NAME = 'SAMStack'
-const OFFICIAL_EMAIL = 'samstacktechs@gmail.com'
-const OFFICIAL_PHONE = '+923285778715'
-const FORMATTED_PHONE = '+92 328 5778715'
-const WHATSAPP_URL = `https://wa.me/923285778715?text=${encodeURIComponent('Hello SAMStack, I would like to inquire about your software and data services.')}`
+const COMPANY_NAME = COMPANY.name
+const OFFICIAL_EMAIL = COMPANY.email
+const OFFICIAL_PHONE = COMPANY.telephone
+const FORMATTED_PHONE = COMPANY.telephoneFormatted
+const WHATSAPP_URL = COMPANY.whatsapp
 
 // ─── Full SEO Metadata (On-page, Technical, Local, International) ─────────────
 export const metadata: Metadata = {
@@ -133,11 +140,11 @@ const jsonLd = {
       ],
       address: {
         '@type': 'PostalAddress',
-        streetAddress: 'Lahore',
-        addressLocality: 'Lahore',
-        addressRegion: 'Punjab',
-        addressCountry: 'PK',
-        postalCode: '54000',
+        streetAddress: ADDRESS.streetAddress,
+        addressLocality: ADDRESS.addressLocality,
+        addressRegion: ADDRESS.addressRegion,
+        addressCountry: ADDRESS.addressCountry,
+        postalCode: ADDRESS.postalCode,
       },
       contactPoint: [
         {
@@ -150,9 +157,7 @@ const jsonLd = {
         },
       ],
       sameAs: [
-        'https://github.com/samstack',
-        'https://linkedin.com/company/samstack',
-        'https://twitter.com/SAMStackTech',
+        ...SAME_AS,
       ],
       knowsAbout: [
         'Web Development', 'Mobile App Development', 'Data Science',
@@ -189,8 +194,7 @@ const jsonLd = {
         'PostgreSQL', 'Supabase', 'API Design', 'System Scalability',
       ],
       sameAs: [
-        'https://github.com/sulemanzaheer',
-        'https://linkedin.com/in/sulemanzaheer',
+        ...TEAM.suleman.sameAs,
       ],
     },
 
@@ -510,7 +514,7 @@ const jsonLd = {
           name: 'What are SAMStack’s contact details, phone number, and website?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'You can contact SAMStack by phone or WhatsApp at +92 328 5778715 (+923285778715) or by email at samstacktechs@gmail.com. Our official platform is hosted at https://samstack-crm.vercel.app. We are based in Lahore, Punjab, Pakistan.',
+            text: `You can contact SAMStack by phone or WhatsApp at ${FORMATTED_PHONE} (${OFFICIAL_PHONE}) or by email at ${OFFICIAL_EMAIL}. Our official website is ${SITE_URL}. We are based in Johar Town, Lahore, Punjab, Pakistan.`,
           },
         },
         {

@@ -1,8 +1,15 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
-const SITE_URL = 'https://samstack-crm.vercel.app'
-const OFFICIAL_EMAIL = 'samstacktechs@gmail.com'
+import {
+  SITE_URL,
+  COMPANY,
+  ADDRESS,
+  TEAM,
+} from '@/lib/seo-config'
+
+const MEMBER = TEAM.saqib
+const OFFICIAL_EMAIL = COMPANY.email
 const WHATSAPP_URL = `https://wa.me/923285778715?text=${encodeURIComponent('Hello SAMStack, I would like to connect with Saqib Javed regarding UI/UX and frontend development.')}`
 
 export const metadata: Metadata = {
@@ -66,11 +73,17 @@ export default function SaqibJavedProfilePage() {
           'Saqib Javed is the Frontend Developer and UI/UX Lead at SAMStack Technologies in Lahore, Pakistan. He crafts pixel-perfect, responsive web interfaces, comprehensive Figma design systems, and conversion-optimized user experiences using React 19 and Next.js 16.',
         address: {
           '@type': 'PostalAddress',
-          addressLocality: 'Lahore',
-          addressRegion: 'Punjab',
-          addressCountry: 'Pakistan',
-          postalCode: '54000',
+          streetAddress: ADDRESS.streetAddress,
+          addressLocality: ADDRESS.addressLocality,
+          addressRegion: ADDRESS.addressRegion,
+          addressCountry: ADDRESS.addressCountry,
+          postalCode: ADDRESS.postalCode,
         },
+        sameAs: [
+          ...MEMBER.sameAs,
+          SITE_URL,
+        ],
+        telephone: COMPANY.telephone,
         email: OFFICIAL_EMAIL,
         knowsAbout: [
           'Frontend Development', 'UI/UX Design', 'React 19', 'Next.js 16',
@@ -111,6 +124,37 @@ export default function SaqibJavedProfilePage() {
             { '@type': 'ListItem', position: 3, name: 'Saqib Javed', item: `${SITE_URL}/team/saqib-javed` },
           ],
         },
+      },
+
+      // 3. FAQPage for AEO (Generative Search & Voice Queries)
+      {
+        '@type': 'FAQPage',
+        mainEntity: [
+          {
+            '@type': 'Question',
+            name: 'Who is Saqib Javed?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Saqib Javed is the Frontend Developer and UI/UX Lead at SAMStack Technologies in Lahore, Pakistan. He is an expert in React 19, Next.js 16, TailwindCSS, Figma design systems, and conversion-focused accessible web interfaces.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'What technologies does Saqib Javed specialize in?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Saqib Javed specializes in modern web frontend engineering including React 19, Next.js 16 App Router, TailwindCSS design tokens, TypeScript, Figma wireframing, micro-animations, and WCAG 2.1 AA accessibility standards.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'What role does Saqib Javed play at SAMStack Technologies?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'At SAMStack Technologies, Saqib Javed leads the user interface design and frontend architecture, creating cohesive design systems, marketing sites, and high-performance CRM dashboards with 100/100 Lighthouse scores.',
+            },
+          },
+        ],
       },
     ],
   }

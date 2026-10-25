@@ -419,3 +419,159 @@ export async function checkDuplicate(params: {
 
   return { duplicates: [] }
 }
+
+// ============================================================
+// BATCH IMPORT LEADS (From Excel / CSV / JSON Ingestion)
+// ============================================================
+
+export interface BatchLeadItem {
+  business_name: string
+  contact_person?: string
+  phone?: string
+  whatsapp?: string
+  email?: string
+  city?: string
+  area?: string
+  full_address?: string
+  category?: string
+  website?: string
+  pipeline_stage?: string
+  lead_source?: string
+  google_rating?: number | string
+  description?: string
+  facebook_url?: string
+  instagram_url?: string
+  tiktok_url?: string
+  linkedin_url?: string
+}
+
+export async function batchImportLeads(leadsList: BatchLeadItem[]) {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) return { error: 'Unauthorized: User must be logged in to import leads' }
+
+  if (!Array.isArray(leadsList) || leadsList.length === 0) {
+    return { error: 'No lead rows provided for import' }
+  }
+
+  const adminSupabase = createAdminClient()
+  const { data: profile } = await adminSupabase
+    .from('profiles')
+    .select('id, role')
+    .eq('auth_user_id', user.id)
+    .single()
+
+  if (!profile) return { error: 'User profile not found' }
+
+  const validStages = [
+    'new',
+    'contacted',
+    'seen',
+    'replied',
+    'interested',
+    'qualified',
+    'proposal_sent',
+    'negotiation',
+    'won',
+    'project_started',
+    'project_completed',
+    'not_interested',
+    'not_qualified',
+    'lost',
+  ]
+
+  const validSources = [
+    'google_maps',
+    'facebook',
+    'instagram',
+    'tiktok',
+    'website',
+    'referral',
+    'manual_entry',
+    'other',
+  ]
+
+  const preparedLeads = []
+
+  for (const item of leadsList) {
+    const rawName = (item.business_name || '').trim()
+    if (!rawName) continue // Skip entries without business name
+
+    const rawStage = (item.pipeline_stage || 'new').toLowerCase().trim()
+    const pipeline_stage = validStages.includes(rawStage) ? rawStage : 'new'
+
+    const rawSource = (item.lead_source || 'manual_entry').toLowerCase().trim().replace(/\s+/g, '_')
+    const lead_source = validSources.includes(rawSource) ? rawSource : 'manual_entry'
+
+    const numRating = item.google_rating ? parseFloat(String(item.google_rating)) : null
+    const google_rating = !isNaN(numRating as number) ? numRating : null
+
+    preparedLeads.push({
+      business_name: rawName,
+      contact_person: item.contact_person?.trim() || null,
+      phone: item.phone?.trim() || null,
+      whatsapp: item.whatsapp?.trim() || null,
+      email: item.email?.trim() || null,
+      city: item.city?.trim() || null,
+      area: item.area?.trim() || null,
+      full_address: item.full_address?.trim() || null,
+      category: item.category?.trim() || null,
+      website: item.website?.trim() || null,
+      pipeline_stage,
+      lead_source,
+      google_rating,
+      description: item.description?.trim() || null,
+      owner_id: profile.id,
+      created_by: profile.id,
+      has_website: Boolean(item.website),
+      has_social_media: Boolean(
+        item.facebook_url || item.instagram_url || item.tiktok_url || item.linkedin_url
+      ),
+      has_online_presence: Boolean(item.website || item.facebook_url || item.instagram_url),
+    })
+  }
+
+  if (preparedLeads.length === 0) {
+    return { error: 'No valid leads found in upload. Every lead must have at least a Business/Company Name.' }
+  }
+
+  // Insert in chunks of 50 to avoid payload limits
+  const chunkSize = 50
+  let totalInserted = 0
+  const insertedLeads = []
+
+  for (let i = 0; i < preparedLeads.length; i += chunkSize) {
+    const chunk = preparedLeads.slice(i, i + chunkSize)
+    const { data, error } = await adminSupabase
+      .from('leads')
+      .insert(chunk)
+      .select('id, business_name')
+
+    if (error) {
+      console.error('Batch insert error chunk:', error)
+      return { error: `Database error during batch insert: ${error.message}` }
+    }
+
+    if (data) {
+      totalInserted += data.length
+      insertedLeads.push(...data)
+    }
+  }
+
+  await logAudit({
+    entity_type: 'lead',
+    entity_id: insertedLeads[0]?.id || profile.id,
+    action: 'created',
+    new_data: { batch_import_count: totalInserted, by: profile.id },
+  })
+
+  revalidatePath('/leads')
+  revalidatePath('/admin/leads')
+  revalidatePath('/dashboard')
+  revalidatePath('/admin/dashboard')
+
+  return { success: true, count: totalInserted }
+}
+

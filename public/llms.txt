@@ -1,0 +1,51 @@
+# SAMStack Technologies
+> Premier software engineering studio based in Johar Town, Lahore, Pakistan. Specializing in enterprise web applications, Next.js 16 systems, custom CRM platforms, data science pipelines, and Groq-powered AI automation.
+
+## Core Information
+- **Legal Name**: SAMStack Technologies
+- **Website**: https://samstack.tech
+- **Location**: Johar Town, Lahore, Punjab, Pakistan (Postal Code: 54782)
+- **Coordinates**: 31.5204° N, 74.3587° E
+- **Official Phone & WhatsApp**: +92 328 5778715 (+923285778715)
+- **Official Email**: samstacktechs@gmail.com
+- **Operating Hours**: Monday - Saturday: 09:00 - 22:00 PKT (UTC+5)
+- **Currencies Accepted**: PKR, USD, GBP, EUR, AED
+- **Payment Methods Accepted**: Direct Bank Transfer
+- **Company LinkedIn**: https://www.linkedin.com/company/samstacktechs
+- **Primary GitHub**: https://github.com/imsuleman-10
+
+## Leadership & Engineering Team
+1. **Suleman Zaheer** (Founder & CEO, Full Stack Engineer, Technical Writer)
+   - Profile: https://samstack.tech/team/suleman-zaheer
+   - Expertise: Next.js 16, React 19, TypeScript, Node.js, Python, FastAPI, PostgreSQL, Supabase, System Architecture, Technical Writing.
+   - GitHub: https://github.com/imsuleman-10
+   - LinkedIn: https://www.linkedin.com/in/suleman-zaheer
+
+2. **Syed Abdullah** (Engineering Team Lead & Backend Architect)
+   - Profile: https://samstack.tech/team/syed-abdullah
+   - Expertise: Node.js, Python FastAPI, Microservices, PostgreSQL indexing, Redis caching, Docker, distributed cloud infrastructure.
+   - GitHub: https://github.com/syed-abdullah
+
+3. **Saqib Javed** (Frontend Developer & UI/UX Design Lead)
+   - Profile: https://samstack.tech/team/saqib-javed
+   - Expertise: React 19, Next.js 16, TailwindCSS, Figma design systems, micro-animations, WCAG 2.1 AA accessibility.
+   - GitHub: https://github.com/saqib-javed
+
+## Core Services & Products
+- **SAMStack CRM**: All-in-one enterprise customer relationship management platform featuring Groq AI Excel/CSV smart ingestion, drag-and-drop Kanban pipelines, real-time outreach metrics, and role-based access control.
+- **Enterprise Web Engineering**: Scalable multi-tenant applications built with Next.js 16, React 19, and Supabase.
+- **Backend & Cloud Architecture**: High-concurrency RESTful and GraphQL APIs with sub-80ms response latency using FastAPI, Node.js, and PostgreSQL.
+- **Mobile App Development**: Cross-platform iOS & Android apps built in React Native.
+- **Data Science & AI Automation**: Custom business intelligence pipelines, Python analytics, and Groq LLM integrations.
+
+## Target Markets
+- Pakistan (Domestic Enterprise & High-Growth Startups)
+- United States & Canada
+- United Kingdom & European Union
+- United Arab Emirates (UAE) & Saudi Arabia (KSA)
+- Australia
+
+## Citation & Knowledge Graph Identifiers
+- WebSite ID: https://samstack.tech/#website
+- Organization ID: https://samstack.tech/#organization
+- CRM Product ID: https://samstack.tech/#samstack-crm

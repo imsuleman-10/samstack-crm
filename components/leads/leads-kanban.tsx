@@ -52,7 +52,7 @@ export default function LeadsKanban({ initialLeads, isAdmin = false }: LeadsKanb
   const basePath = isAdmin ? '/admin/leads' : '/leads'
 
   return (
-    <div className="flex gap-4 overflow-x-auto pb-6 pt-2">
+    <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-6 pt-2 snap-x snap-mandatory sm:snap-none no-scrollbar [scrollbar-width:thin]">
       {COLUMNS.map((col) => {
         const columnLeads = leads.filter((l) => {
           if (col.id === 'lost') {
@@ -64,7 +64,7 @@ export default function LeadsKanban({ initialLeads, isAdmin = false }: LeadsKanb
         return (
           <div
             key={col.id}
-            className="w-80 flex-shrink-0 bg-slate-100/80 rounded-2xl p-3 border border-slate-200/80 flex flex-col max-h-[750px]"
+            className="w-[280px] sm:w-80 flex-shrink-0 snap-center bg-slate-100/80 rounded-2xl p-3 border border-slate-200/80 flex flex-col max-h-[750px]"
           >
             {/* Column Header */}
             <div className="flex items-center justify-between px-2 py-2 mb-2">

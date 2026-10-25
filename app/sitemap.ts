@@ -1,90 +1,85 @@
 import type { MetadataRoute } from 'next'
-
-const SITE_URL = 'https://samstack-crm.vercel.app'
+import { SITE_URL, TEAM } from '@/lib/seo-config'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date()
+  const now = new Date()
+  const lastWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+  const lastMonth = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
 
   return [
-    // ── Homepage (Highest Priority — All SEO / GEO Weight) ───────────
+    // ── Homepage — Maximum Authority ────────────────────────────────────
     {
       url: SITE_URL,
-      lastModified,
+      lastModified: now,
       changeFrequency: 'weekly',
       priority: 1.0,
     },
-    // ── Homepage Anchor Sections (For Crawlability) ──────────────────
+
+    // ── About Page — Company Entity / LLMO Target ────────────────────────
     {
-      url: `${SITE_URL}/#services`,
-      lastModified,
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${SITE_URL}/#team`,
-      lastModified,
+      url: `${SITE_URL}/about`,
+      lastModified: lastWeek,
       changeFrequency: 'monthly',
       priority: 0.9,
     },
-    {
-      url: `${SITE_URL}/#about`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${SITE_URL}/#tech`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${SITE_URL}/#faq`,
-      lastModified,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    // ── Team Directory ───────────────────────────────────────────────
+
+    // ── Team Directory ───────────────────────────────────────────────────
     {
       url: `${SITE_URL}/team`,
-      lastModified,
+      lastModified: lastWeek,
       changeFrequency: 'monthly',
       priority: 0.9,
     },
-    // ── Team Profile Pages (AEO / Knowledge Panel Targets) ──────────
-    // Suleman Zaheer — Founder & CEO (Targets "who is Suleman Zaheer" searches)
+
+    // ── Suleman Zaheer Profile — Founder / Knowledge Panel ───────────────
+    // Target: "Who is Suleman Zaheer?", "Suleman Zaheer Pakistan"
     {
-      url: `${SITE_URL}/team/suleman-zaheer`,
-      lastModified,
+      url: TEAM.suleman.url,
+      lastModified: lastWeek,
       changeFrequency: 'monthly',
-      priority: 0.9,
+      priority: 0.95,
     },
-    // Syed Abdullah — Team Lead & Backend
+
+    // ── Syed Abdullah Profile — Backend Lead ────────────────────────────
     {
-      url: `${SITE_URL}/team/syed-abdullah`,
-      lastModified,
+      url: TEAM.abdullah.url,
+      lastModified: lastWeek,
       changeFrequency: 'monthly',
-      priority: 0.8,
+      priority: 0.85,
     },
-    // Saqib Javed — Frontend & UI/UX Lead
+
+    // ── Saqib Javed Profile — UI/UX Lead ────────────────────────────────
     {
-      url: `${SITE_URL}/team/saqib-javed`,
-      lastModified,
+      url: TEAM.saqib.url,
+      lastModified: lastWeek,
       changeFrequency: 'monthly',
-      priority: 0.8,
+      priority: 0.85,
     },
-    // ── Auth (Lower Priority — Not for Public Indexing) ──────────────
+
+    // ── Team profile images — Google Image Search ────────────────────────
     {
-      url: `${SITE_URL}/login`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.3,
+      url: `${SITE_URL}/suleman.png`,
+      lastModified: lastMonth,
+      changeFrequency: 'yearly',
+      priority: 0.5,
     },
     {
-      url: `${SITE_URL}/register`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.3,
+      url: `${SITE_URL}/saqib.png`,
+      lastModified: lastMonth,
+      changeFrequency: 'yearly',
+      priority: 0.5,
+    },
+    {
+      url: `${SITE_URL}/abdullah.png`,
+      lastModified: lastMonth,
+      changeFrequency: 'yearly',
+      priority: 0.5,
+    },
+    {
+      url: `${SITE_URL}/og-default.png`,
+      lastModified: lastMonth,
+      changeFrequency: 'yearly',
+      priority: 0.4,
     },
   ]
 }

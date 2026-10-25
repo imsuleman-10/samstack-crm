@@ -1,10 +1,17 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
-const SITE_URL = 'https://samstack-crm.vercel.app'
-const OFFICIAL_PHONE = '+923285778715'
-const FORMATTED_PHONE = '+92 328 5778715'
-const OFFICIAL_EMAIL = 'samstacktechs@gmail.com'
+import {
+  SITE_URL,
+  COMPANY,
+  ADDRESS,
+  TEAM,
+} from '@/lib/seo-config'
+
+const MEMBER = TEAM.abdullah
+const OFFICIAL_PHONE = COMPANY.telephone
+const FORMATTED_PHONE = COMPANY.telephoneFormatted
+const OFFICIAL_EMAIL = COMPANY.email
 const WHATSAPP_URL = `https://wa.me/923285778715?text=${encodeURIComponent('Hello Syed Abdullah, I am reaching out regarding backend architecture consultation at SAMStack.')}`
 
 export const metadata: Metadata = {
@@ -66,15 +73,17 @@ export default function SyedAbdullahProfilePage() {
           'Syed Abdullah is a Senior Backend Developer and the Engineering Team Lead at SAMStack Technologies based in Lahore, Pakistan. He specializes in high-concurrency microservices, Node.js, Python FastAPI, PostgreSQL, and resilient server infrastructure.',
         address: {
           '@type': 'PostalAddress',
-          addressLocality: 'Lahore',
-          addressRegion: 'Punjab',
-          addressCountry: 'Pakistan',
-          postalCode: '54000',
+          streetAddress: ADDRESS.streetAddress,
+          addressLocality: ADDRESS.addressLocality,
+          addressRegion: ADDRESS.addressRegion,
+          addressCountry: ADDRESS.addressCountry,
+          postalCode: ADDRESS.postalCode,
         },
         telephone: OFFICIAL_PHONE,
         email: OFFICIAL_EMAIL,
         sameAs: [
-          'https://samstack-crm.vercel.app',
+          ...MEMBER.sameAs,
+          SITE_URL,
         ],
         knowsAbout: [
           'Node.js', 'Python', 'FastAPI', 'Microservices', 'PostgreSQL',
@@ -299,7 +308,8 @@ export default function SyedAbdullahProfilePage() {
                 Leadership &amp; Delivery
               </h3>
               <div className="space-y-2.5 text-xs text-slate-300">
-                <div>📍 <strong>Location:</strong> Lahore, Punjab, Pakistan</div>
+                <div>📍 <strong>Location:</strong> {ADDRESS.streetAddress}, {ADDRESS.addressLocality}, {ADDRESS.addressRegion}, {ADDRESS.addressCountryFull}</div>
+                <div>💳 <strong>Payments:</strong> Bank Transfer ({COMPANY.currenciesAccepted})</div>
                 <div>🛡️ <strong>SLA Target:</strong> 99.99% Production Uptime</div>
                 <div>⚡ <strong>Sprint Model:</strong> Agile 2-week Delivery</div>
               </div>
