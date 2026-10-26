@@ -4,6 +4,8 @@ import { getDashboardMetrics } from '@/lib/queries/analytics'
 import { formatPKR, formatRate } from '@/lib/analytics/formulas'
 import { FileText, Download, Printer, Filter, Building2, Send, Award, DollarSign } from 'lucide-react'
 
+import ReportExportActions from '@/components/reports/report-export-actions'
+
 export const metadata: Metadata = { title: 'Admin - Reports & Summaries' }
 export const dynamic = 'force-dynamic'
 
@@ -26,6 +28,8 @@ export default async function AdminReportsPage() {
             Generate and export comprehensive team productivity and revenue reports.
           </p>
         </div>
+
+        <ReportExportActions metrics={metrics} rates={rates} employees={employees} />
       </div>
 
       {/* Summary Cards */}
