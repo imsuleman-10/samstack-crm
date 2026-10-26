@@ -137,8 +137,20 @@ export default async function AdminProjectsPage({
         </form>
       </div>
 
-      {/* Table */}
-      <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+      {/* TABLE 1: Active & Ongoing Projects */}
+      <div className="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden space-y-3">
+        <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/60">
+          <div className="flex items-center gap-2">
+            <Clock className="w-4 h-4 text-blue-600" />
+            <h2 className="text-sm sm:text-base font-bold text-slate-900">
+              Active / In-Progress Projects ({projects.filter((p: any) => p.status !== 'completed').length})
+            </h2>
+          </div>
+          <span className="text-[11px] font-semibold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-200">
+            Live Deliveries
+          </span>
+        </div>
+
         <div className="overflow-x-auto">
           <table className="w-full text-xs text-slate-600 text-left">
             <thead className="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
@@ -153,75 +165,164 @@ export default async function AdminProjectsPage({
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {projects.map((proj: any) => {
-                const lockedVal = Number(proj.project_value || 0)
-                const recVal = Number(proj.amount_received || 0)
-                const balanceVal = Math.max(0, lockedVal - recVal)
-                const cur = proj.currency || 'PKR'
+              {projects
+                .filter((p: any) => p.status !== 'completed')
+                .map((proj: any) => {
+                  const lockedVal = Number(proj.project_value || 0)
+                  const recVal = Number(proj.amount_received || 0)
+                  const balanceVal = Math.max(0, lockedVal - recVal)
+                  const cur = proj.currency || 'PKR'
 
-                return (
-                  <tr key={proj.id} className="hover:bg-slate-50 transition-colors">
-                    <td className="py-3 px-4">
-                      <div className="font-bold text-slate-900">{proj.project_name}</div>
-                      <div className="text-[10px] text-slate-400">
-                        Closer: {proj.employee?.full_name || 'System'}
-                      </div>
-                    </td>
-                    <td className="py-3 px-4">
-                      {proj.lead ? (
-                        <Link href={`/admin/leads/${proj.lead.id}`} className="font-medium text-blue-600 hover:underline">
-                          {proj.lead.business_name}
-                        </Link>
-                      ) : (
-                        'Direct Client'
-                      )}
-                    </td>
-                    <td className="py-3 px-4 text-slate-600">
-                      {proj.offered_price ? (
-                        <span className="font-semibold text-amber-700">
-                          {cur} {Number(proj.offered_price).toLocaleString()}
+                  return (
+                    <tr key={proj.id} className="hover:bg-slate-50 transition-colors">
+                      <td className="py-3 px-4">
+                        <div className="font-bold text-slate-900">{proj.project_name}</div>
+                        <div className="text-[10px] text-slate-400">
+                          Closer: {proj.employee?.full_name || 'System'}
+                        </div>
+                      </td>
+                      <td className="py-3 px-4">
+                        {proj.lead ? (
+                          <Link href={`/admin/leads/${proj.lead.id}`} className="font-medium text-blue-600 hover:underline">
+                            {proj.lead.business_name}
+                          </Link>
+                        ) : (
+                          'Direct Client'
+                        )}
+                      </td>
+                      <td className="py-3 px-4 text-slate-600">
+                        {proj.offered_price ? (
+                          <span className="font-semibold text-amber-700">
+                            {cur} {Number(proj.offered_price).toLocaleString()}
+                          </span>
+                        ) : (
+                          <span className="text-slate-400">—</span>
+                        )}
+                      </td>
+                      <td className="py-3 px-4 font-extrabold text-slate-900">
+                        {cur} {lockedVal.toLocaleString()}
+                      </td>
+                      <td className="py-3 px-4 font-bold text-emerald-700">
+                        {cur} {recVal.toLocaleString()}
+                      </td>
+                      <td className="py-3 px-4">
+                        {balanceVal > 0 ? (
+                          <span className="font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md text-[11px]">
+                            {cur} {balanceVal.toLocaleString()}
+                          </span>
+                        ) : (
+                          <span className="font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md text-[11px]">
+                            Fully Paid
+                          </span>
+                        )}
+                      </td>
+                      <td className="py-3 px-4">
+                        <span
+                          className={`capitalize px-2.5 py-0.5 rounded-full text-[11px] font-medium border ${
+                            proj.status === 'in_progress'
+                              ? 'bg-blue-50 text-blue-700 border-blue-200'
+                              : 'bg-amber-50 text-amber-700 border-amber-200'
+                          }`}
+                        >
+                          {proj.status.replace('_', ' ')}
                         </span>
-                      ) : (
-                        <span className="text-slate-400">—</span>
-                      )}
-                    </td>
-                    <td className="py-3 px-4 font-extrabold text-slate-900">
-                      {cur} {lockedVal.toLocaleString()}
-                    </td>
-                    <td className="py-3 px-4 font-bold text-emerald-700">
-                      {cur} {recVal.toLocaleString()}
-                    </td>
-                    <td className="py-3 px-4">
-                      {balanceVal > 0 ? (
-                        <span className="font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md text-[11px]">
-                          {cur} {balanceVal.toLocaleString()}
-                        </span>
-                      ) : (
-                        <span className="font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md text-[11px]">
-                          Fully Paid
-                        </span>
-                      )}
-                    </td>
-                    <td className="py-3 px-4">
-                      <span
-                        className={`capitalize px-2.5 py-0.5 rounded-full text-[11px] font-medium border ${
-                          proj.status === 'completed'
-                            ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                            : proj.status === 'in_progress'
-                            ? 'bg-blue-50 text-blue-700 border-blue-200'
-                            : 'bg-amber-50 text-amber-700 border-amber-200'
-                        }`}
-                      >
-                        {proj.status.replace('_', ' ')}
-                      </span>
-                    </td>
-                  </tr>
-                )
-              })}
-              {projects.length === 0 && (
+                      </td>
+                    </tr>
+                  )
+                })}
+              {projects.filter((p: any) => p.status !== 'completed').length === 0 && (
                 <tr>
-                  <td colSpan={7} className="text-center py-10 text-slate-400">
-                    No converted projects recorded yet.
+                  <td colSpan={7} className="text-center py-8 text-slate-400">
+                    No active or in-progress projects recorded right now.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* TABLE 2: Completed & Delivered Projects */}
+      <div className="bg-white border border-emerald-200/90 rounded-3xl shadow-sm overflow-hidden space-y-3">
+        <div className="px-6 py-4 border-b border-emerald-100 flex items-center justify-between bg-emerald-50/50">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-700" />
+            <h2 className="text-sm sm:text-base font-bold text-slate-900">
+              Completed &amp; Delivered Archive ({projects.filter((p: any) => p.status === 'completed').length})
+            </h2>
+          </div>
+          <span className="text-[11px] font-semibold text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-full border border-emerald-300">
+            Delivered Contracts
+          </span>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs text-slate-600 text-left">
+            <thead className="bg-emerald-50/30 text-slate-700 font-semibold border-b border-slate-200">
+              <tr>
+                <th className="py-3 px-4">Delivered Project</th>
+                <th className="py-3 px-4">Client Business</th>
+                <th className="py-3 px-4">Closed Value</th>
+                <th className="py-3 px-4">Total Collected</th>
+                <th className="py-3 px-4">Settlement Status</th>
+                <th className="py-3 px-4">Status</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {projects
+                .filter((p: any) => p.status === 'completed')
+                .map((proj: any) => {
+                  const lockedVal = Number(proj.project_value || 0)
+                  const recVal = Number(proj.amount_received || 0)
+                  const balanceVal = Math.max(0, lockedVal - recVal)
+                  const cur = proj.currency || 'PKR'
+
+                  return (
+                    <tr key={proj.id} className="hover:bg-emerald-50/20 transition-colors">
+                      <td className="py-3 px-4">
+                        <div className="font-bold text-slate-900">{proj.project_name}</div>
+                        <div className="text-[10px] text-slate-400">
+                          Delivered by: {proj.employee?.full_name || 'System'}
+                        </div>
+                      </td>
+                      <td className="py-3 px-4">
+                        {proj.lead ? (
+                          <Link href={`/admin/leads/${proj.lead.id}`} className="font-medium text-blue-600 hover:underline">
+                            {proj.lead.business_name}
+                          </Link>
+                        ) : (
+                          'Direct Client'
+                        )}
+                      </td>
+                      <td className="py-3 px-4 font-extrabold text-slate-900">
+                        {cur} {lockedVal.toLocaleString()}
+                      </td>
+                      <td className="py-3 px-4 font-bold text-emerald-700">
+                        {cur} {recVal.toLocaleString()}
+                      </td>
+                      <td className="py-3 px-4">
+                        {balanceVal === 0 ? (
+                          <span className="font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md text-[11px]">
+                            ✓ 100% Fully Settled
+                          </span>
+                        ) : (
+                          <span className="font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md text-[11px]">
+                            Due: {cur} {balanceVal.toLocaleString()}
+                          </span>
+                        )}
+                      </td>
+                      <td className="py-3 px-4">
+                        <span className="capitalize px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                          ✓ Completed
+                        </span>
+                      </td>
+                    </tr>
+                  )
+                })}
+              {projects.filter((p: any) => p.status === 'completed').length === 0 && (
+                <tr>
+                  <td colSpan={6} className="text-center py-8 text-slate-400">
+                    No completed projects archived yet. Marked completed projects will appear here.
                   </td>
                 </tr>
               )}

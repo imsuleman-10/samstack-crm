@@ -176,6 +176,49 @@ export async function updateLeadStage(leadId: string, stage: string) {
 
   if (error) return { error: error.message }
 
+  // Automatic sync to projects table if lead is converted/won/started/completed
+  if (['won', 'project_started', 'project_completed'].includes(stage)) {
+    try {
+      const projStatus = stage === 'project_completed' ? 'completed' : 'in_progress'
+      const { data: existingProj } = await adminSupabase
+        .from('projects')
+        .select('id')
+        .eq('lead_id', leadId)
+        .maybeSingle()
+
+      if (existingProj?.id) {
+        await adminSupabase
+          .from('projects')
+          .update({
+            status: projStatus,
+            project_value: data.deal_value || data.offered_price || 0,
+            amount_received: data.amount_received || 0,
+            currency: data.currency || 'PKR',
+            completed_at: stage === 'project_completed' ? new Date().toISOString() : null,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', existingProj.id)
+      } else {
+        await adminSupabase
+          .from('projects')
+          .insert({
+            lead_id: leadId,
+            employee_id: data.owner_id || profile.id,
+            project_name: `${data.business_name} - Contract`,
+            project_value: data.deal_value || data.offered_price || 0,
+            offered_price: data.offered_price || 0,
+            amount_received: data.amount_received || 0,
+            currency: data.currency || 'PKR',
+            status: projStatus,
+            start_date: new Date().toISOString().split('T')[0],
+            completed_at: stage === 'project_completed' ? new Date().toISOString() : null,
+          })
+      }
+    } catch (projErr) {
+      console.error('Error auto-syncing project from lead stage:', projErr)
+    }
+  }
+
   await logAudit({
     entity_type: 'lead',
     entity_id: leadId,
@@ -187,6 +230,10 @@ export async function updateLeadStage(leadId: string, stage: string) {
   revalidatePath(`/leads/${leadId}`)
   revalidatePath('/leads')
   revalidatePath('/admin/leads')
+  revalidatePath('/projects')
+  revalidatePath('/admin/projects')
+  revalidatePath('/dashboard')
+  revalidatePath('/admin/dashboard')
   return { data }
 }
 
@@ -626,6 +673,53 @@ export async function updateLead(leadId: string, input: UpdateLeadInput) {
           tiktok_url: tiktok_url || null,
           linkedin_url: linkedin_url || null,
         })
+    }
+  }
+
+  // Auto-sync or update in projects table if lead has deal value or is won/started/completed
+  const effectiveStage = updatedLead.pipeline_stage
+  const hasDeal = Number(updatedLead.deal_value || 0) > 0 || ['won', 'project_started', 'project_completed'].includes(effectiveStage)
+
+  if (hasDeal) {
+    try {
+      const projStatus = effectiveStage === 'project_completed' ? 'completed' : 'in_progress'
+      const { data: existingProj } = await adminSupabase
+        .from('projects')
+        .select('id')
+        .eq('lead_id', leadId)
+        .maybeSingle()
+
+      if (existingProj?.id) {
+        await adminSupabase
+          .from('projects')
+          .update({
+            project_value: updatedLead.deal_value || updatedLead.offered_price || 0,
+            offered_price: updatedLead.offered_price || 0,
+            amount_received: updatedLead.amount_received || 0,
+            currency: updatedLead.currency || 'PKR',
+            status: projStatus,
+            completed_at: effectiveStage === 'project_completed' ? new Date().toISOString() : null,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', existingProj.id)
+      } else {
+        await adminSupabase
+          .from('projects')
+          .insert({
+            lead_id: leadId,
+            employee_id: updatedLead.owner_id || profile.id,
+            project_name: `${updatedLead.business_name} - Contract`,
+            project_value: updatedLead.deal_value || updatedLead.offered_price || 0,
+            offered_price: updatedLead.offered_price || 0,
+            amount_received: updatedLead.amount_received || 0,
+            currency: updatedLead.currency || 'PKR',
+            status: projStatus,
+            start_date: new Date().toISOString().split('T')[0],
+            completed_at: effectiveStage === 'project_completed' ? new Date().toISOString() : null,
+          })
+      }
+    } catch (syncErr) {
+      console.error('Error auto-syncing project from updateLead:', syncErr)
     }
   }
 
