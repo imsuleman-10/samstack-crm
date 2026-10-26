@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { getLeads } from '@/lib/queries/leads'
 import Link from 'next/link'
 import LeadsViewContainer from '@/components/leads/leads-view-container'
+import ExcelTemplateGuide from '@/components/leads/excel-template-guide'
 import { Building2, Plus, Sparkles } from 'lucide-react'
 
 export const metadata: Metadata = { title: 'My Leads' }
@@ -71,6 +72,9 @@ export default async function LeadsPage({
           Add New Lead
         </Link>
       </div>
+
+      {/* Excel Import Guide for Employees */}
+      <ExcelTemplateGuide />
 
       {/* Main Leads View (Table & Kanban Switcher) */}
       <LeadsViewContainer

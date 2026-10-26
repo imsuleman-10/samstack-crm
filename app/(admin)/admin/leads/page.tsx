@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { getLeads } from '@/lib/queries/leads'
 import { getEmployees } from '@/lib/queries/employees'
 import LeadsViewContainer from '@/components/leads/leads-view-container'
+import ExcelTemplateGuide from '@/components/leads/excel-template-guide'
 import { Building2, Plus, Users, UserPlus } from 'lucide-react'
 
 export const metadata: Metadata = { title: 'Admin - All Company Leads' }
@@ -58,6 +59,9 @@ export default async function AdminLeadsPage({
           Add New Lead
         </Link>
       </div>
+
+      {/* Excel Import Guide */}
+      <ExcelTemplateGuide />
 
       {/* Main Leads View Switcher (Kanban & Table) */}
       <LeadsViewContainer
