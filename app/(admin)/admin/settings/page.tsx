@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Settings, Shield, Mail, Database, CheckCircle2, Globe, DollarSign } from 'lucide-react'
 import GroqSettingsCard from '@/components/admin/groq-settings-card'
+import SystemDetailsCard from '@/components/admin/system-details-card'
 import { getSystemSettings } from '@/lib/actions/settings'
 
 export const metadata: Metadata = { title: 'Admin - Settings' }
@@ -25,6 +26,9 @@ export default async function AdminSettingsPage() {
       </div>
 
       <div className="space-y-5">
+        {/* About The System & Architecture Card (Supabase, Vercel, Excel specs) */}
+        <SystemDetailsCard />
+
         {/* Groq AI Configuration Card */}
         <GroqSettingsCard initialConfig={currentConfig} />
 
