@@ -22,8 +22,8 @@ interface ReportExportButtonProps {
     full_name: string
     role: string
     job_title?: string | null
-    target_weekly_outreach: number
-    target_monthly_revenue: number
+    target_weekly_outreach?: number | null
+    target_monthly_revenue?: number | null
     status: string
   }>
 }
