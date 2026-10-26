@@ -63,6 +63,42 @@ export default async function AdminProjectsPage({
         </div>
       </div>
 
+      {/* Quick Status Filter Tabs */}
+      <div className="flex flex-wrap items-center gap-2">
+        <Link
+          href={`/admin/projects${sp.employeeId ? `?employeeId=${sp.employeeId}` : ''}`}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+            !sp.status
+              ? 'bg-slate-900 text-white shadow-xs'
+              : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+          }`}
+        >
+          All Projects ({projects.length})
+        </Link>
+        <Link
+          href={`/admin/projects?status=in_progress${sp.employeeId ? `&employeeId=${sp.employeeId}` : ''}`}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+            sp.status === 'in_progress'
+              ? 'bg-blue-600 text-white shadow-xs'
+              : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+          }`}
+        >
+          <Clock className="w-3.5 h-3.5" />
+          Active / In Progress ({projects.filter((p) => p.status === 'in_progress').length})
+        </Link>
+        <Link
+          href={`/admin/projects?status=completed${sp.employeeId ? `&employeeId=${sp.employeeId}` : ''}`}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+            sp.status === 'completed'
+              ? 'bg-emerald-600 text-white shadow-xs'
+              : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+          }`}
+        >
+          <CheckCircle2 className="w-3.5 h-3.5" />
+          Completed &amp; Delivered ({projects.filter((p) => p.status === 'completed').length})
+        </Link>
+      </div>
+
       {/* Filter Bar */}
       <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
         <form className="flex flex-col sm:flex-row items-center gap-3">

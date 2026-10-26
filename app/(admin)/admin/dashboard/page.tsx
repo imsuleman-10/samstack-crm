@@ -40,10 +40,11 @@ export default async function AdminDashboardPage() {
 
   const activeEmployees = employees.filter((e) => e.status === 'active' && e.role === 'employee')
 
-  // Converted / Locked Deals
-  const lockedProjects = projects.filter(
-    (p) => ['in_progress', 'completed', 'approved'].includes(p.status) || Number(p.project_value || 0) > 0
+  // Separate Active / In-Progress Projects vs Completed Projects
+  const activeProjects = projects.filter(
+    (p) => ['in_progress', 'approved', 'pending'].includes(p.status) || (Number(p.project_value || 0) > 0 && p.status !== 'completed')
   )
+  const completedProjects = projects.filter((p) => p.status === 'completed')
 
   const cashReceived = metrics.total_received_value || 0
   const lockedTotal = metrics.total_project_value || 0
@@ -176,35 +177,35 @@ export default async function AdminDashboardPage() {
         />
       </div>
 
-      {/* DEDICATED SECTION: Converted & Locked Projects Hub */}
+      {/* DEDICATED SECTION 1: Active & Ongoing Projects */}
       <div className="bg-white border border-slate-200 rounded-3xl p-5 sm:p-6 shadow-sm space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
           <div>
             <div className="flex items-center gap-2 text-blue-600 text-xs font-bold uppercase tracking-wider mb-1">
-              <Briefcase className="w-4 h-4" /> Converted Clients &amp; Locked Deals
+              <Clock className="w-4 h-4" /> Active Workflows
             </div>
             <h2 className="text-base sm:text-lg font-bold text-slate-900">
-              Locked Deals &amp; Payment Progression ({lockedProjects.length})
+              Ongoing &amp; In-Progress Projects ({activeProjects.length})
             </h2>
             <p className="text-xs text-slate-500">
-              Projects converted from leads with locked prices and incoming payments.
+              Client projects currently in production, awaiting milestone payments or active delivery.
             </p>
           </div>
           <Link
-            href="/admin/projects"
+            href="/admin/projects?status=in_progress"
             className="text-xs font-bold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1 self-start sm:self-auto"
           >
-            View All Converted Projects &rarr;
+            Manage Active Projects &rarr;
           </Link>
         </div>
 
-        {lockedProjects.length === 0 ? (
+        {activeProjects.length === 0 ? (
           <div className="text-center py-8 text-slate-400 text-xs">
-            No projects marked locked or won yet. Convert a lead to see deal financials here.
+            No projects currently in progress. Converted deals will appear here.
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
-            {lockedProjects.slice(0, 6).map((proj: any) => {
+            {activeProjects.slice(0, 6).map((proj: any) => {
               const val = Number(proj.project_value || 0)
               const rec = Number(proj.amount_received || 0)
               const bal = Math.max(0, val - rec)
@@ -263,6 +264,80 @@ export default async function AdminDashboardPage() {
                         className="h-full bg-emerald-500 rounded-full transition-all"
                         style={{ width: `${progressPct}%` }}
                       />
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* DEDICATED SECTION 2: Completed & Delivered Projects */}
+      <div className="bg-gradient-to-br from-emerald-50/50 to-teal-50/50 border border-emerald-200/80 rounded-3xl p-5 sm:p-6 shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-emerald-100">
+          <div>
+            <div className="flex items-center gap-2 text-emerald-700 text-xs font-bold uppercase tracking-wider mb-1">
+              <CheckCircle2 className="w-4 h-4" /> Delivered Success
+            </div>
+            <h2 className="text-base sm:text-lg font-bold text-slate-900">
+              Completed &amp; Delivered Projects ({completedProjects.length})
+            </h2>
+            <p className="text-xs text-slate-600">
+              Successfully delivered client systems, fulfilled contracts, and closed revenue accounts.
+            </p>
+          </div>
+          <Link
+            href="/admin/projects?status=completed"
+            className="text-xs font-bold text-emerald-700 hover:text-emerald-800 inline-flex items-center gap-1 self-start sm:self-auto"
+          >
+            Delivered Archive &rarr;
+          </Link>
+        </div>
+
+        {completedProjects.length === 0 ? (
+          <div className="text-center py-6 text-slate-400 text-xs">
+            No projects marked completed yet. Once a project is finished, it will be catalogued here.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+            {completedProjects.slice(0, 6).map((proj: any) => {
+              const val = Number(proj.project_value || 0)
+              const rec = Number(proj.amount_received || 0)
+              const bal = Math.max(0, val - rec)
+              const cur = proj.currency || 'PKR'
+
+              return (
+                <div
+                  key={proj.id}
+                  className="p-4 bg-white/90 hover:bg-white border border-emerald-200/90 rounded-2xl space-y-2.5 shadow-xs transition-colors"
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <div className="font-bold text-slate-900 text-sm line-clamp-1">
+                        {proj.project_name}
+                      </div>
+                      <div className="text-[11px] text-slate-500 mt-0.5">
+                        Client: {proj.lead?.business_name || 'Direct Client'}
+                      </div>
+                    </div>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold capitalize bg-emerald-100 text-emerald-800 border border-emerald-300">
+                      ✓ Completed
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between p-2 bg-emerald-50/80 rounded-xl text-xs">
+                    <div>
+                      <div className="text-[10px] text-slate-500 font-medium">Delivered Value</div>
+                      <div className="font-extrabold text-emerald-950">
+                        {cur} {val.toLocaleString()}
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-[10px] text-slate-500 font-medium">Payment Status</div>
+                      <div className={`font-bold ${bal === 0 ? 'text-emerald-700' : 'text-amber-700'}`}>
+                        {bal === 0 ? '100% Fully Settled' : `Due: ${cur} ${bal.toLocaleString()}`}
+                      </div>
                     </div>
                   </div>
                 </div>
