@@ -15,6 +15,8 @@ export interface AnalyticsMetrics {
   deals_won: number
   deals_lost: number
   total_project_value: number
+  total_received_value?: number
+  total_pending_value?: number
   followups_completed: number
   followups_total: number
 }

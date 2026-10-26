@@ -197,6 +197,33 @@ export default function LeadsViewContainer({
                     <StatusBadge type="pipeline" value={lead.pipeline_stage} />
                   </div>
 
+                  {/* Deal Pricing & Financial Status */}
+                  {(lead.deal_value || lead.offered_price || Number(lead.amount_received || 0) > 0) && (
+                    <div className="flex flex-wrap items-center gap-2 p-2 bg-emerald-50/70 border border-emerald-200/80 rounded-xl text-[11px]">
+                      {lead.deal_value ? (
+                        <span className="font-bold text-emerald-950">
+                          Deal: {lead.currency || 'PKR'} {Number(lead.deal_value).toLocaleString()}
+                        </span>
+                      ) : lead.offered_price ? (
+                        <span className="font-medium text-amber-900">
+                          Quote: {lead.currency || 'PKR'} {Number(lead.offered_price).toLocaleString()}
+                        </span>
+                      ) : null}
+
+                      {Number(lead.amount_received || 0) > 0 && (
+                        <span className="px-1.5 py-0.5 rounded-md bg-emerald-600 text-white font-bold text-[10px]">
+                          ✓ Paid {lead.currency || 'PKR'} {Number(lead.amount_received).toLocaleString()}
+                        </span>
+                      )}
+
+                      {lead.deal_value && Number(lead.deal_value) > Number(lead.amount_received || 0) && (
+                        <span className="text-amber-800 font-semibold text-[10px] ml-auto">
+                          Due: {lead.currency || 'PKR'} {(Number(lead.deal_value) - Number(lead.amount_received || 0)).toLocaleString()}
+                        </span>
+                      )}
+                    </div>
+                  )}
+
                   {/* Owner & Updated */}
                   <div className="flex items-center justify-between text-[11px] text-slate-500 pt-1 border-t border-slate-100">
                     <div>
@@ -266,6 +293,7 @@ export default function LeadsViewContainer({
                 <tr>
                   <th className="py-3.5 px-4">Business</th>
                   <th className="py-3.5 px-4">City / Category</th>
+                  <th className="py-3.5 px-4">Deal Pricing &amp; Paid</th>
                   <th className="py-3.5 px-4">Owner / Contact</th>
                   <th className="py-3.5 px-4">Pipeline Stage</th>
                   <th className="py-3.5 px-4">Updated</th>
@@ -273,56 +301,96 @@ export default function LeadsViewContainer({
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {initialLeads.map((lead) => (
-                  <tr key={lead.id} className="hover:bg-slate-50/80 transition-colors group">
-                    <td className="py-3.5 px-4">
-                      <Link
-                        href={`${basePath}/${lead.id}`}
-                        className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors"
-                      >
-                        {lead.business_name}
-                      </Link>
-                      {lead.phone && (
-                        <div className="text-[11px] text-slate-400 mt-0.5">{lead.phone}</div>
-                      )}
-                    </td>
-                    <td className="py-3.5 px-4">
-                      <div className="font-medium text-slate-800">{lead.city || '—'}</div>
-                      <div className="text-[11px] text-slate-400">{lead.category || 'General'}</div>
-                    </td>
-                    <td className="py-3.5 px-4">
-                      <div className="font-medium text-slate-800">
-                        {lead.contact_person || (lead.owner as any)?.full_name || '—'}
-                      </div>
-                      <div className="text-[11px] text-slate-400">{lead.lead_source || 'direct'}</div>
-                    </td>
-                    <td className="py-3.5 px-4">
-                      <StatusBadge type="pipeline" value={lead.pipeline_stage} />
-                    </td>
-                    <td className="py-3.5 px-4 text-slate-400">{timeAgo(lead.updated_at)}</td>
-                    <td className="py-3.5 px-4 text-right">
-                      <div className="inline-flex items-center gap-2">
+                {initialLeads.map((lead) => {
+                  const dealVal = Number(lead.deal_value || 0)
+                  const offeredVal = Number(lead.offered_price || 0)
+                  const receivedVal = Number(lead.amount_received || 0)
+                  const balanceDue = Math.max(0, dealVal - receivedVal)
+                  const cur = lead.currency || 'PKR'
+
+                  return (
+                    <tr key={lead.id} className="hover:bg-slate-50/80 transition-colors group">
+                      <td className="py-3.5 px-4">
                         <Link
                           href={`${basePath}/${lead.id}`}
-                          className="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors"
+                          className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors"
                         >
-                          View
+                          {lead.business_name}
                         </Link>
-                        {(isAdmin ||
-                          (currentProfileId &&
-                            ((lead as any).owner_id === currentProfileId ||
-                              (lead as any).created_by === currentProfileId))) && (
-                          <DeleteLeadModal
-                            leadId={lead.id}
-                            leadName={lead.business_name}
-                            variant="table-action"
-                            onSuccess={() => window.location.reload()}
-                          />
+                        {lead.phone && (
+                          <div className="text-[11px] text-slate-400 mt-0.5">{lead.phone}</div>
                         )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <div className="font-medium text-slate-800">{lead.city || '—'}</div>
+                        <div className="text-[11px] text-slate-400">{lead.category || 'General'}</div>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        {dealVal > 0 ? (
+                          <div className="space-y-0.5">
+                            <div className="font-bold text-slate-900">
+                              {cur} {dealVal.toLocaleString()}
+                            </div>
+                            <div className="flex items-center gap-1.5 text-[10px]">
+                              {receivedVal > 0 ? (
+                                <span className="text-emerald-700 font-semibold">
+                                  ✓ Paid {cur} {receivedVal.toLocaleString()}
+                                </span>
+                              ) : (
+                                <span className="text-slate-400 italic">No payment yet</span>
+                              )}
+                              {balanceDue > 0 && receivedVal > 0 && (
+                                <span className="text-amber-700 font-medium">
+                                  &bull; Due {cur} {balanceDue.toLocaleString()}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        ) : offeredVal > 0 ? (
+                          <div>
+                            <div className="text-slate-700 font-medium">
+                              {cur} {offeredVal.toLocaleString()}
+                            </div>
+                            <div className="text-[10px] text-amber-600 font-medium">Offered Quote</div>
+                          </div>
+                        ) : (
+                          <span className="text-slate-300 italic">—</span>
+                        )}
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <div className="font-medium text-slate-800">
+                          {lead.contact_person || (lead.owner as any)?.full_name || '—'}
+                        </div>
+                        <div className="text-[11px] text-slate-400">{lead.lead_source || 'direct'}</div>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <StatusBadge type="pipeline" value={lead.pipeline_stage} />
+                      </td>
+                      <td className="py-3.5 px-4 text-slate-400">{timeAgo(lead.updated_at)}</td>
+                      <td className="py-3.5 px-4 text-right">
+                        <div className="inline-flex items-center gap-2">
+                          <Link
+                            href={`${basePath}/${lead.id}`}
+                            className="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors"
+                          >
+                            View
+                          </Link>
+                          {(isAdmin ||
+                            (currentProfileId &&
+                              ((lead as any).owner_id === currentProfileId ||
+                                (lead as any).created_by === currentProfileId))) && (
+                            <DeleteLeadModal
+                              leadId={lead.id}
+                              leadName={lead.business_name}
+                              variant="table-action"
+                              onSuccess={() => window.location.reload()}
+                            />
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
                 {initialLeads.length === 0 && (
                   <tr>
                     <td colSpan={6} className="text-center py-12 text-slate-400">

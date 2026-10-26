@@ -91,12 +91,25 @@ export async function getDashboardMetrics(employeeId?: string) {
   const followups_total = followupsData?.length || 0
   const followups_completed = followupsData?.filter(f => f.status === 'completed').length || 0
 
-  // 4. Projects
-  let projectsQuery = adminSupabase.from('projects').select('project_value').is('deleted_at', null)
+  // 4. Projects & Converted Deal Financials
+  let projectsQuery = adminSupabase.from('projects').select('project_value, amount_received').is('deleted_at', null)
   if (employeeId) projectsQuery = projectsQuery.eq('employee_id', employeeId)
   
   const { data: projectsData } = await projectsQuery
-  const total_project_value = projectsData?.reduce((sum, p) => sum + (p.project_value || 0), 0) || 0
+  const projectsTotalValue = projectsData?.reduce((sum, p) => sum + (Number(p.project_value) || 0), 0) || 0
+  const projectsReceivedValue = projectsData?.reduce((sum, p) => sum + (Number(p.amount_received) || 0), 0) || 0
+
+  // Also include leads won/started with locked deal values
+  let wonLeadsQuery = adminSupabase.from('leads').select('deal_value, amount_received').in('pipeline_stage', ['won', 'project_started', 'project_completed']).is('deleted_at', null)
+  if (employeeId) wonLeadsQuery = wonLeadsQuery.eq('owner_id', employeeId)
+  const { data: wonLeadsData } = await wonLeadsQuery
+
+  const leadsLockedValue = wonLeadsData?.reduce((sum, l) => sum + (Number(l.deal_value) || 0), 0) || 0
+  const leadsReceivedValue = wonLeadsData?.reduce((sum, l) => sum + (Number(l.amount_received) || 0), 0) || 0
+
+  const total_project_value = Math.max(projectsTotalValue, leadsLockedValue) || (projectsTotalValue + leadsLockedValue)
+  const total_received_value = Math.max(projectsReceivedValue, leadsReceivedValue) || (projectsReceivedValue + leadsReceivedValue)
+  const total_pending_value = Math.max(0, total_project_value - total_received_value)
 
   const metrics: AnalyticsMetrics = {
     total_leads,
@@ -110,6 +123,8 @@ export async function getDashboardMetrics(employeeId?: string) {
     deals_won,
     deals_lost,
     total_project_value,
+    total_received_value,
+    total_pending_value,
     followups_completed,
     followups_total,
   }

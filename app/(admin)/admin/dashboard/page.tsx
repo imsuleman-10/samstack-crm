@@ -3,6 +3,7 @@ import { getDashboardMetrics, getTodayActivity } from '@/lib/queries/analytics'
 import { getEmployeesWithPerformance } from '@/lib/queries/employees'
 import { getLeads } from '@/lib/queries/leads'
 import { getOutreachActivities } from '@/lib/queries/outreach'
+import { getProjects } from '@/lib/queries/projects'
 import { formatPKR } from '@/lib/analytics/formulas'
 import StatCard from '@/components/ui/stat-card'
 import ActivityOverview from '@/components/dashboard/activity-overview'
@@ -19,20 +20,34 @@ import {
   FileSpreadsheet,
   ArrowRight,
   Sparkles,
+  Lock,
+  Wallet,
+  Clock,
+  Briefcase,
 } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
 export default async function AdminDashboardPage() {
-  const [{ metrics, rates, sourceDistribution, weeklyTrends }, today, employees, recentLeadsData, recentOutreach] = await Promise.all([
+  const [{ metrics, rates, sourceDistribution, weeklyTrends }, today, employees, recentLeadsData, recentOutreach, projects] = await Promise.all([
     getDashboardMetrics(),
     getTodayActivity(),
     getEmployeesWithPerformance(),
     getLeads({ pageSize: 5 }),
     getOutreachActivities({ pageSize: 5 }),
+    getProjects(),
   ])
 
   const activeEmployees = employees.filter((e) => e.status === 'active' && e.role === 'employee')
+
+  // Converted / Locked Deals
+  const lockedProjects = projects.filter(
+    (p) => ['in_progress', 'completed', 'approved'].includes(p.status) || Number(p.project_value || 0) > 0
+  )
+
+  const cashReceived = metrics.total_received_value || 0
+  const lockedTotal = metrics.total_project_value || 0
+  const pendingReceivables = metrics.total_pending_value || Math.max(0, lockedTotal - cashReceived)
 
   return (
     <div className="space-y-4 sm:space-y-6 animate-in">
@@ -63,6 +78,72 @@ export default async function AdminDashboardPage() {
         </div>
       </div>
 
+      {/* EXCLUSIVE ADMIN FINANCIAL VAULT */}
+      <div className="bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 p-5 sm:p-6 rounded-3xl border border-slate-800 shadow-xl text-white space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center">
+              <Wallet className="w-4 h-4" />
+            </div>
+            <div>
+              <h2 className="text-sm sm:text-base font-extrabold tracking-tight">Executive Cashflow &amp; Financial Vault</h2>
+              <p className="text-[11px] text-slate-400">Direct money tracking — Cash received, signed contracts, and outstanding balances.</p>
+            </div>
+          </div>
+          <Link
+            href="/admin/projects"
+            className="inline-flex items-center gap-1.5 text-xs text-blue-400 hover:text-blue-300 font-semibold self-start sm:self-auto transition-colors"
+          >
+            <span>Full Converted Projects Ledger</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+          {/* Card 1: Cash Received */}
+          <div className="p-4 bg-emerald-950/30 border border-emerald-500/30 rounded-2xl space-y-1">
+            <div className="flex items-center justify-between text-emerald-400 text-xs font-bold uppercase tracking-wider">
+              <span>Total Cash Received</span>
+              <CheckCircle2 className="w-4 h-4" />
+            </div>
+            <div className="text-2xl sm:text-3xl font-black text-emerald-300">
+              {formatPKR(cashReceived)}
+            </div>
+            <div className="text-[11px] text-emerald-400/80">
+              Paid in hand / verified client deposits
+            </div>
+          </div>
+
+          {/* Card 2: Locked Contract Value */}
+          <div className="p-4 bg-blue-950/30 border border-blue-500/30 rounded-2xl space-y-1">
+            <div className="flex items-center justify-between text-blue-400 text-xs font-bold uppercase tracking-wider">
+              <span>Locked Deal Value</span>
+              <Lock className="w-4 h-4" />
+            </div>
+            <div className="text-2xl sm:text-3xl font-black text-blue-300">
+              {formatPKR(lockedTotal)}
+            </div>
+            <div className="text-[11px] text-blue-400/80">
+              Total agreed closed project pricing ({metrics.deals_won} deals)
+            </div>
+          </div>
+
+          {/* Card 3: Pending Receivables */}
+          <div className="p-4 bg-amber-950/30 border border-amber-500/30 rounded-2xl space-y-1">
+            <div className="flex items-center justify-between text-amber-400 text-xs font-bold uppercase tracking-wider">
+              <span>Remaining Balance Due</span>
+              <Clock className="w-4 h-4" />
+            </div>
+            <div className="text-2xl sm:text-3xl font-black text-amber-300">
+              {formatPKR(pendingReceivables)}
+            </div>
+            <div className="text-[11px] text-amber-400/80">
+              Pending client payments to be collected
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Main KPI Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <StatCard
@@ -87,12 +168,108 @@ export default async function AdminDashboardPage() {
           color="orange"
         />
         <StatCard
-          title="Total Closed Revenue"
-          value={formatPKR(metrics.total_project_value)}
-          subtitle={`${metrics.deals_won} won projects`}
-          icon={DollarSign}
+          title="Total Won Projects"
+          value={metrics.deals_won}
+          subtitle={`Win Rate: ${rates.win_rate}%`}
+          icon={Briefcase}
           color="green"
         />
+      </div>
+
+      {/* DEDICATED SECTION: Converted & Locked Projects Hub */}
+      <div className="bg-white border border-slate-200 rounded-3xl p-5 sm:p-6 shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
+          <div>
+            <div className="flex items-center gap-2 text-blue-600 text-xs font-bold uppercase tracking-wider mb-1">
+              <Briefcase className="w-4 h-4" /> Converted Clients &amp; Locked Deals
+            </div>
+            <h2 className="text-base sm:text-lg font-bold text-slate-900">
+              Locked Deals &amp; Payment Progression ({lockedProjects.length})
+            </h2>
+            <p className="text-xs text-slate-500">
+              Projects converted from leads with locked prices and incoming payments.
+            </p>
+          </div>
+          <Link
+            href="/admin/projects"
+            className="text-xs font-bold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1 self-start sm:self-auto"
+          >
+            View All Converted Projects &rarr;
+          </Link>
+        </div>
+
+        {lockedProjects.length === 0 ? (
+          <div className="text-center py-8 text-slate-400 text-xs">
+            No projects marked locked or won yet. Convert a lead to see deal financials here.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+            {lockedProjects.slice(0, 6).map((proj: any) => {
+              const val = Number(proj.project_value || 0)
+              const rec = Number(proj.amount_received || 0)
+              const bal = Math.max(0, val - rec)
+              const progressPct = val > 0 ? Math.min(100, Math.round((rec / val) * 100)) : 0
+              const cur = proj.currency || 'PKR'
+
+              return (
+                <div
+                  key={proj.id}
+                  className="p-4 bg-slate-50/80 hover:bg-slate-50 border border-slate-200/90 rounded-2xl space-y-2.5 transition-colors"
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <div className="font-bold text-slate-900 text-sm line-clamp-1">
+                        {proj.project_name}
+                      </div>
+                      <div className="text-[11px] text-slate-500 mt-0.5">
+                        Client: {proj.lead?.business_name || 'Direct Client'}
+                      </div>
+                    </div>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold capitalize bg-blue-100 text-blue-800">
+                      {proj.status?.replace('_', ' ')}
+                    </span>
+                  </div>
+
+                  {/* Financial Metrics */}
+                  <div className="grid grid-cols-3 gap-2 pt-1 text-center">
+                    <div className="bg-white p-1.5 rounded-xl border border-slate-200">
+                      <div className="text-[9px] uppercase font-bold text-slate-400">Locked</div>
+                      <div className="text-xs font-extrabold text-slate-900">
+                        {cur} {val.toLocaleString()}
+                      </div>
+                    </div>
+                    <div className="bg-emerald-50 p-1.5 rounded-xl border border-emerald-200">
+                      <div className="text-[9px] uppercase font-bold text-emerald-700">Paid</div>
+                      <div className="text-xs font-extrabold text-emerald-900">
+                        {cur} {rec.toLocaleString()}
+                      </div>
+                    </div>
+                    <div className="bg-amber-50 p-1.5 rounded-xl border border-amber-200">
+                      <div className="text-[9px] uppercase font-bold text-amber-700">Due</div>
+                      <div className="text-xs font-extrabold text-amber-900">
+                        {cur} {bal.toLocaleString()}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Payment Progress Bar */}
+                  <div className="space-y-1 pt-1">
+                    <div className="flex justify-between text-[10px] font-semibold text-slate-500">
+                      <span>Payment Collected</span>
+                      <span className="text-emerald-700">{progressPct}%</span>
+                    </div>
+                    <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-emerald-500 rounded-full transition-all"
+                        style={{ width: `${progressPct}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        )}
       </div>
 
       {/* Interactive Visual Charts (Recharts) */}

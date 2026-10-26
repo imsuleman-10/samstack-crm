@@ -25,7 +25,7 @@ export async function getLeads(params?: {
 
   let query = adminSupabase
     .from('leads')
-    .select('id, business_name, category, city, phone, lead_source, pipeline_stage, owner_id, created_by, updated_at, owner:profiles!leads_owner_id_fkey(full_name, profile_photo_url), outreach:outreach_activities(count)', { count: 'exact' })
+    .select('id, business_name, category, city, phone, whatsapp, email, lead_source, pipeline_stage, owner_id, created_by, offered_price, deal_value, amount_received, currency, updated_at, owner:profiles!leads_owner_id_fkey(full_name, profile_photo_url), outreach:outreach_activities(count)', { count: 'exact' })
     .is('deleted_at', null)
 
   // Non-admins can only see leads they own or created
