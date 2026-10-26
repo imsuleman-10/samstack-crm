@@ -132,77 +132,7 @@ export async function createLeadFull(input: FullLeadInput) {
   return { data: lead }
 }
 
-// ============================================================
-// UPDATE LEAD
-// ============================================================
 
-export async function updateLead(leadId: string, input: Partial<FullLeadInput>) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: 'Unauthorized' }
-
-  const adminSupabase = createAdminClient()
-  const { data: profile } = await adminSupabase
-    .from('profiles')
-    .select('id, role')
-    .eq('auth_user_id', user.id)
-    .single()
-
-  if (!profile) return { error: 'Profile not found' }
-
-  const { data: existing } = await adminSupabase
-    .from('leads')
-    .select('*')
-    .eq('id', leadId)
-    .single()
-
-  if (!existing) return { error: 'Lead not found' }
-
-  const isAdmin = ['admin', 'super_admin'].includes(profile.role)
-  const isOwnerOrCreator = existing.created_by === profile.id || existing.owner_id === profile.id
-
-  if (!isAdmin && !isOwnerOrCreator) {
-    return { error: 'Permission denied: You can only edit your own leads.' }
-  }
-
-  const { facebook_url, instagram_url, tiktok_url, linkedin_url, youtube_url, ...leadData } = input
-
-  const { data: lead, error } = await adminSupabase
-    .from('leads')
-    .update({ ...leadData, updated_at: new Date().toISOString() })
-    .eq('id', leadId)
-    .select()
-    .single()
-
-  if (error) return { error: error.message }
-
-  // Update social links
-  if (facebook_url !== undefined || instagram_url !== undefined || tiktok_url !== undefined || linkedin_url !== undefined || youtube_url !== undefined) {
-    await adminSupabase
-      .from('lead_social_links')
-      .upsert({
-        lead_id: leadId,
-        facebook_url: facebook_url || null,
-        instagram_url: instagram_url || null,
-        tiktok_url: tiktok_url || null,
-        linkedin_url: linkedin_url || null,
-        youtube_url: youtube_url || null,
-      }, { onConflict: 'lead_id' })
-  }
-
-  await logAudit({
-    entity_type: 'lead',
-    entity_id: leadId,
-    action: 'updated',
-    old_data: existing,
-    new_data: lead,
-  })
-
-  revalidatePath(`/leads/${leadId}`)
-  revalidatePath('/leads')
-  revalidatePath('/admin/leads')
-  return { data: lead }
-}
 
 // ============================================================
 // UPDATE PIPELINE STAGE
