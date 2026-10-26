@@ -259,13 +259,14 @@ html, body {
 
 @keyframes indeterminate {
   0% { transform: translateX(-100%); }
-  50% { transform: translateX(30%); }
+  50% { transform: translateX(40%); }
   100% { transform: translateX(200%); }
 }
 
 .animate-indeterminate {
-  animation: indeterminate 1.5s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+  animation: indeterminate 0.75s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
+
 
 
 
