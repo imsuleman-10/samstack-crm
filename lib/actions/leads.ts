@@ -594,3 +594,128 @@ export async function batchImportLeads(leadsList: BatchLeadItem[]) {
   return { success: true, count: totalInserted }
 }
 
+// ============================================================
+// UPDATE LEAD
+// ============================================================
+
+export interface UpdateLeadInput {
+  business_name?: string
+  contact_person?: string
+  phone?: string
+  whatsapp?: string
+  email?: string
+  city?: string
+  area?: string
+  full_address?: string
+  category?: string
+  website?: string
+  description?: string
+  pipeline_stage?: string
+  lead_source?: string
+  google_rating?: number | null
+  offered_price?: number | null
+  deal_value?: number | null
+  amount_received?: number | null
+  currency?: string
+  facebook_url?: string
+  instagram_url?: string
+  tiktok_url?: string
+  linkedin_url?: string
+}
+
+export async function updateLead(leadId: string, input: UpdateLeadInput) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Unauthorized' }
+
+  const adminSupabase = createAdminClient()
+  const { data: profile } = await adminSupabase
+    .from('profiles')
+    .select('id, role')
+    .eq('auth_user_id', user.id)
+    .single()
+
+  if (!profile) return { error: 'Profile not found' }
+
+  const { data: existingLead, error: fetchErr } = await adminSupabase
+    .from('leads')
+    .select('*, social_links:lead_social_links(*)')
+    .eq('id', leadId)
+    .single()
+
+  if (fetchErr || !existingLead) return { error: 'Lead not found' }
+
+  const { facebook_url, instagram_url, tiktok_url, linkedin_url, ...leadFields } = input
+
+  const updatePayload: Record<string, any> = {
+    ...leadFields,
+    updated_at: new Date().toISOString(),
+  }
+
+  if (leadFields.website !== undefined) {
+    updatePayload.has_website = Boolean(leadFields.website)
+  }
+
+  const { data: updatedLead, error: updateErr } = await adminSupabase
+    .from('leads')
+    .update(updatePayload)
+    .eq('id', leadId)
+    .select()
+    .single()
+
+  if (updateErr) return { error: updateErr.message }
+
+  // Update or insert social links
+  if (
+    facebook_url !== undefined ||
+    instagram_url !== undefined ||
+    tiktok_url !== undefined ||
+    linkedin_url !== undefined
+  ) {
+    const existingSocial = Array.isArray(existingLead.social_links)
+      ? existingLead.social_links[0]
+      : existingLead.social_links
+
+    if (existingSocial?.id) {
+      await adminSupabase
+        .from('lead_social_links')
+        .update({
+          facebook_url: facebook_url !== undefined ? facebook_url : existingSocial.facebook_url,
+          instagram_url: instagram_url !== undefined ? instagram_url : existingSocial.instagram_url,
+          tiktok_url: tiktok_url !== undefined ? tiktok_url : existingSocial.tiktok_url,
+          linkedin_url: linkedin_url !== undefined ? linkedin_url : existingSocial.linkedin_url,
+        })
+        .eq('id', existingSocial.id)
+    } else if (facebook_url || instagram_url || tiktok_url || linkedin_url) {
+      await adminSupabase
+        .from('lead_social_links')
+        .insert({
+          lead_id: leadId,
+          facebook_url: facebook_url || null,
+          instagram_url: instagram_url || null,
+          tiktok_url: tiktok_url || null,
+          linkedin_url: linkedin_url || null,
+        })
+    }
+  }
+
+  await logAudit({
+    entity_type: 'lead',
+    entity_id: leadId,
+    action: 'updated',
+    old_data: existingLead,
+    new_data: updatedLead,
+  })
+
+  revalidatePath('/leads')
+  revalidatePath(`/leads/${leadId}`)
+  revalidatePath('/admin/leads')
+  revalidatePath(`/admin/leads/${leadId}`)
+  revalidatePath('/projects')
+  revalidatePath('/admin/projects')
+  revalidatePath('/dashboard')
+  revalidatePath('/admin/dashboard')
+
+  return { data: updatedLead }
+}
+

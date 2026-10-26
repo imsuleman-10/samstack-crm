@@ -8,10 +8,11 @@ import { formatDate, formatDateTime, getInitials } from '@/lib/utils'
 import {
   Building2, Globe, Phone, Mail, MapPin, ChevronLeft,
   ExternalLink, MessageSquare, Calendar,
-  Star, User, Shield
+  Star, User, Shield, DollarSign
 } from 'lucide-react'
 import Link from 'next/link'
 import DeleteLeadModal from '@/components/leads/delete-lead-modal'
+import EditLeadModal from '@/components/leads/edit-lead-modal'
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params
@@ -90,6 +91,7 @@ export default async function AdminLeadDetailPage({
               <div>Assigned Owner: <span className="font-semibold text-slate-900">{(lead.owner as any)?.full_name || 'Unassigned'}</span></div>
               <div className="flex items-center gap-3">
                 <span className="font-mono text-[11px] text-slate-400">ID: {lead.id.slice(0, 8)}</span>
+                <EditLeadModal lead={lead} />
                 <DeleteLeadModal
                   leadId={lead.id}
                   leadName={lead.business_name}

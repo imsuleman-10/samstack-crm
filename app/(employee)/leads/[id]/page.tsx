@@ -8,7 +8,7 @@ import { formatDate, formatDateTime, getInitials } from '@/lib/utils'
 import {
   Building2, Globe, Phone, Mail, MapPin, ChevronLeft,
   ExternalLink, MessageSquare, Calendar,
-  Star, User, Clock
+  Star, User, Clock, DollarSign
 } from 'lucide-react'
 
 const FacebookIcon = (props: any) => (
@@ -27,6 +27,7 @@ import LeadNotes from './lead-notes'
 import LeadFollowUps from './lead-followups'
 import StageSelector from './stage-selector'
 import DeleteLeadModal from '@/components/leads/delete-lead-modal'
+import EditLeadModal from '@/components/leads/edit-lead-modal'
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params
@@ -108,6 +109,50 @@ export default async function LeadDetailPage({
               </div>
             </div>
 
+            {/* Deal Financials Card */}
+            <div className="mt-4 pt-4 border-t border-border">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 bg-gradient-to-r from-emerald-50/70 to-teal-50/70 border border-emerald-200/80 rounded-2xl">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-950">
+                    <DollarSign className="w-4 h-4 text-emerald-600" />
+                    <span>Deal Financials &amp; Revenue</span>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
+                    {lead.offered_price ? (
+                      <span className="text-slate-600">
+                        Offered: <strong className="text-amber-800">{(lead.currency || 'PKR').toUpperCase()} {Number(lead.offered_price).toLocaleString()}</strong>
+                      </span>
+                    ) : null}
+                    {lead.deal_value ? (
+                      <span className="text-slate-600">
+                        Locked / Done: <strong className="text-emerald-800">{(lead.currency || 'PKR').toUpperCase()} {Number(lead.deal_value).toLocaleString()}</strong>
+                      </span>
+                    ) : (
+                      <span className="text-slate-400 italic">No locked price set yet</span>
+                    )}
+                    {Number(lead.amount_received || 0) > 0 && (
+                      <span className="text-slate-600">
+                        Received: <strong className="text-blue-700">{(lead.currency || 'PKR').toUpperCase()} {Number(lead.amount_received).toLocaleString()}</strong>
+                      </span>
+                    )}
+                    {lead.deal_value ? (
+                      <span className="text-slate-600">
+                        Balance Due: <strong className="text-amber-700">{(lead.currency || 'PKR').toUpperCase()} {Math.max(0, Number(lead.deal_value) - Number(lead.amount_received || 0)).toLocaleString()}</strong>
+                      </span>
+                    ) : null}
+                  </div>
+                </div>
+
+                <div className="flex-shrink-0">
+                  <EditLeadModal
+                    lead={lead}
+                    triggerButtonText="Edit Deal Pricing"
+                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-xs transition-colors"
+                  />
+                </div>
+              </div>
+            </div>
+
             {/* Stage selector */}
             <div className="mt-4 pt-4 border-t border-border">
               <StageSelector currentStage={lead.pipeline_stage} leadId={lead.id} />
@@ -115,7 +160,8 @@ export default async function LeadDetailPage({
 
             {/* Actions */}
             <div className="flex flex-wrap items-center justify-between gap-2 mt-4">
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <EditLeadModal lead={lead} triggerButtonText="Edit Details" />
                 <AddOutreachModal leadId={lead.id} leadName={lead.business_name} />
                 <AddFollowUpModal leadId={lead.id} leadName={lead.business_name} employeeId={profile.id} />
               </div>
