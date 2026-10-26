@@ -114,6 +114,35 @@ export default function LeadsKanban({ initialLeads, isAdmin = false }: LeadsKanb
                         <span>{lead.contact_person}</span>
                       </div>
                     )}
+
+                    {/* Deal Pricing & Payment Tracking */}
+                    {(lead.deal_value || lead.offered_price) && (
+                      <div className="mt-2 pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-1 text-[11px]">
+                        {lead.deal_value ? (
+                          <div className="w-full">
+                            <div className="flex items-center justify-between font-bold text-emerald-800">
+                              <span>Locked:</span>
+                              <span>
+                                {(lead.currency || 'PKR').toUpperCase()} {Number(lead.deal_value).toLocaleString()}
+                              </span>
+                            </div>
+                            {Number(lead.amount_received || 0) > 0 && (
+                              <div className="flex items-center justify-between text-[10px] text-slate-500 mt-0.5">
+                                <span>Rec: {(lead.currency || 'PKR').toUpperCase()} {Number(lead.amount_received).toLocaleString()}</span>
+                                <span className="font-semibold text-amber-700">
+                                  Bal: {(lead.currency || 'PKR').toUpperCase()} {(Number(lead.deal_value) - Number(lead.amount_received || 0)).toLocaleString()}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        ) : lead.offered_price ? (
+                          <div className="flex items-center justify-between w-full text-amber-700 font-medium">
+                            <span>Offered Quote:</span>
+                            <span>{(lead.currency || 'PKR').toUpperCase()} {Number(lead.offered_price).toLocaleString()}</span>
+                          </div>
+                        ) : null}
+                      </div>
+                    )}
                   </div>
 
                   {/* Direct Contact Actions */}

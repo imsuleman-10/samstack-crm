@@ -194,20 +194,44 @@ export default function ExcelLeadImporter({
   const handleDownloadTemplate = () => {
     const templateData = [
       {
-        'Business Name': 'Al-Rehman Enterprises',
-        'Contact Person': 'Muhammad Usman',
-        Phone: '+92 300 1234567',
-        WhatsApp: '+92 300 1234567',
-        Email: 'info@alrehman.pk',
+        'Business Name': 'Apex Textile Mills Ltd',
+        'Contact Person': 'Chaudhry Kamran',
+        Phone: '+92 300 4567890',
+        WhatsApp: '+92 300 4567890',
+        Email: 'kamran@apextextiles.pk',
         City: 'Lahore',
         Area: 'Gulberg III',
         'Full Address': 'Suite 401, Main Boulevard, Gulberg III, Lahore',
-        Category: 'Software & IT',
-        Website: 'https://alrehman.pk',
-        'Pipeline Stage': 'new',
-        'Lead Source': 'google_maps',
+        Category: 'Textiles & Manufacturing',
+        Website: 'https://apextextiles.pk',
+        'Offered Price': 450000,
+        'Locked Price': 380000,
+        'Amount Received': 150000,
+        Currency: 'PKR',
+        'Pipeline Stage': 'won',
+        'Lead Source': 'referral',
         'Google Rating': 4.8,
-        Notes: 'Met at Lahore Tech Expo, interested in Next.js web application development.',
+        Notes: 'Enterprise inventory ERP portal with 2-week agile sprint delivery.',
+      },
+      {
+        'Business Name': 'BlueWave Digital Commerce',
+        'Contact Person': 'Tariq Mehmood',
+        Phone: '+971 50 1234567',
+        WhatsApp: '+971 50 1234567',
+        Email: 'contact@bluewave-uae.com',
+        City: 'Dubai',
+        Area: 'Business Bay',
+        'Full Address': 'Tower B, Business Bay, Dubai, UAE',
+        Category: 'E-Commerce & Retail',
+        Website: 'https://bluewave-uae.com',
+        'Offered Price': 5000,
+        'Locked Price': 4200,
+        'Amount Received': 2100,
+        Currency: 'USD',
+        'Pipeline Stage': 'project_started',
+        'Lead Source': 'linkedin',
+        'Google Rating': 4.9,
+        Notes: 'Headless Next.js 16 online store with automated payment sync.',
       },
       {
         'Business Name': 'Pak Steel Traders',
@@ -220,7 +244,11 @@ export default function ExcelLeadImporter({
         'Full Address': 'Plot 12, Industrial Area, Badami Bagh, Lahore',
         Category: 'Manufacturing',
         Website: '',
-        'Pipeline Stage': 'contacted',
+        'Offered Price': 280000,
+        'Locked Price': 250000,
+        'Amount Received': 100000,
+        Currency: 'PKR',
+        'Pipeline Stage': 'negotiation',
         'Lead Source': 'referral',
         'Google Rating': 4.5,
         Notes: 'Requires inventory management CRM software.',
@@ -229,9 +257,9 @@ export default function ExcelLeadImporter({
 
     const worksheet = XLSX.utils.json_to_sheet(templateData)
     const workbook = XLSX.utils.book_new()
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Leads Template')
-    XLSX.writeFile(workbook, 'SAMStack_Leads_Import_Template.xlsx')
-    toast.success('Sample Excel Template downloaded!')
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'SAMStack Leads Template')
+    XLSX.writeFile(workbook, 'SAMStack_CRM_Leads_Template.xlsx')
+    toast.success('Sample Excel Template with Deal Pricing downloaded!')
   }
 
   const handleResetAndClose = () => {
@@ -312,6 +340,36 @@ export default function ExcelLeadImporter({
                 <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 text-white font-bold text-xs shadow-md shadow-blue-500/25">
                   Browse Computer
                 </span>
+              </div>
+
+              {/* Template Download Quick Banner */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/80 rounded-2xl">
+                <div>
+                  <div className="text-xs font-bold text-blue-950 flex items-center gap-1.5">
+                    <span>📊</span> Official Spreadsheet Template (Ready-to-use)
+                  </div>
+                  <div className="text-[11px] text-blue-700 mt-0.5">
+                    Pre-configured columns with business contacts, offered quotes, locked prices, and payments.
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <a
+                    href="/SAMStack_CRM_Leads_Template.xlsx"
+                    download="SAMStack_CRM_Leads_Template.xlsx"
+                    onClick={(e) => e.stopPropagation()}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-xs transition-colors"
+                  >
+                    <Download className="w-3.5 h-3.5" /> Download .XLSX
+                  </a>
+                  <a
+                    href="/SAMStack_CRM_Leads_Template.csv"
+                    download="SAMStack_CRM_Leads_Template.csv"
+                    onClick={(e) => e.stopPropagation()}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 text-xs font-bold transition-colors"
+                  >
+                    .CSV
+                  </a>
+                </div>
               </div>
 
               {/* Supported Formats Info */}
@@ -466,36 +524,60 @@ export default function ExcelLeadImporter({
                       <th className="py-2.5 px-3">Business</th>
                       <th className="py-2.5 px-3">Phone / WhatsApp</th>
                       <th className="py-2.5 px-3">City / Category</th>
+                      <th className="py-2.5 px-3">Deal Financials</th>
                       <th className="py-2.5 px-3">Stage</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
                     {prepareLeadsForImport()
                       .slice(0, 5)
-                      .map((lead, idx) => (
-                        <tr key={idx} className="hover:bg-slate-50">
-                          <td className="py-2.5 px-3 font-semibold text-slate-900">
-                            {lead.business_name || '—'}
-                            {lead.contact_person && (
-                              <div className="text-[10px] text-slate-400">
-                                Contact: {lead.contact_person}
-                              </div>
-                            )}
-                          </td>
-                          <td className="py-2.5 px-3 text-slate-600">
-                            {lead.phone || lead.whatsapp || '—'}
-                          </td>
-                          <td className="py-2.5 px-3 text-slate-600">
-                            <div>{lead.city || '—'}</div>
-                            <div className="text-[10px] text-slate-400">{lead.category || 'General'}</div>
-                          </td>
-                          <td className="py-2.5 px-3">
-                            <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 uppercase">
-                              {lead.pipeline_stage || 'new'}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
+                      .map((lead, idx) => {
+                        const cur = (lead.currency || 'PKR').toUpperCase()
+                        return (
+                          <tr key={idx} className="hover:bg-slate-50">
+                            <td className="py-2.5 px-3 font-semibold text-slate-900">
+                              {lead.business_name || '—'}
+                              {lead.contact_person && (
+                                <div className="text-[10px] text-slate-400">
+                                  Contact: {lead.contact_person}
+                                </div>
+                              )}
+                            </td>
+                            <td className="py-2.5 px-3 text-slate-600">
+                              {lead.phone || lead.whatsapp || '—'}
+                            </td>
+                            <td className="py-2.5 px-3 text-slate-600">
+                              <div>{lead.city || '—'}</div>
+                              <div className="text-[10px] text-slate-400">{lead.category || 'General'}</div>
+                            </td>
+                            <td className="py-2.5 px-3 text-slate-700">
+                              {lead.deal_value ? (
+                                <div>
+                                  <span className="font-bold text-emerald-700 text-xs">
+                                    {cur} {Number(lead.deal_value).toLocaleString()}
+                                  </span>
+                                  {lead.amount_received ? (
+                                    <div className="text-[10px] text-slate-500">
+                                      Paid: {cur} {Number(lead.amount_received).toLocaleString()}
+                                    </div>
+                                  ) : null}
+                                </div>
+                              ) : lead.offered_price ? (
+                                <span className="text-amber-700 font-semibold text-[11px]">
+                                  Offer: {cur} {Number(lead.offered_price).toLocaleString()}
+                                </span>
+                              ) : (
+                                <span className="text-slate-400 text-[11px]">—</span>
+                              )}
+                            </td>
+                            <td className="py-2.5 px-3">
+                              <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 uppercase">
+                                {lead.pipeline_stage || 'new'}
+                              </span>
+                            </td>
+                          </tr>
+                        )
+                      })}
                   </tbody>
                 </table>
               </div>

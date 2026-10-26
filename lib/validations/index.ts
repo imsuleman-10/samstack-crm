@@ -17,6 +17,10 @@ export const quickAddLeadSchema = z.object({
   facebook_url: z.string().url('Enter a valid URL').optional().or(z.literal('')),
   instagram_url: z.string().url('Enter a valid URL').optional().or(z.literal('')),
   tiktok_url: z.string().url('Enter a valid URL').optional().or(z.literal('')),
+  offered_price: z.coerce.number().positive().optional(),
+  deal_value: z.coerce.number().positive().optional(),
+  amount_received: z.coerce.number().nonnegative().optional(),
+  currency: z.string().optional(),
   lead_source: z.enum(['google_maps', 'facebook', 'instagram', 'tiktok', 'website', 'referral', 'manual_entry', 'other']).default('google_maps'),
 })
 
@@ -51,6 +55,10 @@ export const fullLeadSchema = z.object({
   tiktok_url: z.string().url('Enter a valid URL').optional().or(z.literal('')),
   linkedin_url: z.string().url('Enter a valid URL').optional().or(z.literal('')),
   youtube_url: z.string().url('Enter a valid URL').optional().or(z.literal('')),
+  offered_price: z.coerce.number().positive().optional(),
+  deal_value: z.coerce.number().positive().optional(),
+  amount_received: z.coerce.number().nonnegative().optional(),
+  currency: z.string().optional(),
 })
 
 export type QuickAddLeadInput = z.infer<typeof quickAddLeadSchema>
@@ -96,7 +104,9 @@ export const projectSchema = z.object({
   lead_id: z.string().uuid().optional(),
   project_name: z.string().min(2, 'Project name is required'),
   project_value: z.coerce.number().positive().optional(),
-  currency: z.string().default('PKR'),
+  offered_price: z.coerce.number().positive().optional(),
+  amount_received: z.coerce.number().nonnegative().optional(),
+  currency: z.string().optional(),
   status: z.enum(['pending', 'approved', 'in_progress', 'completed', 'cancelled']).default('pending'),
   start_date: z.string().optional(),
   expected_completion_date: z.string().optional(),

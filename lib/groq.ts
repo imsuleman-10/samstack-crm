@@ -137,6 +137,10 @@ export const STANDARD_CRM_FIELDS = [
   { key: 'full_address', label: 'Full Address' },
   { key: 'category', label: 'Category / Industry' },
   { key: 'website', label: 'Website URL' },
+  { key: 'offered_price', label: 'Offered Price / Quote (آفر کی گئی رقم)' },
+  { key: 'deal_value', label: 'Locked Price / Deal Value (ڈن ہوئی رقم)' },
+  { key: 'amount_received', label: 'Amount Received / Paid (وصول شدہ رقم)' },
+  { key: 'currency', label: 'Currency (PKR, USD, AED, etc.)' },
   { key: 'pipeline_stage', label: 'Pipeline Stage' },
   { key: 'lead_source', label: 'Lead Source' },
   { key: 'google_rating', label: 'Google Rating' },
@@ -290,6 +294,42 @@ export function runDeterministicColumnMapping(headers: string[]): Record<string,
       result[h] = 'lead_source'
     } else if (norm.includes('rating') || norm.includes('stars') || norm.includes('review')) {
       result[h] = 'google_rating'
+    } else if (
+      norm.includes('offer') ||
+      norm.includes('quote') ||
+      norm.includes('initialprice') ||
+      norm.includes('asking') ||
+      norm.includes('quotation')
+    ) {
+      result[h] = 'offered_price'
+    } else if (
+      norm.includes('dealvalue') ||
+      norm.includes('lockedprice') ||
+      norm.includes('projectvalue') ||
+      norm.includes('doneprice') ||
+      norm.includes('finalprice') ||
+      norm.includes('agreed') ||
+      norm.includes('closedamount') ||
+      norm === 'deal' ||
+      norm === 'price' ||
+      norm === 'budget' ||
+      norm === 'amount'
+    ) {
+      result[h] = 'deal_value'
+    } else if (
+      norm.includes('received') ||
+      norm.includes('advance') ||
+      norm.includes('paid') ||
+      norm.includes('collected') ||
+      norm.includes('deposit')
+    ) {
+      result[h] = 'amount_received'
+    } else if (
+      norm.includes('currency') ||
+      norm === 'curr' ||
+      norm === 'cur'
+    ) {
+      result[h] = 'currency'
     } else if (norm.includes('note') || norm.includes('remark') || norm.includes('desc') || norm.includes('comment')) {
       result[h] = 'description'
     }

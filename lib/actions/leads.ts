@@ -443,6 +443,10 @@ export interface BatchLeadItem {
   instagram_url?: string
   tiktok_url?: string
   linkedin_url?: string
+  offered_price?: number | string
+  deal_value?: number | string
+  amount_received?: number | string
+  currency?: string
 }
 
 export async function batchImportLeads(leadsList: BatchLeadItem[]) {
@@ -508,6 +512,17 @@ export async function batchImportLeads(leadsList: BatchLeadItem[]) {
     const numRating = item.google_rating ? parseFloat(String(item.google_rating)) : null
     const google_rating = !isNaN(numRating as number) ? numRating : null
 
+    const numOffered = item.offered_price ? parseFloat(String(item.offered_price).replace(/[^0-9.]/g, '')) : null
+    const offered_price = !isNaN(numOffered as number) ? numOffered : null
+
+    const numDeal = item.deal_value ? parseFloat(String(item.deal_value).replace(/[^0-9.]/g, '')) : null
+    const deal_value = !isNaN(numDeal as number) ? numDeal : null
+
+    const numReceived = item.amount_received ? parseFloat(String(item.amount_received).replace(/[^0-9.]/g, '')) : 0
+    const amount_received = !isNaN(numReceived as number) ? numReceived : 0
+
+    const currency = (item.currency?.trim() || 'PKR').toUpperCase()
+
     preparedLeads.push({
       business_name: rawName,
       contact_person: item.contact_person?.trim() || null,
@@ -519,6 +534,10 @@ export async function batchImportLeads(leadsList: BatchLeadItem[]) {
       full_address: item.full_address?.trim() || null,
       category: item.category?.trim() || null,
       website: item.website?.trim() || null,
+      offered_price,
+      deal_value,
+      amount_received,
+      currency,
       pipeline_stage,
       lead_source,
       google_rating,

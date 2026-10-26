@@ -30,9 +30,8 @@ export default async function AdminProjectsPage({
   ])
 
   const totalValue = projects.reduce((sum: number, p: any) => sum + (p.project_value || 0), 0)
-  const completedValue = projects
-    .filter((p: any) => p.status === 'completed')
-    .reduce((sum: number, p: any) => sum + (p.project_value || 0), 0)
+  const totalReceived = projects.reduce((sum: number, p: any) => sum + (p.amount_received || 0), 0)
+  const totalPending = Math.max(0, totalValue - totalReceived)
 
   return (
     <div className="space-y-6">
@@ -40,18 +39,26 @@ export default async function AdminProjectsPage({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
         <div>
           <div className="flex items-center gap-2 text-blue-600 text-xs font-semibold uppercase tracking-wider mb-1">
-            <FolderKanban className="w-4 h-4" /> Portfolio & Revenue
+            <FolderKanban className="w-4 h-4" /> Portfolio & Deal Revenue
           </div>
-          <h1 className="text-xl font-bold text-slate-900">Converted Projects</h1>
+          <h1 className="text-xl font-bold text-slate-900">Converted Projects & Deal Financials</h1>
           <p className="text-xs text-slate-500 mt-1">
-            Total {projects.length} won projects totaling {formatPKR(totalValue)}.
+            Track locked deal prices, advance/received payments, and pending client balances.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="bg-emerald-50 border border-emerald-200 px-4 py-2 rounded-xl">
-            <div className="text-[10px] uppercase font-semibold text-emerald-700">Completed Revenue</div>
-            <div className="text-base font-bold text-emerald-900">{formatPKR(completedValue)}</div>
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="bg-slate-50 border border-slate-200 px-3.5 py-2 rounded-xl">
+            <div className="text-[10px] uppercase font-bold text-slate-500">Locked Value</div>
+            <div className="text-sm sm:text-base font-extrabold text-slate-900">{formatPKR(totalValue)}</div>
+          </div>
+          <div className="bg-emerald-50 border border-emerald-200 px-3.5 py-2 rounded-xl">
+            <div className="text-[10px] uppercase font-bold text-emerald-700">Total Received</div>
+            <div className="text-sm sm:text-base font-extrabold text-emerald-900">{formatPKR(totalReceived)}</div>
+          </div>
+          <div className="bg-amber-50 border border-amber-200 px-3.5 py-2 rounded-xl">
+            <div className="text-[10px] uppercase font-bold text-amber-700">Remaining Balance</div>
+            <div className="text-sm sm:text-base font-extrabold text-amber-900">{formatPKR(totalPending)}</div>
           </div>
         </div>
       </div>
@@ -102,52 +109,82 @@ export default async function AdminProjectsPage({
               <tr>
                 <th className="py-3 px-4">Project Name</th>
                 <th className="py-3 px-4">Client Business</th>
-                <th className="py-3 px-4">Closer Rep</th>
-                <th className="py-3 px-4">Project Value (PKR)</th>
-                <th className="py-3 px-4">Start Date</th>
+                <th className="py-3 px-4">Offered Quote</th>
+                <th className="py-3 px-4">Locked Deal Value</th>
+                <th className="py-3 px-4">Received / Paid</th>
+                <th className="py-3 px-4">Pending Balance</th>
                 <th className="py-3 px-4">Status</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {projects.map((proj: any) => (
-                <tr key={proj.id} className="hover:bg-slate-50 transition-colors">
-                  <td className="py-3 px-4 font-bold text-slate-900">{proj.project_name}</td>
-                  <td className="py-3 px-4">
-                    {proj.lead ? (
-                      <Link href={`/admin/leads/${proj.lead.id}`} className="font-medium text-blue-600 hover:underline">
-                        {proj.lead.business_name}
-                      </Link>
-                    ) : (
-                      'Direct Client'
-                    )}
-                  </td>
-                  <td className="py-3 px-4 font-medium text-slate-800">
-                    {proj.employee?.full_name || 'System'}
-                  </td>
-                  <td className="py-3 px-4 font-bold text-slate-900">
-                    {formatPKR(proj.project_value)}
-                  </td>
-                  <td className="py-3 px-4 text-slate-500">
-                    {proj.start_date ? formatDate(proj.start_date) : 'N/A'}
-                  </td>
-                  <td className="py-3 px-4">
-                    <span
-                      className={`capitalize px-2.5 py-0.5 rounded-full text-[11px] font-medium border ${
-                        proj.status === 'completed'
-                          ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                          : proj.status === 'in_progress'
-                          ? 'bg-blue-50 text-blue-700 border-blue-200'
-                          : 'bg-amber-50 text-amber-700 border-amber-200'
-                      }`}
-                    >
-                      {proj.status.replace('_', ' ')}
-                    </span>
-                  </td>
-                </tr>
-              ))}
+              {projects.map((proj: any) => {
+                const lockedVal = Number(proj.project_value || 0)
+                const recVal = Number(proj.amount_received || 0)
+                const balanceVal = Math.max(0, lockedVal - recVal)
+                const cur = proj.currency || 'PKR'
+
+                return (
+                  <tr key={proj.id} className="hover:bg-slate-50 transition-colors">
+                    <td className="py-3 px-4">
+                      <div className="font-bold text-slate-900">{proj.project_name}</div>
+                      <div className="text-[10px] text-slate-400">
+                        Closer: {proj.employee?.full_name || 'System'}
+                      </div>
+                    </td>
+                    <td className="py-3 px-4">
+                      {proj.lead ? (
+                        <Link href={`/admin/leads/${proj.lead.id}`} className="font-medium text-blue-600 hover:underline">
+                          {proj.lead.business_name}
+                        </Link>
+                      ) : (
+                        'Direct Client'
+                      )}
+                    </td>
+                    <td className="py-3 px-4 text-slate-600">
+                      {proj.offered_price ? (
+                        <span className="font-semibold text-amber-700">
+                          {cur} {Number(proj.offered_price).toLocaleString()}
+                        </span>
+                      ) : (
+                        <span className="text-slate-400">—</span>
+                      )}
+                    </td>
+                    <td className="py-3 px-4 font-extrabold text-slate-900">
+                      {cur} {lockedVal.toLocaleString()}
+                    </td>
+                    <td className="py-3 px-4 font-bold text-emerald-700">
+                      {cur} {recVal.toLocaleString()}
+                    </td>
+                    <td className="py-3 px-4">
+                      {balanceVal > 0 ? (
+                        <span className="font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md text-[11px]">
+                          {cur} {balanceVal.toLocaleString()}
+                        </span>
+                      ) : (
+                        <span className="font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md text-[11px]">
+                          Fully Paid
+                        </span>
+                      )}
+                    </td>
+                    <td className="py-3 px-4">
+                      <span
+                        className={`capitalize px-2.5 py-0.5 rounded-full text-[11px] font-medium border ${
+                          proj.status === 'completed'
+                            ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                            : proj.status === 'in_progress'
+                            ? 'bg-blue-50 text-blue-700 border-blue-200'
+                            : 'bg-amber-50 text-amber-700 border-amber-200'
+                        }`}
+                      >
+                        {proj.status.replace('_', ' ')}
+                      </span>
+                    </td>
+                  </tr>
+                )
+              })}
               {projects.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="text-center py-10 text-slate-400">
+                  <td colSpan={7} className="text-center py-10 text-slate-400">
                     No converted projects recorded yet.
                   </td>
                 </tr>

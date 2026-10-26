@@ -143,9 +143,12 @@ export interface Lead {
   google_reviews_count: number | null
   has_website: boolean
   has_social_media: boolean
-  has_online_presence: boolean
   lead_source: LeadSource
   pipeline_stage: PipelineStage
+  offered_price?: number | null
+  deal_value?: number | null
+  amount_received?: number | null
+  currency?: string | null
   owner_id: string | null
   created_by: string | null
   deleted_at: string | null
@@ -213,6 +216,8 @@ export interface Project {
   employee_id: string | null
   project_name: string
   project_value: number | null
+  offered_price?: number | null
+  amount_received?: number | null
   currency: string
   status: ProjectStatus
   start_date: string | null
